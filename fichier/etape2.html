@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étape 2 - Changement avec l'utilisateur | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --tech-green: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: var(--primary-blue); }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .content-section { padding: 2rem 0 4rem; }
+
+        .content-box {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .step-image {
+            width: 100%;
+            max-width: 700px;
+            margin: 1.5rem auto;
+            display: block;
+            border-radius: 10px;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        }
+
+        .btn-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            .page-hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            <ul>
+                <li><a href="index.html">Page d'accueil</a></li>
+                <li><a href="stage1.html">Stage 1</a></li>
+                <li><a href="stage2.html">Stage 2</a></li>
+                <li><a href="cv.html">CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1>Étape 2 - Changement avec l'utilisateur</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <span>›</span>
+                <a href="stage1.html">Stage 1</a>
+                <span>›</span>
+                <a href="missions.html">Missions</a>
+                <span>›</span>
+                <a href="mission2.html">Mission 2</a>
+                <span>›</span>
+                <span>Étape 2</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-box">
+                <p style="color: var(--text-gray);">
+                    L'étape 2 se réalise lorsque l'utilisateur vient changer son poste.
+                </p>
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Dans un premier temps, il faut lui demander s'il a apporté son téléphone afin de configurer <strong>Colibri</strong>, qui est le VPN qui permet de télétravailler.
+                </p>
+            </div>
+
+            <div class="content-box">
+                <h2 style="color: var(--tech-green); margin-bottom: 1.5rem;">Scripts de sauvegarde et restauration</h2>
+                <p style="color: var(--text-gray);">
+                    Une fois son PC récupéré, il faut brancher un disque dur sur son PC contenant des scripts de sauvegarde et de restauration des données, les scripts se présentent sous le format <strong>.vbs</strong>, leur contenu est disponible en cliquant sur les boutons :
+                </p>
+                <div class="btn-grid">
+                    <a href="sauvegarde.html" class="btn">📥 Script de Sauvegarde</a>
+                    <a href="restauration.html" class="btn">📤 Script de Restauration</a>
+                </div>
+                <p style="color: var(--text-gray); margin-top: 1.5rem;">
+                    On lance ensuite le script de <strong>Sauvegarde</strong> sur l'ancien PC afin de sauvegarder les données de type :
+                </p>
+                <ul style="list-style: none; padding-left: 1.5rem; color: var(--text-gray); margin-top: 1rem;">
+                    <li style="position: relative; padding: 0.5rem 0;">▹ Signatures électroniques Outlook</li>
+                    <li style="position: relative; padding: 0.5rem 0;">▹ Fichiers et documents sauvegardés en local</li>
+                    <li style="position: relative; padding: 0.5rem 0;">▹ Profil Firefox (contenant l'historique et les marques-pages)</li>
+                    <li style="position: relative; padding: 0.5rem 0;">▹ Archive Outlook si l'utilisateur en a</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h2 style="color: var(--tech-green); margin-bottom: 1.5rem;">Configuration de Colibri (VPN)</h2>
+                <p style="color: var(--text-gray);">
+                    Pendant que le disque dur sauvegarde toutes les données, configuration de Colibri ainsi que des imprimantes réseaux utilisées.
+                </p>
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Pour la configuration de Colibri, il suffit simplement que l'utilisateur se connecte comme en télétravail, c'est-à-dire en mettant ses identifiants, puis un code PIN seulement connu par l'utilisateur suivi de 6 chiffres qui sont générés aléatoirement toutes les 1 minute sur une application mobile. Cela charge donc les paquets du VPN, c'est pour cela que la première connexion doit se faire sur site, car en télétravail, l'outil ne peut pas télécharger les paquets.
+                </p>
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Concernant Colibri, j'ai une part de travail à faire seulement quand l'utilisateur n'a jamais fait de télétravail ou souhaite modifier son appareil mobile de connexion. Pour cela je dois créer ou remplacer un token comme expliqué ci-dessous :
+                </p>
+
+                <h3 style="color: var(--primary-blue); margin-top: 2rem; margin-bottom: 1rem;">Création d'un token</h3>
+                <p style="color: var(--text-gray);">
+                    Tout d'abord, je me connecte à la console RSA qui permet la gestion des tokens avec mes identifiants, puis il y a une barre de recherche, je rentre le nom de famille de la personne à qui je souhaite ajouter le token.
+                </p>
+                <img src="etape2_img1.png" alt="Console RSA" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1.5rem;">
+                    Je clique droit sur <strong>Assign Token</strong>, puis <strong>Assign Software Token</strong> car c'est un token pour le logiciel RSA sur téléphone.
+                </p>
+                <img src="etape2_img2.png" alt="Assign Token" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1.5rem;">
+                    Je choisis ensuite le token que je veux assigner (je choisis n'importe lequel car ils ont tous la même utilité).
+                </p>
+                <img src="etape2_img3.png" alt="Selection token" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1.5rem;">
+                    Pour finir, je choisis soit l'option <strong>Soft Token iOS QR</strong> ou <strong>Soft Token Android QR</strong> en fonction du téléphone de l'utilisateur. « QR » correspond au fait de réaliser la configuration de l'application mobile avec un QR code directement.
+                </p>
+                <img src="etape2_img4.png" alt="QR Code" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1.5rem;">
+                    Enfin, il faut se rendre sur un autre site pour que l'utilisateur s'y connecte afin de recevoir son QR code (scanné via l'application RSA sur téléphone) et afin de choisir son code PIN comme expliqué ci-dessus.
+                </p>
+            </div>
+
+            <div class="content-box">
+                <h2 style="color: var(--tech-green); margin-bottom: 1.5rem;">Configuration des imprimantes réseaux</h2>
+                <p style="color: var(--text-gray);">
+                    Il faut ensuite connecter les imprimantes réseaux que l'utilisateur utilisait sur son ancien PC.
+                </p>
+                <img src="etape2_img5.png" alt="Icône imprimante" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Il faut d'abord se rendre dans le raccourci « <strong>Serveur d'impression</strong> » situé sur le bureau de l'ordinateur.
+                </p>
+                <img src="etape2_img6.png" alt="Serveur impression" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Puis rentrer dans la case « rechercher », le numéro de l'imprimante (63 dans l'exemple ci-contre) puis cliquer sur <strong>Connecter</strong> afin de l'affilier au PC.
+                </p>
+
+                <p style="color: var(--text-gray); margin-top: 1.5rem;">
+                    Une fois Colibri configuré et les imprimantes ajoutées, il faut donc restaurer les données sauvegardées préalablement sur le disque dur. On vérifie que les marques-pages Firefox ou encore les archives et signatures Outlook ont bien été importés ainsi que les données sauvegardées en local.
+                </p>
+
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Les nouveaux ordinateurs n'ayant que 2 Ports USB disponibles, il faut demander si les utilisateurs ont besoin de plus en télétravail (si utilisation de souris + clavier + casque USB). Puis on leur fournit une nouvelle alimentation.
+                </p>
+            </div>
+
+            <div class="content-box">
+                <h2 style="color: var(--tech-green); margin-bottom: 1.5rem;">Mouvement dans l'Active Directory</h2>
+                <p style="color: var(--text-gray);">
+                    Le changement de poste est donc pratiquement fini, il nous reste juste à faire un mouvement dans l'Active Directory.
+                </p>
+                <img src="etape2_img7.png" alt="Container provisionning" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Tout d'abord, il faut retrouver le nom de l'utilisateur à qui appartient le PC dans <strong>Container_Provisionning_Ivanti</strong> où se trouvent tous les ordinateurs qui ne sont pas rangés dans un répertoire et affectés très récemment ou tout juste masterisés. (Les noms et prénoms sont effacés pour le respect des personnes).
+                </p>
+                <img src="etape2_img8.png" alt="Déplacement AD" class="step-image">
+
+                <p style="color: var(--text-gray); margin-top: 1rem;">
+                    Ensuite il faut déplacer l'ordinateur correspondant à l'utilisateur dans <strong>Siège</strong> ou <strong>Agences</strong>, en fonction d'où l'utilisateur est situé. Puis nous devons renseigner « <strong>en attente de suppression</strong> » à la fin de la description de l'ancien ordinateur.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2026 Kaëlig CHRISTOUX. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
