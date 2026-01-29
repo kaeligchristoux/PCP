@@ -13,6 +13,8 @@
             --deep-blue: #0c4a6e;
             --tech-green: #10b981;
             --dark-green: #065f46;
+            --sncf-red: #ed1c24;
+            --dark-red: #c41e1e;
             --bg-dark: #0f172a;
             --bg-card: #1e293b;
             --text-light: #f1f5f9;
@@ -42,8 +44,8 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(237, 28, 36, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
             z-index: -1;
             animation: bgPulse 8s ease-in-out infinite;
         }
@@ -62,7 +64,7 @@
             backdrop-filter: blur(10px);
             padding: 1.5rem 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+            border-bottom: 1px solid rgba(237, 28, 36, 0.3);
         }
 
         nav .container {
@@ -106,12 +108,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(90deg, var(--sncf-red), var(--primary-blue));
             transition: width 0.3s;
         }
 
         nav a:hover {
-            color: var(--primary-blue);
+            color: var(--sncf-red);
         }
 
         nav a:hover::after {
@@ -134,7 +136,7 @@
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, var(--sncf-red), var(--primary-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -150,10 +152,10 @@
             display: inline-block;
             margin-top: 1.5rem;
             padding: 0.75rem 1.5rem;
-            background: rgba(14, 165, 233, 0.1);
-            border: 1px solid rgba(14, 165, 233, 0.3);
+            background: rgba(237, 28, 36, 0.15);
+            border: 1px solid rgba(237, 28, 36, 0.4);
             border-radius: 10px;
-            color: var(--primary-blue);
+            color: var(--sncf-red);
             font-weight: 600;
         }
 
@@ -168,8 +170,8 @@
             margin: 3rem auto;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(14, 165, 233, 0.2);
+            box-shadow: 0 20px 60px rgba(237, 28, 36, 0.3);
+            border: 2px solid rgba(237, 28, 36, 0.3);
         }
 
         .company-image img {
@@ -189,7 +191,7 @@
             background: var(--bg-card);
             padding: 2rem;
             border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(237, 28, 36, 0.2);
             text-decoration: none;
             transition: all 0.3s;
             display: flex;
@@ -200,8 +202,8 @@
 
         .action-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary-blue);
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+            border-color: var(--sncf-red);
+            box-shadow: 0 10px 30px rgba(237, 28, 36, 0.4);
         }
 
         .action-card .icon {
@@ -210,7 +212,7 @@
         }
 
         .action-card h3 {
-            color: var(--tech-green);
+            color: var(--sncf-red);
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
         }
@@ -237,7 +239,7 @@
             left: 0;
             width: 100px;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(90deg, var(--sncf-red), var(--primary-blue));
             border-radius: 2px;
         }
 
@@ -253,7 +255,7 @@
             background: var(--bg-card);
             padding: 2rem;
             border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(237, 28, 36, 0.2);
             text-decoration: none;
             transition: all 0.3s;
             display: flex;
@@ -263,14 +265,14 @@
 
         .cra-card:hover {
             transform: translateX(5px);
-            border-color: var(--tech-green);
-            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.2);
+            border-color: var(--sncf-red);
+            box-shadow: 0 5px 20px rgba(237, 28, 36, 0.3);
         }
 
         .cra-number {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, var(--sncf-red), var(--dark-red));
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -295,7 +297,7 @@
         /* Footer */
         footer {
             background: rgba(15, 23, 42, 0.8);
-            border-top: 1px solid rgba(14, 165, 233, 0.2);
+            border-top: 1px solid rgba(237, 28, 36, 0.3);
             padding: 3rem 0 1.5rem;
             margin-top: 4rem;
         }
@@ -309,7 +311,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, var(--sncf-red), var(--primary-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -321,7 +323,7 @@
             font-size: 0.9rem;
             text-align: center;
             padding-top: 1.5rem;
-            border-top: 1px solid rgba(14, 165, 233, 0.1);
+            border-top: 1px solid rgba(237, 28, 36, 0.2);
         }
 
         /* Responsive */
@@ -377,8 +379,8 @@
     <!-- Hero Section -->
     <section class="page-hero">
         <div class="container">
-            <h1>SNCF Réseau</h1>
-            <p class="subtitle">Stage de deuxième année</p>
+            <h1>🚂 SNCF Réseau</h1>
+            <p class="subtitle">Stage de deuxième année - ESTI Atlantique</p>
             <div class="period">📅 Période : 12 janvier au 20 février 2026</div>
         </div>
     </section>
@@ -397,8 +399,8 @@
             <div class="action-buttons">
                 <a href="contextesncf.html" class="action-card fade-in">
                     <div class="icon">🏢</div>
-                    <h3>Contexte CEJM</h3>
-                    <p>Présentation de l'entreprise et contexte économique</p>
+                    <h3>Contexte SNCF</h3>
+                    <p>Présentation de l'entreprise et organisation</p>
                 </a>
                 <a href="missions-sncf.html" class="action-card fade-in">
                     <div class="icon">🎯</div>
@@ -414,7 +416,7 @@
         <div class="container">
             <h2 class="section-title">Comptes Rendus d'Activité</h2>
             <p style="text-align: center; color: var(--text-gray); margin-bottom: 2rem;">
-                Ci-dessous, sont fournis les 6 comptes rendus d'activité hebdomadaires correspondant aux 6 semaines de stage effectuées.
+                Ci-dessous, sont fournis les comptes rendus d'activité hebdomadaires correspondant aux semaines de stage effectuées.
             </p>
             
             <div class="cra-grid">
@@ -422,7 +424,7 @@
                     <div class="cra-number">1</div>
                     <div class="cra-info">
                         <h4>CRA Semaine 1</h4>
-                        <p>12/01 au 26/01/2026</p>
+                        <p>12/01 au 16/01/2026</p>
                     </div>
                 </a>
                 <a href="cra-sncf-semaine2.html" class="cra-card fade-in">
@@ -432,28 +434,28 @@
                         <p>19/01 au 23/01/2026</p>
                     </div>
                 </a>
-                <a href="cra-semaine3.html" class="cra-card fade-in">
+                <a href="cra-sncf-semaine3.html" class="cra-card fade-in">
                     <div class="cra-number">3</div>
                     <div class="cra-info">
                         <h4>CRA Semaine 3</h4>
                         <p>26/01 au 30/01/2026</p>
                     </div>
                 </a>
-                <a href="cra-semaine4.html" class="cra-card fade-in">
+                <a href="cra-sncf-semaine4.html" class="cra-card fade-in">
                     <div class="cra-number">4</div>
                     <div class="cra-info">
                         <h4>CRA Semaine 4</h4>
                         <p>02/02 au 06/02/2026</p>
                     </div>
                 </a>
-                <a href="cra-semaine5.html" class="cra-card fade-in">
+                <a href="cra-sncf-semaine5.html" class="cra-card fade-in">
                     <div class="cra-number">5</div>
                     <div class="cra-info">
                         <h4>CRA Semaine 5</h4>
                         <p>09/02 au 13/02/2026</p>
                     </div>
                 </a>
-                <a href="cra-semaine6.html" class="cra-card fade-in">
+                <a href="cra-sncf-semaine6.html" class="cra-card fade-in">
                     <div class="cra-number">6</div>
                     <div class="cra-info">
                         <h4>CRA Semaine 6</h4>
@@ -465,16 +467,14 @@
     </section>
 
     <!-- Référentiel BTS SIO Section -->
-    <section style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(16, 185, 129, 0.05)); padding: 5rem 0; border-top: 2px solid rgba(14, 165, 233, 0.3);">
+    <section style="background: linear-gradient(135deg, rgba(237, 28, 36, 0.05), rgba(14, 165, 233, 0.05)); padding: 5rem 0; border-top: 2px solid rgba(237, 28, 36, 0.3);">
         <div class="container">
             <h2 class="section-title" style="margin-bottom: 1rem;">📚 Référentiel BTS SIO - Option SISR</h2>
             <p style="text-align: center; color: var(--text-gray); margin-bottom: 0.5rem; font-size: 1.1rem; font-weight: 500;">
                 Solutions d'Infrastructure, Systèmes et Réseaux
             </p>
-
-            <p>
-                                                                                                                                                                                       
-                                                                                                                                                                                                    
+            <p style="text-align: center; color: var(--text-gray); margin-bottom: 4rem; font-size: 0.9rem; font-style: italic;">
+                Arrêté du 29 Avril 2019
             </p>
 
             <!-- Bloc 1 -->
@@ -653,6 +653,37 @@
         </div>
     </section>
 
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">&lt;KC/&gt;</div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 Kaëlig CHRISTOUX. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Scroll animations
@@ -675,3 +706,4 @@
     </script>
 </body>
 </html>
+
