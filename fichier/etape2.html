@@ -39,6 +39,31 @@
             z-index: -1;
         }
 
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        }
+
+        .btn-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
         nav {
             position: fixed;
             top: 0;
@@ -321,6 +346,9 @@
                 <p style="color: var(--text-gray); margin-top: 1rem;">
                     Ensuite il faut déplacer l'ordinateur correspondant à l'utilisateur dans <strong>Siège</strong> ou <strong>Agences</strong>, en fonction d'où l'utilisateur est situé. Puis nous devons renseigner « <strong>en attente de suppression</strong> » à la fin de la description de l'ancien ordinateur.
                 </p>
+            </div>
+            <div class="btn-grid">
+                    <a href="missions.html" class="btn">Retour aux missions</a>
             </div>
         </div>
     </section>
