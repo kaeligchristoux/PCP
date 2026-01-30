@@ -39,6 +39,31 @@
             z-index: -1;
         }
 
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        }
+
+        .btn-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
         nav {
             position: fixed;
             top: 0;
@@ -283,6 +308,9 @@
                         <strong>Solution :</strong> Don d'un nouveau boîtier et câble d'alimentation. (Pas d'inventaire concernant les câbles, alimentations, les souris, claviers ou encore les casques, seulement concernant les PC, écrans et réplicateurs).
                     </p>
                     <a href="resolution-ticket-5.pdf" download class="btn">📄 Télécharger le PDF</a>
+                </div>
+                <div class="btn-grid">
+                    <a href="missions.html" class="btn">Retour aux missions</a>
                 </div>
             </div>
         </div>
