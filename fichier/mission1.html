@@ -46,6 +46,31 @@
                 radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
             z-index: -1;
         }
+        
+         .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        }
+
+        .btn-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
 
         nav {
             position: fixed;
@@ -283,6 +308,9 @@
                 <p class="step-description">
                     Pour finir, il faut cliquer sur le bouton <strong>« Quit »</strong> afin que l'ordinateur redémarre pour effectuer les dernières mises à jour.
                 </p>
+            </div>
+            <div class="btn-grid">
+                    <a href="missions.html" class="btn">Retour aux missions</a>
             </div>
         </div>
     </section>
