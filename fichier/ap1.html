@@ -535,18 +535,17 @@ network:<br>
                 <div class="info-box">
                     <strong>📝 Explication de la configuration :</strong><br>
                     <ul style="margin-top: 0.5rem; padding-left: 2rem;">
-                        <li><code>enp0s3</code> : nom de l'interface réseau (peut varier)</li>
-                        <li><code>dhcp4: no</code> : désactive DHCP (on veut du statique)</li>
-                        <li><code>100.115.29.182/23</code> : adresse IP + masque (/23 = 255.255.254.0)</li>
-                        <li><code>100.115.29.254</code> : passerelle par défaut (gateway)</li>
-                        <li><code>8.8.8.8 / 8.8.4.4</code> : serveurs DNS de Google</li>
+                        <li><code>ens160</code> : nom de l'interface réseau (peut varier)</li>
+                        <li><code>dhcp4(6): no</code> : désactive DHCP (on veut du statique)</li>
+                        <li><code>addresses: [100.115.29.182/23]</code> : adresse IP + masque (/23 = 255.255.254.0)</li>
+                        <li><code>via: 100.115.29.254</code> : passerelle par défaut</li>
+                        <li><code>addresses: [100.115.29.254, 100.115.28.41, 8.8.8.8]</code> : serveurs DNS du lycée et de Google</li>
                     </ul>
                 </div>
 
                 <div class="image-placeholder">
-                    <div class="icon">🖼️</div>
-                    <p><strong>Image suggérée :</strong> Screenshot du fichier Netplan édité</p>
-                    <p class="image-caption">Source : <a href="https://netplan.io/examples/" target="_blank" style="color: var(--primary-blue);">Netplan Examples</a></p>
+                    <img src="Netplan.png" alt="netplanyaml">
+                    <p class="image-caption">Configuration de l'adresse IP sur la VM US22</p>
                 </div>
 
                 <h4>✅ Application de la configuration</h4>
