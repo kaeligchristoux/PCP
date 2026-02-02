@@ -642,9 +642,6 @@ sudo systemctl start odoo<br>
 <br>
 <span class="comment"># Activer le démarrage automatique au boot</span><br>
 sudo systemctl enable odoo<br>
-<br>
-<span class="comment"># Vérifier le statut du service</span><br>
-sudo systemctl status odoo
                 </div>
 
                 <div class="success-box">
@@ -653,17 +650,9 @@ sudo systemctl status odoo
                 </div>
 
                 <h3>Étape 6 : Première connexion à Odoo</h3>
-
-                <div class="image-placeholder">
-                    <div class="icon">🖼️</div>
-                    <p><strong>Image suggérée :</strong> Screenshot page de connexion Odoo</p>
-                    <p class="image-caption">Source : <a href="https://www.odoo.com/" target="_blank" style="color: var(--primary-blue);">Odoo.com</a></p>
-                </div>
-
                 <p>
                     Depuis mon PC hôte, j'ai ouvert un navigateur et accédé à l'URL :
                 </p>
-
                 <div class="code-block" style="font-size: 1.1rem; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--tech-green);">
 http://100.115.29.182:8069
                 </div>
@@ -675,9 +664,8 @@ http://100.115.29.182:8069
                 <h4>📊 Création de la base de données "genclients"</h4>
 
                 <div class="image-placeholder">
-                    <div class="icon">🖼️</div>
-                    <p><strong>Image suggérée :</strong> Screenshot création de base de données</p>
-                    <p class="image-caption">Source : <a href="https://www.odoo.com/documentation/16.0/" target="_blank" style="color: var(--primary-blue);">Odoo Documentation</a></p>
+                    <img src="odoo.png" alt="CreationBDDodoo">
+                    <p class="image-caption">Création de la base de données "genclients"</p>
                 </div>
 
                 <p>
@@ -699,11 +687,15 @@ http://100.115.29.182:8069
                             </tr>
                             <tr>
                                 <td><strong>Email administrateur</strong></td>
-                                <td><code>admin@genclients.local</code></td>
+                                <td><code>kaelig.christoux@lycee-basch.fr</code></td>
                             </tr>
                             <tr>
                                 <td><strong>Mot de passe</strong></td>
-                                <td>(mot de passe sécurisé)</td>
+                                <td>stssio</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Numéro de téléphone</strong></td>
+                                <td>06 32 91 93 17</td>
                             </tr>
                             <tr>
                                 <td><strong>Langue</strong></td>
