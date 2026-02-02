@@ -965,12 +965,20 @@
     <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
+        
+        <!-- Bouton hamburger (mobile only) -->
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Menu de navigation -->
             <ul>
                 <li><a href="index.html">Page d'accueil</a></li>
+                <li><a href="ap.html">Ateliers Pro</a></li>
                 <li><a href="stage1.html">Stage 1</a></li>
                 <li><a href="stage2.html">Stage 2</a></li>
-                <li><a href="veille.html">Veilles</a></li>
-                <li><a href="ap.html">Ateliers Pro</a></li>
                 <li><a href="cv.html">CV</a></li>
             </ul>
         </div>
@@ -1352,6 +1360,33 @@
             const body = encodeURIComponent('De: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message);
             window.location.href = 'mailto:christouxkaelig@gmail.com?subject=' + subject + '&body=' + body;
         });
+                // Menu hamburger toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('nav ul');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        
+            // Fermer le menu quand on clique sur un lien
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+        
+            // Fermer le menu si on clique en dehors
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('nav')) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
