@@ -554,11 +554,8 @@ network:<br>
 <span class="comment"># 2. Appliquer la configuration réseau</span><br>
 sudo netplan apply<br>
 <br>
-<span class="comment"># 3. Vérifier l'IP attribuée</span><br>
-ip addr show enp0s3<br>
-<br>
 <span class="comment"># 4. Tester la connexion</span><br>
-ping -c 4 8.8.8.8
+ping 8.8.8.8
                 </div>
 
                 <div class="success-box">
@@ -577,10 +574,7 @@ ping -c 4 8.8.8.8
 sudo apt update<br>
 <br>
 <span class="comment"># Mise à jour des paquets installés</span><br>
-sudo apt upgrade -y<br>
-<br>
-<span class="comment"># Nettoyage (optionnel)</span><br>
-sudo apt autoremove -y
+sudo apt upgrade
                 </div>
 
                 <h3>Étape 5 : Installation d'Odoo 16</h3>
@@ -634,7 +628,7 @@ sudo apt install odoo -y
                     </ul>
                 </div>
 
-                <h4>🚀 Démarrage du service Odoo</h4>
+                <h4>Démarrage du service Odoo</h4>
 
                 <div class="code-block">
 <span class="comment"># Démarrer Odoo</span><br>
@@ -658,7 +652,7 @@ http://100.115.29.182:8069
                 </div>
 
                 <p style="margin-top: 1.5rem;">
-                    La page de création de base de données Odoo s'est affichée ! 🎉
+                    La page de création de base de données Odoo s'est affichée !
                 </p>
 
                 <h4>📊 Création de la base de données "genclients"</h4>
