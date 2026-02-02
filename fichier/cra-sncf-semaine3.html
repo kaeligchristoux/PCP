@@ -230,6 +230,29 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .pdf-download {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .pdf-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--sncf-red), #c41e1e);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(237, 28, 36, 0.3);
+        }
+
+        .pdf-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(237, 28, 36, 0.5);
+        }
+
+
         .learning-section {
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1));
             padding: 2rem;
@@ -582,6 +605,12 @@
                     la conception de mon site web PCP pour l'examen final, ce qui me permet d'organiser et de valoriser 
                     toutes les compétences acquises durant ce stage.
                 </p>
+            </div>
+
+            <div class="pdf-download">
+                <a href="SNCF_CHRISTOUX_Kaelig_CRA_Sem3.pdf" class="pdf-button" download>
+                    📥 Télécharger le CRA en PDF
+                </a>
             </div>
 
             <div style="text-align: center;">
