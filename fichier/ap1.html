@@ -438,9 +438,8 @@
                 <h3>Étape 1 : Création de la machine virtuelle</h3>
                 
                 <div class="image-placeholder">
-                    <div class="icon">🖼️</div>
-                    <p><strong>Image suggérée :</strong> Screenshot VirtualBox - Nouvelle machine virtuelle</p>
-                    <p class="image-caption">Source : <a href="https://www.virtualbox.org/manual/UserManual.html" target="_blank" style="color: var(--primary-blue);">VirtualBox Manual</a></p>
+                    <img src="vmware.png" alt="ImageVMware">
+                    <p class="image-caption">Création de la machine virtuelle</p>
                 </div>
 
                 <p>
@@ -480,11 +479,6 @@
                                 <td>Performance suffisante pour les tests</td>
                             </tr>
                             <tr>
-                                <td><strong>Disque dur</strong></td>
-                                <td>20 Go (dynamique)</td>
-                                <td>Espace suffisant pour OS + Odoo + données</td>
-                            </tr>
-                            <tr>
                                 <td><strong>Réseau</strong></td>
                                 <td>Accès par pont</td>
                                 <td>Permet l'accès depuis mon PC hôte</td>
@@ -494,43 +488,14 @@
                 </div>
 
                 <h3>Étape 2 : Installation Ubuntu Server 22.04</h3>
-                
-                <div class="image-placeholder">
-                    <div class="icon">🖼️</div>
-                    <p><strong>Image suggérée :</strong> Screenshot installateur Ubuntu Server</p>
-                    <p class="image-caption">Source : <a href="https://ubuntu.com/download/server" target="_blank" style="color: var(--primary-blue);">Ubuntu Server</a></p>
-                </div>
-
+                <br></br>
                 <p>
-                    J'ai démarré la VM sur l'ISO Ubuntu Server 22.04 et suivi l'assistant d'installation :
+                    J'ai démarré la VM sur le modèle Ubuntu Server fournie par nos professeurs.
                 </p>
-
-                <ul class="card" style="list-style: none; padding: 1.5rem;">
-                    <li style="padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem;">
-                        <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
-                        Langue : <strong>Français</strong>
-                    </li>
-                    <li style="padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem;">
-                        <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
-                        Clavier : <strong>Français (AZERTY)</strong>
-                    </li>
-                    <li style="padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem;">
-                        <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
-                        Type d'installation : <strong>Ubuntu Server (minimal)</strong>
-                    </li>
-                    <li style="padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem;">
-                        <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
-                        Partitionnement : <strong>Utiliser le disque entier (guidé)</strong>
-                    </li>
-                    <li style="padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem;">
-                        <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
-                        Compte utilisateur : <strong>kaelig</strong>
-                    </li>
-                    <li style="padding-left: 1.5rem; position: relative;">
-                        <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
-                        Serveur OpenSSH : <strong>Installé</strong> (pour accès distant)
-                    </li>
-                </ul>
+                <div class="image-placeholder">
+                    <img src="ubuntu.png" alt="Ubuntu Server">
+                    <p class="image-caption">Interface Linux de la VM US22</p>
+                </div>
 
                 <h3>Étape 3 : Configuration IP statique avec Netplan</h3>
 
@@ -554,18 +519,17 @@ sudo nano /etc/netplan/00-installer-config.yaml
                 <div class="code-block">
 <span class="comment"># Contenu du fichier YAML</span><br>
 network:<br>
-&nbsp;&nbsp;version: 2<br>
-&nbsp;&nbsp;renderer: networkd<br>
 &nbsp;&nbsp;ethernets:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;enp0s3:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp4: no<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 100.115.29.182/23<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gateway4: 100.115.29.254<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ens160:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses: [100.115.29.182/23]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routes:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- to: default<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; via: 100.115.29.254<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nameservers:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 8.8.8.8<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 8.8.4.4
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses: [100.115.29.254, 100.115.28.41, 8.8.8.8]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp4: false<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp6: false<br>
+&nbsp;&nbsp;version: 2
                 </div>
 
                 <div class="info-box">
