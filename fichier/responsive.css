@@ -109,37 +109,37 @@
     }
 }
 /* Menu Hamburger */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    z-index: 1001;
-}
-
-.menu-toggle span {
-    width: 25px;
-    height: 3px;
-    background: var(--primary-blue);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-}
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        z-index: 1001;
+    }
+    
+    .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background: var(--primary-blue);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
 
 /* Animation du burger en X */
-.menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
-}
-
-.menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
-}
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
 
 /* Sur mobile : afficher le burger et cacher le menu */
 @media (max-width: 968px) {
