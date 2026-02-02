@@ -828,6 +828,114 @@
             }
         }
 
+        /* AP CSS */
+            /* Section AP Redirect */
+            .ap-redirect-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(6, 182, 212, 0.1));
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+           }
+
+            .ap-redirect-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, #0ea5e9, #06b6d4, #0ea5e9);
+                background-size: 200% 100%;
+                animation: shimmer 3s linear infinite;
+            }
+            
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+            
+            .ap-redirect-icon {
+                font-size: 4rem;
+                margin-bottom: 1.5rem;
+                animation: float 3s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+            
+            .ap-redirect-title {
+                color: #0ea5e9;
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+            }
+            
+            .ap-redirect-description {
+                color: #cbd5e1;
+                font-size: 1.1rem;
+                line-height: 1.8;
+                margin-bottom: 2rem;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .ap-redirect-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 1rem 2.5rem;
+                background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+                color: white;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+            }
+            
+            .ap-redirect-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(14, 165, 233, 0.6);
+            }
+            
+            .ap-redirect-button .arrow {
+                font-size: 1.5rem;
+                transition: transform 0.3s ease;
+            }
+            
+            .ap-redirect-button:hover .arrow {
+                transform: translateX(5px);
+            }
+            
+            /* Responsive */
+            @media (max-width: 768px) {
+                .ap-redirect-card {
+                    padding: 2rem;
+                }
+                
+                .ap-redirect-title {
+                    font-size: 1.5rem;
+                }
+                
+                .ap-redirect-description {
+                    font-size: 1rem;
+                }
+                
+                .ap-redirect-button {
+                    padding: 0.8rem 2rem;
+                    font-size: 1rem;
+                }
+            }
+
         /* Scroll animations */
         .fade-in {
             opacity: 0;
@@ -851,6 +959,7 @@
                 <li><a href="stage1.html">Stage 1</a></li>
                 <li><a href="stage2.html">Stage 2</a></li>
                 <li><a href="veille.html">Veilles</a></li>
+                <li><a href="ap.html">Ateliers Pro</a></li>
                 <li><a href="cv.html">CV</a></li>
             </ul>
         </div>
@@ -862,7 +971,7 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1>
-                        Salut, je suis<br>
+                        Bonjour, je suis<br>
                         <span class="gradient-text">Kaëlig CHRISTOUX</span>
                     </h1>
                     <p class="subtitle">Étudiant BTS SIO • Option SISR</p>
@@ -874,7 +983,7 @@
                     <br /></br>
                     <div class="hero-buttons">
                         <a href="#veilles" class="btn btn-primary">Veilles</a>
-                        <a href="#contact" class="btn btn-primary">Me contacter</a>
+                        <a href="#ap-redirect" class="btn btn-primary">Ateliers Pro</a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -1140,52 +1249,20 @@
     </section>
 
 
-    <!-- Contact Section -->
-    <section id="contact">
+<!-- Section AP (Ateliers Professionnels) -->
+    <section id="ap-redirect" style="padding: 4rem 0; background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(6, 182, 212, 0.05));">
         <div class="container">
-            <h2 class="section-title">Restons en contact</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item fade-in">
-                        <div class="icon">📧</div>
-                        <div>
-                            <h4>Email</h4>
-                            <p style="color: var(--primary-blue);">christouxkaelig@gmail.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item fade-in">
-                        <div class="icon">📍</div>
-                        <div>
-                            <h4>Localisation</h4>
-                            <p style="color: var(--text-gray);">Rennes, Bretagne</p>
-                        </div>
-                    </div>
-                    <div class="contact-item fade-in">
-                        <div class="icon">🎓</div>
-                        <div>
-                            <h4>Formation</h4>
-                            <p style="color: var(--text-gray);">Lycée Victor et Hélène Basch</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-form fade-in">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--tech-green);">Envoyez-moi un message</h3>
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name">Nom</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Envoyer le message</button>
-                    </form>
-                </div>
+            <div class="ap-redirect-card">
+                <div class="ap-redirect-icon">🔧</div>
+                <h2 class="ap-redirect-title">Découvrez mes Ateliers Professionnels</h2>
+                <p class="ap-redirect-description">
+                    Projets techniques réalisés en BTS SIO : déploiement d'infrastructures, 
+                    administration systèmes, développement d'applications et bien plus encore.
+                </p>
+                <a href="ap.html" class="ap-redirect-button">
+                    <span>Voir mes projets</span>
+                    <span class="arrow">→</span>
+                </a>
             </div>
         </div>
     </section>
