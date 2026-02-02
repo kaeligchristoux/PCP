@@ -512,27 +512,36 @@
             font-weight: bold;
         }
 
-        /* Veilles Section */
-        .veilles-grid {
+        /* Stage 2 red SNCF */
+        .stage-card.stage-red .stage-header {
+            background: linear-gradient(135deg, #ed1c24, #c41e1e);
+        }
+        .stage-card.stage-red:hover {
+            box-shadow: 0 15px 40px rgba(237, 28, 36, 0.3);
+        }
+        .stage-card.stage-red {
+            border-color: rgba(237, 28, 36, 0.2);
+        }
+
+        /* s */
+        .s-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
             max-width: 900px;
             margin: 0 auto;
         }
-
-        .veille-card {
+        .-card {
             background: var(--bg-card);
             border-radius: 15px;
             overflow: hidden;
-            border: 2px solid rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.3);
             transition: all 0.3s;
             text-decoration: none;
             display: block;
             position: relative;
         }
-
-        .veille-card::before {
+        .-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -541,36 +550,29 @@
             height: 4px;
             background: linear-gradient(90deg, #8b5cf6, #a78bfa);
         }
-
-        .veille-card:hover {
+        .-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
             border-color: #8b5cf6;
         }
-
-        .veille-card.coming-soon {
+        .-card.coming-soon {
             border-style: dashed;
             border-color: rgba(139, 92, 246, 0.2);
             opacity: 0.7;
         }
-
-        .veille-card.coming-soon::before {
+        .-card.coming-soon::before {
             background: rgba(139, 92, 246, 0.3);
         }
-
-        .veille-card.coming-soon:hover {
+        .-card.coming-soon:hover {
             transform: none;
             box-shadow: none;
         }
-
-        .veille-header {
+        .-header {
             background: linear-gradient(135deg, #8b5cf6, #6d28d9);
             padding: 2rem;
             color: white;
-            position: relative;
         }
-
-        .veille-number {
+        .-number {
             display: inline-block;
             width: 45px;
             height: 45px;
@@ -584,36 +586,30 @@
             font-family: 'JetBrains Mono', monospace;
             margin-bottom: 1rem;
         }
-
-        .veille-header h3 {
+        .-header h3 {
             font-size: 1.4rem;
             margin-bottom: 0.5rem;
         }
-
-        .veille-header .subtitle-text {
+        .-header .subtitle-text {
             font-family: 'JetBrains Mono', monospace;
             opacity: 0.9;
             font-size: 0.95rem;
         }
-
-        .veille-content {
+        .-content {
             padding: 2rem;
         }
-
-        .veille-content p {
+        .-content p {
             color: var(--text-gray);
             margin-bottom: 1.5rem;
             line-height: 1.7;
         }
-
-        .veille-tags {
+        .-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
-
-        .veille-tag {
+        .-tag {
             padding: 0.4rem 0.8rem;
             background: rgba(139, 92, 246, 0.15);
             border: 1px solid rgba(139, 92, 246, 0.3);
@@ -622,8 +618,7 @@
             color: #a78bfa;
             font-family: 'JetBrains Mono', monospace;
         }
-
-        .veille-button {
+        .-button {
             display: inline-block;
             padding: 0.8rem 1.5rem;
             background: linear-gradient(135deg, #8b5cf6, #6d28d9);
@@ -632,20 +627,16 @@
             font-weight: 600;
             transition: all 0.3s;
         }
-
-        .veille-card:hover .veille-button {
+        .-card:hover .-button {
             transform: translateX(5px);
         }
-
-        .veille-card.coming-soon .veille-button {
+        .-card.coming-soon .-button {
             background: rgba(139, 92, 246, 0.3);
             cursor: not-allowed;
         }
-
-        .veille-card.coming-soon:hover .veille-button {
+        .-card.coming-soon:hover .-button {
             transform: none;
         }
-
         .coming-soon-badge {
             display: inline-block;
             padding: 0.4rem 0.8rem;
@@ -870,15 +861,15 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1>
-                        Bonjour, je suis<br>
+                        Salut, je suis<br>
                         <span class="gradient-text">Kaëlig CHRISTOUX</span>
                     </h1>
                     <p class="subtitle">Étudiant BTS SIO • Option SISR</p>
                     <p>Passionné par l'informatique, les réseaux et les systèmes. Je développe mes compétences techniques au quotidien pour devenir un professionnel du numérique.</p>
                     <div class="hero-buttons">
                         <a href="cv.html" class="btn btn-primary">📄 Voir mon CV</a>
-                        <a href="#stages" class="btn btn-secondary">Voir mes stages</a>
-                        <a href="#veilles" class="btn btn-secondary">🔍 Veilles</a>
+                        <a href="stage1.html" class="btn btn-secondary">Voir mes stages</a>
+                        <a href="#s" class="btn btn-secondary"> s</a>
                         <a href="#contact" class="btn btn-secondary">Me contacter</a>
                     </div>
                 </div>
@@ -1081,7 +1072,7 @@
                         </ul>
                     </div>
                 </a>
-                <a href="stage2.html" class="stage-card fade-in" style="text-decoration: none;">
+                <a href="stage2.html" class="stage-card stage-red fade-in" style="text-decoration: none;">
                     <div class="stage-header">
                         <h3>Stage 2ème année</h3>
                         <p class="period">12 janvier au 20 février 2026</p>
@@ -1101,50 +1092,41 @@
         </div>
     </section>
 
-    <!-- Veilles Section -->
-    <section id="veilles">
+    <!-- s Section -->
+    <section id="s">
         <div class="container">
-            <h2 class="section-title">🔍 Mes Veilles Technologiques</h2>
-            <div class="veilles-grid">
-                <!-- Veille 1 : Zabbix -->
-                <a href="veille1.html" class="veille-card fade-in">
-                    <div class="veille-header">
-                        <div class="veille-number">01</div>
+            <h2 class="section-title">🔍 Mes s Technologiques</h2>
+            <div class="s-grid">
+                <a href="1.html" class="-card fade-in">
+                    <div class="-header">
+                        <div class="-number">01</div>
                         <h3>🖥️ Supervision avec Zabbix</h3>
                         <p class="subtitle-text">Monitoring et supervision réseau</p>
                     </div>
-                    <div class="veille-content">
-                        <p>
-                            Veille sur <strong>Zabbix 7.0</strong>, l'outil de supervision installé durant mon stage 
-                            à la SNCF. Comparaison avec Spectrum, templates Huawei, et configuration SNMP.
-                        </p>
-                        <div class="veille-tags">
-                            <span class="veille-tag">Zabbix 7.0</span>
-                            <span class="veille-tag">Monitoring</span>
-                            <span class="veille-tag">SNMP</span>
-                            <span class="veille-tag">Spectrum</span>
+                    <div class="-content">
+                        <p> sur <strong>Zabbix 7.0</strong>, l'outil de supervision installé durant mon stage à la SNCF. Comparaison avec Spectrum, templates Huawei, et configuration SNMP.</p>
+                        <div class="-tags">
+                            <span class="-tag">Zabbix 7.0</span>
+                            <span class="-tag">Monitoring</span>
+                            <span class="-tag">SNMP</span>
+                            <span class="-tag">Spectrum</span>
                         </div>
-                        <span class="veille-button">Découvrir la veille →</span>
+                        <span class="-button">Découvrir la  →</span>
                     </div>
                 </a>
-
-                <!-- Veille 2 : À venir -->
-                <div class="veille-card coming-soon fade-in">
-                    <div class="veille-header">
-                        <div class="veille-number">02</div>
+                <div class="-card coming-soon fade-in">
+                    <div class="-header">
+                        <div class="-number">02</div>
                         <span class="coming-soon-badge">🔜 À venir</span>
-                        <h3>Veille technologique #2</h3>
+                        <h3> technologique #2</h3>
                         <p class="subtitle-text">En cours de préparation</p>
                     </div>
-                    <div class="veille-content">
-                        <p>
-                            Cette veille sera complétée prochainement. Elle portera sur un sujet lié aux 
-                            infrastructures systèmes et réseaux en relation avec mes missions de stage.
-                        </p>
-                        <div class="veille-tags">
-                            <span class="veille-tag">À définir</span>
+                    <div class="-content">
+                        <p>Cette  sera complétée prochainement. Elle portera sur un sujet lié aux infrastructures systèmes et réseaux en relation avec mes missions de stage.</p>
+                        <div class="-tags">
+                            <span class="-tag">À définir</span>
                         </div>
-                        <span class="veille-button">Bientôt disponible</span>
+                        <span class="-button">Bientôt disponible</span>
                     </div>
                 </div>
             </div>
@@ -1161,7 +1143,7 @@
                         <div class="icon">📧</div>
                         <div>
                             <h4>Email</h4>
-                            <p style="color: var(--primary-blue);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfaca7bda6bcbba0bab7a4aeaaa3a6a88fa8a2aea6a3e1aca0a2">[email&#160;protected]</a></p>
+                            <p style="color: var(--primary-blue);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02616a706b71766d777a6963676e6b6542656f636b6e2c616d6f">[email&#160;protected]</a></p>
                         </div>
                     </div>
                     <div class="contact-item fade-in">
