@@ -1,0 +1,110 @@
+/* === AMÉLIORATIONS RESPONSIVE UNIVERSELLES === */
+
+/* Smartphones en portrait (< 480px) */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    h1 {
+        font-size: 1.75rem !important;
+        line-height: 1.2;
+    }
+    
+    h2 {
+        font-size: 1.5rem !important;
+        line-height: 1.3;
+    }
+    
+    h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    /* Boutons plus accessibles sur mobile */
+    .btn, .ap-redirect-button, .veille-button, .back-button {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.95rem !important;
+    }
+    
+    /* Cartes en pleine largeur */
+    .card, .about-card, .stage-card, .veille-card, .ap-card {
+        margin-bottom: 1rem;
+    }
+    
+    /* Tables scrollables */
+    table {
+        font-size: 0.85rem;
+    }
+    
+    /* Code blocks scrollables */
+    .code-block {
+        font-size: 0.75rem;
+        overflow-x: auto;
+    }
+    
+    /* Images responsive */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* Tablettes en portrait (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem !important;
+    }
+    
+    h2 {
+        font-size: 1.75rem !important;
+    }
+}
+
+/* Touch-friendly pour tous les mobiles/tablettes */
+@media (max-width: 968px) {
+    /* Augmenter la zone de clic des liens/boutons */
+    a, button, .btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    /* Espacement entre éléments cliquables */
+    nav ul li {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Améliorer la lisibilité */
+    p {
+        line-height: 1.7;
+    }
+}
+
+/* Landscape mobile (rotation) */
+@media (max-height: 500px) and (orientation: landscape) {
+    .page-hero, .hero {
+        padding-top: 100px !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    nav {
+        padding: 0.75rem 0 !important;
+    }
+}
+
+/* Réduction de mouvement pour accessibilité */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
