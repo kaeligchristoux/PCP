@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
     <style>
         :root {
             --primary-blue: #0ea5e9;
@@ -16,6 +17,8 @@
             --bg-card: #1e293b;
             --text-light: #f1f5f9;
             --text-gray: #cbd5e1;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,6 +28,7 @@
             background: var(--bg-dark);
             color: var(--text-light);
             line-height: 1.8;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -38,8 +42,15 @@
                 radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
             z-index: -1;
+            animation: bgPulse 8s ease-in-out infinite;
         }
 
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Navigation complète */
         nav {
             position: fixed;
             top: 0;
@@ -74,16 +85,114 @@
             list-style: none;
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
+
+        nav ul li { position: relative; }
 
         nav a {
             color: var(--text-gray);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        nav a:hover { color: var(--primary-blue); }
+        nav ul li a i {
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: lightslategray !important;
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li { padding: 0; margin: 0; }
+
+        .submenu li a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
 
         .container {
             max-width: 1200px;
@@ -91,18 +200,45 @@
             padding: 0 2rem;
         }
 
+        /* Hero violet/cyan */
         .page-hero {
-            padding: 150px 0 60px;
+            padding: 140px 0 60px;
             text-align: center;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border-bottom: 3px solid rgba(139, 92, 246, 0.3);
         }
 
         .page-hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .script-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 50px;
+            margin-top: 1rem;
+            animation: slideDown 0.6s ease-out 0.2s backwards;
+        }
+
+        .script-badge i {
+            font-size: 1.5rem;
+            color: #8b5cf6;
+        }
+
+        .script-badge span {
+            font-weight: 600;
+            color: #8b5cf6;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .breadcrumb {
@@ -113,52 +249,154 @@
             margin-top: 1.5rem;
             color: var(--text-gray);
             font-size: 0.95rem;
+            animation: slideDown 0.6s ease-out 0.4s backwards;
         }
 
         .breadcrumb a {
             color: var(--primary-blue);
             text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .content-section { padding: 2rem 0 4rem; }
+        .breadcrumb a:hover { color: var(--tech-green); }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section { padding: 4rem 0; }
 
         .content-box {
             background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
             margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6);
+            background-size: 200% 100%;
+            animation: gradientSlide 3s linear infinite;
+        }
+
+        @keyframes gradientSlide {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .content-box h2 {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .content-box h2 i {
+            color: lightslategray;
+            font-size: 2rem;
+        }
+
+        .content-box p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
         }
 
         .code-block {
-            background: #000;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid rgba(14, 165, 233, 0.3);
+            background: #0d1117;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #00ff00;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #58d68d;
             max-height: 600px;
             overflow-y: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .code-block::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .code-block::-webkit-scrollbar-track {
+            background: #1a1e25;
+        }
+
+        .code-block::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 5px;
+        }
+
+        .btn-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2.5rem;
         }
 
         .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 2.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 1.05rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn i,
+        .btn span {
+            position: relative;
+            z-index: 1;
         }
 
         footer {
@@ -174,9 +412,81 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 768px) {
-            nav ul { display: none; }
+        @media (max-width: 968px) {
+            .menu-toggle { display: flex; }
+            
+            nav ul {
+                display: none;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                max-width: 320px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+                border-left: 2px solid var(--primary-blue);
+                animation: slideInMobile 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav ul.active { display: flex; }
+            
+            nav ul li {
+                margin-bottom: 0;
+                border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+                width: 100%;
+            }
+            
+            nav ul li:last-child { border-bottom: none; }
+            
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            nav ul li.has-submenu > a i.fa-chevron-down { margin-left: auto; }
+            nav ul li.has-submenu.open > a i.fa-chevron-down { transform: rotate(180deg); }
+            
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(6, 182, 212, 0.1);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid var(--primary-blue);
+                margin-left: 1rem;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav ul li.has-submenu.open .submenu {
+                display: block;
+                max-height: 500px;
+            }
+            
+            .submenu li { border: none; }
+            .submenu li a {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
+            }
+
             .page-hero h1 { font-size: 2rem; }
+            .btn-grid { flex-direction: column; }
+        }
+
+        @keyframes slideInMobile {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
@@ -184,20 +494,44 @@
     <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
-            <ul>
-                <li><a href="index.html">Page d'accueil</a></li>
-                <li><a href="stage1.html">Stage 1</a></li>
-                <li><a href="stage2.html">Stage 2</a></li>
-                <li><a href="veille.html">Veilles</a></li>
-                <li><a href="ap.html">Ateliers Pro</a></li>
-                <li><a href="cv.html">CV</a></li>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
             </ul>
         </div>
     </nav>
 
     <section class="page-hero">
         <div class="container">
-            <h1>📥 Script de Sauvegarde</h1>
+            <h1><i class="fas fa-download" style="color: lightslategray; margin-right: 1rem;"></i>Script de Sauvegarde</h1>
+            <div class="script-badge">
+                <i class="fas fa-code"></i>
+                <span>SaveProfilManuel.vbs</span>
+            </div>
             <div class="breadcrumb">
                 <a href="index.html">Accueil</a>
                 <span>›</span>
@@ -217,12 +551,14 @@
     <section class="content-section">
         <div class="container">
             <div class="content-box">
-                <h2 style="color: var(--tech-green); margin-bottom: 1rem;">SaveProfilManuel.vbs</h2>
-                <p style="color: var(--text-gray); margin-bottom: 1.5rem;">
+                <h2>
+                    <i class="fas fa-file-code"></i>
+                    SaveProfilManuel.vbs
+                </h2>
+                <p>
                     Script permettant de sauvegarder les éléments du profil utilisateur connecté (Bureau, Documents, Favoris, Téléchargements, Images, profil Firefox, signatures Outlook).
                 </p>
-                <div class="code-block">
-'*************************************************
+                <div class="code-block">'*************************************************
 'SaveProfilManuel.vbs
 '*************************************************
 'Script permettant de sauvegarder les éléments
@@ -332,11 +668,16 @@ reg.Pattern = "\[" & section & "\]([^\[]+)":regSub.Pattern = "\b" & key & " *= *
  On Error Resume Next
 ReadIni = regSub.Execute(reg.Execute(iniText).Item(0).SubMatches(0)).Item(0).SubMatches(0)
  If Err.Number = 5 then ReadIni = False
-End Function
-                </div>
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="sauvegarde-2.pdf" download class="btn">📄 Télécharger le PDF</a>
-                    <a href="etape2.html" class="btn" style="margin-left: 1rem;">← Retour à l'étape 2</a>
+End Function</div>
+                <div class="btn-grid">
+                    <a href="sauvegarde-2.pdf" download class="btn">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Télécharger le PDF</span>
+                    </a>
+                    <a href="etape2.html" class="btn">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Retour à l'étape 2</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -349,5 +690,34 @@ End Function
             </div>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
 </body>
 </html>
