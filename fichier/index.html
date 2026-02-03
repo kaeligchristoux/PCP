@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" href="favicon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="responsive.css">
     <style>
         :root {
@@ -1017,32 +1018,18 @@
 </head>
 <body>
     <!-- Navigation -->
-<nav>
-    <div class="container">
-        <a href="index.html" class="logo">&lt;KC/&gt;</a>
-        <ul>
-            <li><a href="index.html">Page d'accueil</a></li>
-            
-            <!-- Menu Stages avec sous-menu -->
-            <li class="has-submenu">
-                <a href="#">Stages ▾</a>
-                <ul class="submenu">
-                    <li><a href="stage1.html">Stage 1</a></li>
-                    <li><a href="stage2.html">Stage 2</a></li>
-                </ul>
-            </li>
-            
-            <!-- Menu Autres avec sous-menu -->
-            <li class="has-submenu">
-                <a href="#">Autres ▾</a>
-                <ul class="submenu">
-                    <li><a href="veille.html">Veilles</a></li>
-                    <li><a href="ap.html">Ateliers Pro</a></li>
-                </ul>
-            </li>
-        </ul>
+    <div class="topnav" id="myTopnav">
+      <a href="index.html" class="active">Home</a>
+      <a href="stage1.html">Stage 1</a>
+      <a href="stage2.html">Stage 2</a>
+      <a href="veille.html">Veille</a>
+      <a href="ap.html">Ateliers pro</a>
+      <a href="cv.html">CV</a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
     </div>
-</nav>
+
 
     <!-- Hero Section -->
     <section id="accueil" class="hero">
@@ -1421,5 +1408,16 @@
             window.location.href = 'mailto:christouxkaelig@gmail.com?subject=' + subject + '&body=' + body;
         });
     </script>
+    <script>
+        function myFunction() {
+          var x = document.getElementById("myTopnav");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+    </script>
+
 </body>
 </html>
