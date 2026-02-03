@@ -8,23 +8,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
     <style>
         :root {
             --primary-blue: #0ea5e9;
+            --deep-blue: #0c4a6e;
             --tech-green: #10b981;
+            --dark-green: #065f46;
             --bg-dark: #0f172a;
             --bg-card: #1e293b;
             --text-light: #f1f5f9;
             --text-gray: #cbd5e1;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--bg-dark);
             color: var(--text-light);
-            line-height: 1.8;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -38,8 +48,15 @@
                 radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
             z-index: -1;
+            animation: bgPulse 8s ease-in-out infinite;
         }
 
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Navigation complète - copié de mission2 */
         nav {
             position: fixed;
             top: 0;
@@ -67,6 +84,7 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
         }
 
@@ -74,6 +92,11 @@
             list-style: none;
             display: flex;
             gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
         }
 
         nav a {
@@ -81,28 +104,154 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        nav a:hover { color: var(--primary-blue); }
+        nav ul li a i {
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: lightslategray !important;
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
+        /* Page Hero - VIOLET/CYAN */
         .page-hero {
-            padding: 150px 0 60px;
+            padding: 140px 0 60px;
             text-align: center;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border-bottom: 3px solid rgba(139, 92, 246, 0.3);
         }
 
         .page-hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 50px;
+            margin-top: 1rem;
+            animation: slideDown 0.6s ease-out 0.2s backwards;
+        }
+
+        .step-badge i {
+            font-size: 1.5rem;
+            color: #8b5cf6;
+        }
+
+        .step-badge span {
+            font-weight: 600;
+            color: #8b5cf6;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .breadcrumb {
@@ -113,49 +262,259 @@
             margin-top: 1.5rem;
             color: var(--text-gray);
             font-size: 0.95rem;
+            animation: slideDown 0.6s ease-out 0.4s backwards;
         }
 
         .breadcrumb a {
             color: var(--primary-blue);
             text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .content-section { padding: 2rem 0 4rem; }
+        .breadcrumb a:hover {
+            color: var(--tech-green);
+        }
 
-        .content-box {
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Content */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        /* Timeline comme mission1 */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #8b5cf6, #06b6d4, var(--primary-blue), var(--tech-green));
+        }
+
+        .step {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 2.5rem;
             background: var(--bg-card);
-            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.4s;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+            border-color: #8b5cf6;
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            left: -2.8rem;
+            top: 2.5rem;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-radius: 50%;
+            border: 4px solid var(--bg-dark);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.1); }
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .step-title i {
+            color: lightslategray;
+            font-size: 1.8rem;
+        }
+
+        .step-content {
+            color: var(--text-gray);
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        .step-content p {
+            margin-bottom: 1rem;
+        }
+
+        .step-content strong {
+            color: #8b5cf6;
+            font-weight: 700;
+        }
+
+        .step-image-wrapper {
+            margin: 2rem 0;
+            text-align: center;
+            position: relative;
         }
 
         .step-image {
-            width: 100%;
             max-width: 600px;
-            margin: 1.5rem auto;
-            display: block;
-            border-radius: 10px;
-            border: 2px solid rgba(14, 165, 233, 0.2);
+            width: 100%;
+            border-radius: 15px;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+        .step-image:hover {
+            transform: scale(1.05);
+            border-color: #8b5cf6;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .image-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(139, 92, 246, 0.95);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Intro Box */
+        .intro-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6);
+            background-size: 200% 100%;
+            animation: gradientSlide 3s linear infinite;
+        }
+
+        @keyframes gradientSlide {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .intro-box p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        .intro-box strong {
+            color: #8b5cf6;
+        }
+
+        /* Next Button */
+        .next-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 3rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             color: white;
             text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s;
+            box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        .next-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
+        .next-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .next-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
+        }
+
+        .next-button i,
+        .next-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
         footer {
             background: rgba(15, 23, 42, 0.8);
             border-top: 1px solid rgba(14, 165, 233, 0.2);
@@ -169,30 +528,147 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 768px) {
-            nav ul { display: none; }
+        /* Fade in */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .menu-toggle { display: flex; }
+            
+            nav ul {
+                display: none;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                max-width: 320px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+                border-left: 2px solid var(--primary-blue);
+                animation: slideInMobile 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav ul.active { display: flex; }
+            
+            nav ul li {
+                margin-bottom: 0;
+                border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+                width: 100%;
+            }
+            
+            nav ul li:last-child { border-bottom: none; }
+            
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            nav ul li.has-submenu > a i.fa-chevron-down { margin-left: auto; }
+            nav ul li.has-submenu.open > a i.fa-chevron-down { transform: rotate(180deg); }
+            
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(6, 182, 212, 0.1);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid var(--primary-blue);
+                margin-left: 1rem;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav ul li.has-submenu.open .submenu {
+                display: block;
+                max-height: 500px;
+            }
+            
+            .submenu li { border: none; }
+            .submenu li a {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
+            }
+
             .page-hero h1 { font-size: 2rem; }
+            .timeline { padding-left: 2rem; }
+            .timeline::before { left: 0.75rem; }
+            .step::before {
+                left: -2.05rem;
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        @keyframes slideInMobile {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
-            <ul>
-                <li><a href="index.html">Page d'accueil</a></li>
-                <li><a href="stage1.html">Stage 1</a></li>
-                <li><a href="stage2.html">Stage 2</a></li>
-                <li><a href="veille.html">Veilles</a></li>
-                <li><a href="ap.html">Ateliers Pro</a></li>
-                <li><a href="cv.html">CV</a></li>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Page Hero -->
     <section class="page-hero">
         <div class="container">
-            <h1>Étape 1 - Préparation du poste</h1>
+            <h1>⚙️ Étape 1 - Préparation du poste</h1>
+            <div class="step-badge">
+                <i class="fas fa-cogs"></i>
+                <span>ÉTAPE 1/2</span>
+            </div>
             <div class="breadcrumb">
                 <a href="index.html">Accueil</a>
                 <span>›</span>
@@ -207,47 +683,159 @@
         </div>
     </section>
 
+    <!-- Content -->
     <section class="content-section">
         <div class="container">
-            <div class="content-box">
-                <img src="etape1_img1.png" alt="Active Directory" class="step-image">
-                <p style="color: var(--text-gray); margin-top: 1rem;">
+            <!-- Intro -->
+            <div class="intro-box fade-in">
+                <p>
                     Dans un premier temps, si le PC n'est pas affecté à l'utilisateur, nous devons lui affecter un poste dans l'<strong>Active Directory</strong>, d'un PC qui a été masterisé préalablement en modifiant la description afin d'ajouter le nom et prénom de l'utilisateur.
                 </p>
             </div>
 
-            <div class="content-box">
-                <h2 style="color: var(--tech-green); margin-bottom: 1.5rem;">Vérification des logiciels</h2>
-                <p style="color: var(--text-gray);">La préparation de postes consiste ensuite à la vérification de logiciels précis qui sont les suivants :</p>
-                
-                <h3 style="color: var(--primary-blue); margin-top: 2rem; margin-bottom: 1rem;">Teams</h3>
-                <img src="etape1_img2.png" alt="Teams" class="step-image">
-                <p style="color: var(--text-gray);">Il faut d'abord connecter l'adresse électronique de l'utilisateur puis son mot de passe qu'il a fourni.</p>
-                
-                <h3 style="color: var(--primary-blue); margin-top: 2rem; margin-bottom: 1rem;">OneDrive</h3>
-                <img src="etape1_img3.png" alt="OneDrive" class="step-image">
-                <p style="color: var(--text-gray);">Afin que l'utilisateur ait une connexion avec le Cloud, et ses fichiers qui y sont stockés.</p>
-                
-                <h3 style="color: var(--primary-blue); margin-top: 2rem; margin-bottom: 1rem;">Outlook</h3>
-                <img src="etape1_img4.png" alt="Outlook 1" class="step-image">
-                <img src="etape1_img5.png" alt="Outlook 2" class="step-image">
-                <p style="color: var(--text-gray);">Pour que l'utilisateur puisse avoir accès à sa messagerie électronique sur son nouveau PC.</p>
-                
-                <h3 style="color: var(--primary-blue); margin-top: 2rem; margin-bottom: 1rem;">OneNote</h3>
-                <img src="etape1_img6.png" alt="OneNote" class="step-image">
-                <p style="color: var(--text-gray);">Afin d'ajouter manuellement les notes de l'utilisateur (stockées sur le Cloud).</p>
-                
-                <h3 style="color: var(--primary-blue); margin-top: 2rem; margin-bottom: 1rem;">Cisco Jabber</h3>
-                <img src="etape1_img7.png" alt="Cisco Jabber" class="step-image">
-                <p style="color: var(--text-gray);">Pour finir cette configuration, on connecte cette application qui va permettre de recevoir les messages et appels de son téléphone professionnel directement sur son PC de travail (avec le H de la personne).</p>
+            <!-- Timeline -->
+            <div class="timeline">
+                <!-- Step 0: AD -->
+                <div class="step fade-in">
+                    <div class="step-header">
+                        <div class="step-number">0</div>
+                        <h3 class="step-title">
+                            <i class="fas fa-sitemap"></i>
+                            Affectation Active Directory
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-image-wrapper">
+                            <img src="etape1_img1.png" alt="Active Directory" class="step-image">
+                            <div class="image-badge">
+                                <i class="fas fa-database"></i>
+                                Active Directory
+                            </div>
+                        </div>
+                        <p>Modification de la description dans l'AD pour ajouter le nom et prénom de l'utilisateur au PC masterisé.</p>
+                    </div>
+                </div>
+
+                <!-- Step 1: Teams -->
+                <div class="step fade-in">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">
+                            <i class="fas fa-users"></i>
+                            Configuration Teams
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Il faut d'abord connecter l'<strong>adresse électronique de l'utilisateur</strong> puis son mot de passe qu'il a fourni.</p>
+                        <div class="step-image-wrapper">
+                            <img src="etape1_img2.png" alt="Teams" class="step-image">
+                            <div class="image-badge">
+                                <i class="fas fa-comments"></i>
+                                Teams
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: OneDrive -->
+                <div class="step fade-in">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">
+                            <i class="fas fa-cloud"></i>
+                            Synchronisation OneDrive
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Afin que l'utilisateur ait une connexion avec le <strong>Cloud</strong>, et ses fichiers qui y sont stockés.</p>
+                        <div class="step-image-wrapper">
+                            <img src="etape1_img3.png" alt="OneDrive" class="step-image">
+                            <div class="image-badge">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                OneDrive
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Outlook -->
+                <div class="step fade-in">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">
+                            <i class="fas fa-envelope"></i>
+                            Configuration Outlook
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Pour que l'utilisateur puisse avoir accès à sa <strong>messagerie électronique</strong> sur son nouveau PC.</p>
+                        <div class="step-image-wrapper">
+                            <img src="etape1_img4.png" alt="Outlook 1" class="step-image">
+                            <div class="image-badge">
+                                <i class="fas fa-mail-bulk"></i>
+                                Outlook
+                            </div>
+                        </div>
+                        <div class="step-image-wrapper" style="margin-top: 1.5rem;">
+                            <img src="etape1_img5.png" alt="Outlook 2" class="step-image">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: OneNote -->
+                <div class="step fade-in">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">
+                            <i class="fas fa-sticky-note"></i>
+                            Ajout OneNote
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Afin d'ajouter manuellement les <strong>notes de l'utilisateur</strong> (stockées sur le Cloud).</p>
+                        <div class="step-image-wrapper">
+                            <img src="etape1_img6.png" alt="OneNote" class="step-image">
+                            <div class="image-badge">
+                                <i class="fas fa-book"></i>
+                                OneNote
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Cisco Jabber -->
+                <div class="step fade-in">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <h3 class="step-title">
+                            <i class="fas fa-phone"></i>
+                            Configuration Cisco Jabber
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Pour finir cette configuration, on connecte cette application qui va permettre de recevoir les <strong>messages et appels</strong> de son téléphone professionnel directement sur son PC de travail (avec le H de la personne).</p>
+                        <div class="step-image-wrapper">
+                            <img src="etape1_img7.png" alt="Cisco Jabber" class="step-image">
+                            <div class="image-badge">
+                                <i class="fas fa-headset"></i>
+                                Cisco Jabber
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="etape2.html" class="btn">→ Passer à l'étape 2</a>
+            <!-- Next Button -->
+            <div style="text-align: center;">
+                <a href="etape2.html" class="next-button">
+                    <span>Passer à l'étape 2</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="copyright">
@@ -255,5 +843,55 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
