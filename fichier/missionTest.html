@@ -52,13 +52,7 @@
             animation: bgPulse 8s ease-in-out infinite;
         }
 
-        img:active {
-           transform: scale(1.2);
-           transition: 1s;
-        }
-        img:not(:active) {
-           transition: 0.5s;
-        }
+
 
         @keyframes bgPulse {
             0%, 100% { opacity: 0.5; }
@@ -476,7 +470,8 @@
             color: var(--primary-blue);
             font-weight: 600;
         }
-
+        
+        
         .step-image-wrapper {
             position: relative;
         }
@@ -488,6 +483,13 @@
             transition: all 0.3s;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            img:active {
+               transform: scale(1.2);
+               transition: 1s;
+        }
+            img:not(:active) {
+               transition: 0.5s;
+        }
         }
 
         .step-image:hover {
@@ -870,7 +872,7 @@
                             </div>
                         </div>
                         <div class="step-image-wrapper">
-                            <img src="mission1_img1.jpg" class="img" alt="Menu boot F12" class="step-image">
+                            <img src="mission1_img1.jpg" alt="Menu boot F12" class="step-image">
                             <div class="image-badge">
                                 <i class="fas fa-keyboard"></i>
                                 Boot Menu
