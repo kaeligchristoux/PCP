@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
     <style>
         :root {
             --primary-blue: #0ea5e9;
@@ -16,15 +17,23 @@
             --bg-card: #1e293b;
             --text-light: #f1f5f9;
             --text-gray: #cbd5e1;
+            --accent-orange: #f97316;
+            --accent-red: #ef4444;
+            --accent-amber: #fbbf24;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--bg-dark);
             color: var(--text-light);
-            line-height: 1.8;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -35,36 +44,18 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
             z-index: -1;
+            animation: bgPulse 8s ease-in-out infinite;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
-        }
-
-        .btn-grid {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
+        /* Navigation */
         nav {
             position: fixed;
             top: 0;
@@ -92,6 +83,7 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
         }
 
@@ -99,6 +91,11 @@
             list-style: none;
             display: flex;
             gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
         }
 
         nav a {
@@ -106,9 +103,107 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        nav a:hover { color: var(--primary-blue); }
+        nav ul li a i {
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: lightslategray !important;
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
 
         .container {
             max-width: 1200px;
@@ -116,18 +211,45 @@
             padding: 0 2rem;
         }
 
+        /* Hero ORANGE/ROUGE */
         .page-hero {
-            padding: 150px 0 60px;
+            padding: 140px 0 60px;
             text-align: center;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
+            border-bottom: 3px solid rgba(249, 115, 22, 0.3);
         }
 
         .page-hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, #ef4444, #f97316);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .mission-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(249, 115, 22, 0.2);
+            border: 2px solid rgba(249, 115, 22, 0.4);
+            border-radius: 50px;
+            margin-top: 1rem;
+            animation: slideDown 0.6s ease-out 0.2s backwards;
+        }
+
+        .mission-badge i {
+            font-size: 1.5rem;
+            color: #f97316;
+        }
+
+        .mission-badge span {
+            font-weight: 600;
+            color: #f97316;
         }
 
         .breadcrumb {
@@ -138,71 +260,379 @@
             margin-top: 1.5rem;
             color: var(--text-gray);
             font-size: 0.95rem;
+            animation: slideDown 0.6s ease-out 0.4s backwards;
         }
 
         .breadcrumb a {
             color: var(--primary-blue);
             text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .content-section { padding: 2rem 0 4rem; }
+        .breadcrumb a:hover {
+            color: var(--tech-green);
+        }
 
-        .intro {
-            background: var(--bg-card);
-            padding: 2rem;
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Content */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        /* Intro Context */
+        .intro-context {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(249, 115, 22, 0.3);
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-context::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #f97316, #ef4444);
+            background-size: 200% 100%;
+            animation: gradientSlide 3s linear infinite;
+        }
+
+        @keyframes gradientSlide {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .intro-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ef4444, #f97316);
             border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            margin-bottom: 3rem;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
         }
 
+        .intro-title h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .intro-context p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .intro-context strong {
+            color: #f97316;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 3rem 0 3rem;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #f97316);
+            border-radius: 2px;
+        }
+
+        /* Tickets Grid */
         .tickets-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
 
         .ticket-card {
             background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            transition: all 0.3s;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(249, 115, 22, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .ticket-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(249, 115, 22, 0.05));
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .ticket-card:hover::before {
+            opacity: 1;
         }
 
         .ticket-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            border-color: #f97316;
+            box-shadow: 0 20px 50px rgba(249, 115, 22, 0.4);
         }
 
-        .ticket-card h3 {
-            font-size: 1.5rem;
+        .ticket-header {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, -30px); }
+        }
+
+        .ticket-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
             margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            z-index: 1;
         }
 
-        .ticket-card p {
-            color: var(--text-gray);
+        .ticket-number i {
+            font-size: 1.2rem;
+        }
+
+        .ticket-header h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ticket-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 0.4rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ticket-status i {
+            font-size: 0.9rem;
+        }
+
+        .ticket-content {
+            padding: 2rem;
+        }
+
+        .problem-section {
             margin-bottom: 1.5rem;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+        .problem-section h4 {
+            color: #ef4444;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .problem-section h4 i {
+            font-size: 1.2rem;
+        }
+
+        .problem-section p {
+            color: var(--text-gray);
+            line-height: 1.8;
+            padding-left: 1.75rem;
+        }
+
+        .solution-section {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-section h4 {
+            color: #10b981;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .solution-section h4 i {
+            font-size: 1.2rem;
+        }
+
+        .solution-section p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .ticket-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #ef4444, #f97316);
             color: white;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 1rem;
             transition: all 0.3s;
-            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
+        .download-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(249, 115, 22, 0.5);
+        }
+
+        .download-btn i,
+        .download-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 3rem;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s;
+            box-shadow: 0 6px 25px rgba(249, 115, 22, 0.4);
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .back-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(249, 115, 22, 0.6);
+        }
+
+        .back-button i,
+        .back-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
         footer {
             background: rgba(15, 23, 42, 0.8);
             border-top: 1px solid rgba(14, 165, 233, 0.2);
@@ -216,31 +646,141 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 768px) {
-            nav ul { display: none; }
+        /* Fade in */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .menu-toggle { display: flex; }
+            
+            nav ul {
+                display: none;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                max-width: 320px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+                border-left: 2px solid var(--primary-blue);
+                animation: slideInMobile 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav ul.active { display: flex; }
+            
+            nav ul li {
+                margin-bottom: 0;
+                border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+                width: 100%;
+            }
+            
+            nav ul li:last-child { border-bottom: none; }
+            
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            nav ul li.has-submenu > a i.fa-chevron-down { margin-left: auto; }
+            nav ul li.has-submenu.open > a i.fa-chevron-down { transform: rotate(180deg); }
+            
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(6, 182, 212, 0.1);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid var(--primary-blue);
+                margin-left: 1rem;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav ul li.has-submenu.open .submenu {
+                display: block;
+                max-height: 500px;
+            }
+            
+            .submenu li { border: none; }
+            .submenu li a {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
+            }
+
             .page-hero h1 { font-size: 2rem; }
             .tickets-grid { grid-template-columns: 1fr; }
+        }
+
+        @keyframes slideInMobile {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
-            <ul>
-                <li><a href="index.html">Page d'accueil</a></li>
-                <li><a href="stage1.html">Stage 1</a></li>
-                <li><a href="stage2.html">Stage 2</a></li>
-                <li><a href="veille.html">Veilles</a></li>
-                <li><a href="ap.html">Ateliers Pro</a></li>
-                <li><a href="cv.html">CV</a></li>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Page Hero -->
     <section class="page-hero">
         <div class="container">
-            <h1>Mission 3 : Résolutions d'incidents</h1>
+            <h1><i class="fas fa-ticket-alt" style="color: lightslategray; margin-right: 1rem;"></i>Mission 3 : Résolutions d'incidents</h1>
+            <div class="mission-badge">
+                <i class="fas fa-headset"></i>
+                <span>Support Technique</span>
+            </div>
             <div class="breadcrumb">
                 <a href="index.html">Accueil</a>
                 <span>›</span>
@@ -253,72 +793,211 @@
         </div>
     </section>
 
+    <!-- Content -->
     <section class="content-section">
         <div class="container">
-            <div class="intro">
-                <p style="color: var(--text-gray); font-size: 1.1rem;">
+            <!-- Intro -->
+            <div class="intro-context fade-in">
+                <div class="intro-title">
+                    <div class="intro-icon"><i class="fas fa-inbox"></i></div>
+                    <h2>Gestion des incidents</h2>
+                </div>
+                <p>
                     Durant une partie de stage, j'ai également eu à résoudre des <strong>incidents</strong> qui sont présentés sous forme de <strong>tickets</strong> reçus dans une boîte aux lettres collective sur Outlook afin que notre équipe puisse les résoudre, les tickets sont créés par des utilisateurs ayant un problème ou un besoin.
                 </p>
             </div>
 
-            <h2 style="color: var(--tech-green); margin: 2rem 0 1.5rem; text-align: center; font-size: 2rem;">Les différents tickets résolus</h2>
+            <h2 class="section-title fade-in">🎫 Les 5 tickets résolus</h2>
 
+            <!-- Tickets Grid -->
             <div class="tickets-grid">
-                <div class="ticket-card" style="border-left: 4px solid var(--primary-blue);">
-                    <h3 style="color: var(--primary-blue);">🎫 Résolution Ticket 1</h3>
-                    <p>
-                        Problème d'écran sur un poste, l'écran ne voulait plus se connecter au poste (Message d'erreur : <strong>No Signal Detected</strong>). Je me suis rendu sur place avec le matériel nécessaire.<br><br>
-                        <strong>Solution :</strong> Le câble HDMI était simplement débranché du réplicateur. Une fois rebranché, l'écran a tout de suite détecté mon ordinateur.
-                    </p>
-                    <a href="resolution-ticket-1.pdf" download class="btn">📄 Télécharger le PDF</a>
+                <!-- Ticket 1 -->
+                <div class="ticket-card fade-in">
+                    <div class="ticket-header">
+                        <div class="ticket-number">
+                            <i class="fas fa-hashtag"></i>
+                            TICKET 1
+                        </div>
+                        <h3>Écran sans signal</h3>
+                        <div class="ticket-status">
+                            <i class="fas fa-check-circle"></i>
+                            Résolu
+                        </div>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="problem-section">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Problème</h4>
+                            <p>
+                                Problème d'écran sur un poste, l'écran ne voulait plus se connecter au poste (Message d'erreur : <strong>No Signal Detected</strong>). Je me suis rendu sur place avec le matériel nécessaire.
+                            </p>
+                        </div>
+                        <div class="solution-section">
+                            <h4><i class="fas fa-wrench"></i> Solution</h4>
+                            <p>
+                                Le câble HDMI était simplement débranché du réplicateur. Une fois rebranché, l'écran a tout de suite détecté mon ordinateur.
+                            </p>
+                        </div>
+                        <div class="ticket-actions">
+                            <a href="resolution-ticket-1.pdf" download class="download-btn">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Télécharger le PDF</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ticket-card" style="border-left: 4px solid var(--tech-green);">
-                    <h3 style="color: var(--tech-green);">🎫 Résolution Ticket 2</h3>
-                    <p>
-                        Besoin d'installation de matériels pour une nouvelle arrivée dans le mois. Les matériels sont les suivants :<br>
-                        • Souris<br>
-                        • Clavier<br>
-                        • Câble Ethernet<br>
-                        • Écran<br><br>
-                        <strong>Solution :</strong> J'ai préparé le branchement de toutes les connectiques avec embouts mis à disposition sur le bureau.
-                    </p>
-                    <a href="resolution-ticket-2.pdf" download class="btn">📄 Télécharger le PDF</a>
+                <!-- Ticket 2 -->
+                <div class="ticket-card fade-in">
+                    <div class="ticket-header">
+                        <div class="ticket-number">
+                            <i class="fas fa-hashtag"></i>
+                            TICKET 2
+                        </div>
+                        <h3>Installation matériel nouvelle arrivée</h3>
+                        <div class="ticket-status">
+                            <i class="fas fa-check-circle"></i>
+                            Résolu
+                        </div>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="problem-section">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Demande</h4>
+                            <p>
+                                Besoin d'installation de matériels pour une nouvelle arrivée dans le mois. Les matériels sont les suivants : Souris, Clavier, Câble Ethernet, Écran.
+                            </p>
+                        </div>
+                        <div class="solution-section">
+                            <h4><i class="fas fa-wrench"></i> Solution</h4>
+                            <p>
+                                J'ai préparé le branchement de toutes les connectiques avec embouts mis à disposition sur le bureau.
+                            </p>
+                        </div>
+                        <div class="ticket-actions">
+                            <a href="resolution-ticket-2.pdf" download class="download-btn">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Télécharger le PDF</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ticket-card" style="border-left: 4px solid var(--primary-blue);">
-                    <h3 style="color: var(--primary-blue);">🎫 Résolution Ticket 3</h3>
-                    <p>
-                        Problème d'écran qui affichait « <strong>No signal</strong> » alors que l'écran était connecté au réplicateur, et le réplicateur était bien connecté au PC.<br><br>
-                        <strong>Solution :</strong> Après plusieurs tests (câbles VGA/HDMI, adaptateurs, test avec mon PC portable), j'ai découvert que le câble USB-C qui relie le réplicateur au PC était défectueux. Câble remplacé, problème résolu.
-                    </p>
-                    <a href="resolution-ticket-3.pdf" download class="btn">📄 Télécharger le PDF</a>
+                <!-- Ticket 3 -->
+                <div class="ticket-card fade-in">
+                    <div class="ticket-header">
+                        <div class="ticket-number">
+                            <i class="fas fa-hashtag"></i>
+                            TICKET 3
+                        </div>
+                        <h3>Câble USB-C défectueux</h3>
+                        <div class="ticket-status">
+                            <i class="fas fa-check-circle"></i>
+                            Résolu
+                        </div>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="problem-section">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Problème</h4>
+                            <p>
+                                Problème d'écran qui affichait « <strong>No signal</strong> » alors que l'écran était connecté au réplicateur, et le réplicateur était bien connecté au PC.
+                            </p>
+                        </div>
+                        <div class="solution-section">
+                            <h4><i class="fas fa-wrench"></i> Solution</h4>
+                            <p>
+                                Après plusieurs tests (câbles VGA/HDMI, adaptateurs, test avec mon PC portable), j'ai découvert que le câble USB-C qui relie le réplicateur au PC était défectueux. Câble remplacé, problème résolu.
+                            </p>
+                        </div>
+                        <div class="ticket-actions">
+                            <a href="resolution-ticket-3.pdf" download class="download-btn">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Télécharger le PDF</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ticket-card" style="border-left: 4px solid var(--tech-green);">
-                    <h3 style="color: var(--tech-green);">🎫 Résolution Ticket 4</h3>
-                    <p>
-                        Le PC d'une utilisatrice de Saint-Brieuc avait fait la mise à jour du passage à <strong>Windows 11</strong>, et elle n'avait plus accès à ses imprimantes réseaux.<br><br>
-                        <strong>Solution :</strong> J'ai pris son poste à distance sur la console Ivanti pour résoudre le problème de connexion aux imprimantes.
-                    </p>
-                    <a href="resolution-ticket-4.pdf" download class="btn">📄 Télécharger le PDF</a>
+                <!-- Ticket 4 -->
+                <div class="ticket-card fade-in">
+                    <div class="ticket-header">
+                        <div class="ticket-number">
+                            <i class="fas fa-hashtag"></i>
+                            TICKET 4
+                        </div>
+                        <h3>Imprimantes après Windows 11</h3>
+                        <div class="ticket-status">
+                            <i class="fas fa-check-circle"></i>
+                            Résolu
+                        </div>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="problem-section">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Problème</h4>
+                            <p>
+                                Le PC d'une utilisatrice de Saint-Brieuc avait fait la mise à jour du passage à <strong>Windows 11</strong>, et elle n'avait plus accès à ses imprimantes réseaux.
+                            </p>
+                        </div>
+                        <div class="solution-section">
+                            <h4><i class="fas fa-wrench"></i> Solution</h4>
+                            <p>
+                                J'ai pris son poste à distance sur la console Ivanti pour résoudre le problème de connexion aux imprimantes.
+                            </p>
+                        </div>
+                        <div class="ticket-actions">
+                            <a href="resolution-ticket-4.pdf" download class="download-btn">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Télécharger le PDF</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ticket-card" style="border-left: 4px solid var(--primary-blue);">
-                    <h3 style="color: var(--primary-blue);">🎫 Résolution Ticket 5</h3>
-                    <p>
-                        Boîtier d'alimentation défectueux car du <strong>thé avait été renversé dessus</strong>.<br><br>
-                        <strong>Solution :</strong> Don d'un nouveau boîtier et câble d'alimentation. (Pas d'inventaire concernant les câbles, alimentations, les souris, claviers ou encore les casques, seulement concernant les PC, écrans et réplicateurs).
-                    </p>
-                    <a href="resolution-ticket-5.pdf" download class="btn">📄 Télécharger le PDF</a>
+                <!-- Ticket 5 -->
+                <div class="ticket-card fade-in">
+                    <div class="ticket-header">
+                        <div class="ticket-number">
+                            <i class="fas fa-hashtag"></i>
+                            TICKET 5
+                        </div>
+                        <h3>Boîtier alimentation endommagé</h3>
+                        <div class="ticket-status">
+                            <i class="fas fa-check-circle"></i>
+                            Résolu
+                        </div>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="problem-section">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Problème</h4>
+                            <p>
+                                Boîtier d'alimentation défectueux car du <strong>thé avait été renversé dessus</strong>.
+                            </p>
+                        </div>
+                        <div class="solution-section">
+                            <h4><i class="fas fa-wrench"></i> Solution</h4>
+                            <p>
+                                Don d'un nouveau boîtier et câble d'alimentation. (Pas d'inventaire concernant les câbles, alimentations, les souris, claviers ou encore les casques, seulement concernant les PC, écrans et réplicateurs).
+                            </p>
+                        </div>
+                        <div class="ticket-actions">
+                            <a href="resolution-ticket-5.pdf" download class="download-btn">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Télécharger le PDF</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>    
-        </div>
-        <div class="btn-grid">
-            <a href="missions.html" class="btn">Retour aux missions</a>
+            </div>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="missions.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour aux missions</span>
+                </a>
+            </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="copyright">
@@ -326,5 +1005,55 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
