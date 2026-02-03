@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
     <style>
         :root {
             --primary-blue: #0ea5e9;
@@ -19,6 +20,7 @@
             --text-light: #f1f5f9;
             --text-gray: #cbd5e1;
             --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
         }
 
         * {
@@ -90,6 +92,11 @@
             list-style: none;
             display: flex;
             gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
         }
 
         nav a {
@@ -98,6 +105,114 @@
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i {
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: lightslategray !important;
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
         }
 
         nav a::after {
@@ -109,10 +224,6 @@
             height: 2px;
             background: linear-gradient(90deg, var(--primary-blue), var(--tech-green));
             transition: width 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--primary-blue);
         }
 
         nav a:hover::after {
@@ -127,25 +238,68 @@
 
         /* Page Hero */
         .page-hero {
-            padding: 150px 0 60px;
+            padding: 150px 0 80px;
             text-align: center;
+            position: relative;
         }
 
         .page-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            animation: slideDown 0.6s ease-out 0.2s backwards;
+        }
+
+        .mission-count {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            animation: slideDown 0.6s ease-out 0.4s backwards;
+        }
+
+        .count-item {
+            text-align: center;
+        }
+
+        .count-number {
             font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
             background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .page-hero .subtitle {
-            font-size: 1.3rem;
+        .count-label {
             color: var(--text-gray);
-            max-width: 700px;
-            margin: 0 auto;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Breadcrumb */
@@ -154,9 +308,10 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             color: var(--text-gray);
             font-size: 0.95rem;
+            animation: slideDown 0.6s ease-out 0.6s backwards;
         }
 
         .breadcrumb a {
@@ -177,77 +332,223 @@
         /* Mission Cards */
         .mission-card {
             background: var(--bg-card);
-            border-radius: 20px;
+            border-radius: 25px;
             overflow: hidden;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            margin-bottom: 3rem;
-            transition: all 0.3s;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            margin-bottom: 4rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(16, 185, 129, 0.05));
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 0;
+        }
+
+        .mission-card:hover::before {
+            opacity: 1;
         }
 
         .mission-card:hover {
+            transform: translateY(-10px);
             border-color: var(--primary-blue);
-            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.2);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3);
         }
 
         .mission-header {
             background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
             color: white;
-            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, -30px); }
+        }
+
+        .mission-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .mission-header h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
         }
 
         .mission-header p {
             opacity: 0.95;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+            position: relative;
+            z-index: 1;
         }
 
         .mission-content {
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .mission-description {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--text-gray);
             margin-bottom: 2rem;
-            line-height: 1.8;
+            line-height: 1.9;
+            padding: 1.5rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 10px;
+        }
+
+        .mission-description strong {
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-image-wrapper {
+            position: relative;
+            margin: 3rem 0;
+            text-align: center;
         }
 
         .mission-image {
+            max-width: 650px;
             width: 100%;
-            max-width: 600px;
-            margin: 2rem auto;
-            display: block;
-            border-radius: 15px;
-            border: 2px solid rgba(14, 165, 233, 0.2);
+            border-radius: 20px;
+            border: 3px solid rgba(14, 165, 233, 0.3);
+            transition: all 0.4s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mission-image:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-blue);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .mission-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(14, 165, 233, 0.2);
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .mission-tags {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag i {
+            color: lightslategray;
         }
 
         .mission-btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 2.5rem;
             background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
             color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 15px;
             font-weight: 600;
+            font-size: 1.05rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
-            margin-top: 1rem;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s;
+        }
+
+        .mission-btn:hover::before {
+            left: 100%;
         }
 
         .mission-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.6);
         }
 
         .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
-            margin: 4rem 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-blue), var(--tech-green), transparent);
+            margin: 5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: var(--bg-dark);
+            border-radius: 50%;
+            border: 3px solid var(--primary-blue);
         }
 
         /* Footer */
@@ -264,14 +565,108 @@
             font-size: 0.9rem;
         }
 
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 968px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
             nav ul {
                 display: none;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                max-width: 320px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+                border-left: 2px solid var(--primary-blue);
+                animation: slideInMobile 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin-bottom: 0;
+                border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+                width: 100%;
+            }
+            
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            nav ul li.has-submenu > a i.fa-chevron-down {
+                margin-left: auto;
+            }
+            
+            nav ul li.has-submenu.open > a i.fa-chevron-down {
+                transform: rotate(180deg);
+            }
+            
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(6, 182, 212, 0.1);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid var(--primary-blue);
+                margin-left: 1rem;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav ul li.has-submenu.open .submenu {
+                display: block;
+                max-height: 500px;
+            }
+            
+            .submenu li {
+                border: none;
+            }
+            
+            .submenu li a {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
             }
 
             .page-hero h1 {
                 font-size: 2rem;
+            }
+
+            .mission-count {
+                flex-direction: column;
+                gap: 1.5rem;
             }
 
             .mission-header h2 {
@@ -279,7 +674,28 @@
             }
 
             .mission-content {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .mission-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .mission-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @keyframes slideInMobile {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
     </style>
@@ -289,13 +705,33 @@
     <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
-            <ul>
-                <li><a href="index.html">Page d'accueil</a></li>
-                <li><a href="stage1.html">Stage 1</a></li>
-                <li><a href="stage2.html">Stage 2</a></li>
-                <li><a href="veille.html">Veilles</a></li>
-                <li><a href="ap.html">Ateliers Pro</a></li>
-                <li><a href="cv.html">CV</a></li>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
             </ul>
         </div>
     </nav>
@@ -303,8 +739,20 @@
     <!-- Page Hero -->
     <section class="page-hero">
         <div class="container">
-            <h1>Missions effectuées</h1>
-            <p class="subtitle">Pendant mon stage de première année de BTS effectué à la CARSAT Bretagne, j'ai participé à plusieurs missions techniques concrètes.</p>
+            <h1>🎯 Missions effectuées</h1>
+            <p class="subtitle">Pendant mon stage de première année de BTS effectué à la CARSAT Bretagne, j'ai participé à plusieurs missions techniques concrètes dans le domaine de l'infrastructure informatique.</p>
+            
+            <div class="mission-count">
+                <div class="count-item">
+                    <div class="count-number">3</div>
+                    <div class="count-label">Missions principales</div>
+                </div>
+                <div class="count-item">
+                    <div class="count-number">6</div>
+                    <div class="count-label">Semaines de stage</div>
+                </div>
+            </div>
+
             <div class="breadcrumb">
                 <a href="index.html">Accueil</a>
                 <span>›</span>
@@ -319,18 +767,29 @@
     <section class="content-section">
         <div class="container">
             <!-- Mission 1 -->
-            <div class="mission-card">
+            <div class="mission-card fade-in">
                 <div class="mission-header">
-                    <h2>Mission 1</h2>
-                    <p>Masterisation de postes</p>
+                    <div class="mission-number">1</div>
+                    <h2>Masterisation de postes</h2>
+                    <p>Configuration et déploiement d'ordinateurs</p>
                 </div>
                 <div class="mission-content">
                     <p class="mission-description">
-                        Participation à la configuration initiale et au déploiement de plusieurs ordinateurs via un système de masterisation.
+                        Participation à la configuration initiale et au déploiement de plusieurs ordinateurs via un système de masterisation automatisé avec Ivanti.
                     </p>
-                    <img src="a3d41b14d30fa0c911c42ea03d5a1562_fgraphic.png" alt="Ivanti" class="mission-image">
-                    <div style="text-align: center;">
-                        <a href="mission1.html" class="mission-btn">📋 Voir les détails de la mission 1</a>
+                    <div class="mission-image-wrapper">
+                        <img src="a3d41b14d30fa0c911c42ea03d5a1562_fgraphic.png" alt="Ivanti" class="mission-image">
+                    </div>
+                    <div class="mission-footer">
+                        <div class="mission-tags">
+                            <span class="tag"><i class="fas fa-desktop"></i> Masterisation</span>
+                            <span class="tag"><i class="fas fa-cog"></i> Configuration</span>
+                            <span class="tag"><i class="fas fa-rocket"></i> Déploiement</span>
+                        </div>
+                        <a href="mission1.html" class="mission-btn">
+                            <span>Voir les détails</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -338,20 +797,31 @@
             <div class="divider"></div>
 
             <!-- Mission 2 -->
-            <div class="mission-card">
+            <div class="mission-card fade-in">
                 <div class="mission-header">
-                    <h2>Mission 2</h2>
-                    <p>Changement de postes pour les utilisateurs</p>
+                    <div class="mission-number">2</div>
+                    <h2>Changement de postes utilisateurs</h2>
+                    <p>Migration et configuration de nouveaux équipements</p>
                 </div>
                 <div class="mission-content">
                     <p class="mission-description">
-                        <strong>Préparation du poste en autonomie :</strong> Installation et configuration des nouveaux postes.
+                        <strong>Préparation du poste en autonomie</strong>
+                        Installation et configuration complète des nouveaux postes de travail avant déploiement chez les utilisateurs.
                     </p>
                     <p class="mission-description">
-                        <strong>Intervention avec l'utilisateur :</strong> Sauvegarde des données de l'ancien poste, puis paramétrage du nouveau poste.
+                        <strong>Intervention avec l'utilisateur</strong>
+                        Sauvegarde sécurisée des données de l'ancien poste, migration et paramétrage personnalisé du nouveau poste.
                     </p>
-                    <div style="text-align: center;">
-                        <a href="mission2.html" class="mission-btn">📋 Voir les détails de la mission 2</a>
+                    <div class="mission-footer">
+                        <div class="mission-tags">
+                            <span class="tag"><i class="fas fa-exchange-alt"></i> Migration</span>
+                            <span class="tag"><i class="fas fa-user-check"></i> Utilisateur</span>
+                            <span class="tag"><i class="fas fa-save"></i> Sauvegarde</span>
+                        </div>
+                        <a href="mission2.html" class="mission-btn">
+                            <span>Voir les détails</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -359,18 +829,29 @@
             <div class="divider"></div>
 
             <!-- Mission 3 -->
-            <div class="mission-card">
+            <div class="mission-card fade-in">
                 <div class="mission-header">
-                    <h2>Mission 3</h2>
-                    <p>Résolution d'incidents</p>
+                    <div class="mission-number">3</div>
+                    <h2>Résolution d'incidents</h2>
+                    <p>Support technique et dépannage utilisateurs</p>
                 </div>
                 <div class="mission-content">
                     <p class="mission-description">
-                        Traitement de tickets liés à des problèmes rencontrés par les utilisateurs (logiciels, imprimantes, réseau, etc.)
+                        Traitement de tickets liés à des problèmes rencontrés par les utilisateurs : dysfonctionnements logiciels, problèmes d'imprimantes, incidents réseau, et autres demandes d'assistance technique.
                     </p>
-                    <img src="capture-decran-2025-06-26-074828.png" alt="DoIT" class="mission-image">
-                    <div style="text-align: center;">
-                        <a href="mission3.html" class="mission-btn">📋 Voir les détails de la mission 3</a>
+                    <div class="mission-image-wrapper">
+                        <img src="capture-decran-2025-06-26-074828.png" alt="DoIT" class="mission-image">
+                    </div>
+                    <div class="mission-footer">
+                        <div class="mission-tags">
+                            <span class="tag"><i class="fas fa-ticket-alt"></i> Tickets</span>
+                            <span class="tag"><i class="fas fa-wrench"></i> Dépannage</span>
+                            <span class="tag"><i class="fas fa-headset"></i> Support</span>
+                        </div>
+                        <a href="mission3.html" class="mission-btn">
+                            <span>Voir les détails</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -385,5 +866,55 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
