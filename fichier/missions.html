@@ -21,6 +21,9 @@
             --text-gray: #cbd5e1;
             --accent-cyan: #06b6d4;
             --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-orange: #f97316;
+            --accent-red: #ef4444;
         }
 
         * {
@@ -215,21 +218,6 @@
             transform: rotate(-45deg) translate(7px, -7px);
         }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--tech-green));
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -329,7 +317,7 @@
             padding: 4rem 0;
         }
 
-        /* Mission Cards */
+        /* Mission Cards BASE */
         .mission-card {
             background: var(--bg-card);
             border-radius: 25px;
@@ -359,12 +347,136 @@
 
         .mission-card:hover {
             transform: translateY(-10px);
-            border-color: var(--primary-blue);
             box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3);
         }
 
+        /* Mission 1 - ROSE/VIOLET */
+        .mission-card:nth-child(1) {
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .mission-card:nth-child(1)::before {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(139, 92, 246, 0.05));
+        }
+
+        .mission-card:nth-child(1):hover {
+            border-color: #ec4899;
+            box-shadow: 0 20px 60px rgba(236, 72, 153, 0.4);
+        }
+
+        .mission-card:nth-child(1) .mission-header {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+        }
+
+        .mission-card:nth-child(1) .mission-description {
+            background: rgba(236, 72, 153, 0.05);
+            border-left-color: #ec4899;
+        }
+
+        .mission-card:nth-child(1) .mission-description strong {
+            color: #ec4899;
+        }
+
+        .mission-card:nth-child(1) .tag {
+            background: rgba(236, 72, 153, 0.1);
+            border-color: rgba(236, 72, 153, 0.3);
+            color: #ec4899;
+        }
+
+        .mission-card:nth-child(1) .mission-btn {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+        }
+
+        .mission-card:nth-child(1) .mission-btn:hover {
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.5);
+        }
+
+        /* Mission 2 - VIOLET/CYAN (3ème enfant car divider au milieu) */
+        .mission-card:nth-child(3) {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .mission-card:nth-child(3)::before {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(6, 182, 212, 0.05));
+        }
+
+        .mission-card:nth-child(3):hover {
+            border-color: #8b5cf6;
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+        }
+
+        .mission-card:nth-child(3) .mission-header {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+        }
+
+        .mission-card:nth-child(3) .mission-description {
+            background: rgba(139, 92, 246, 0.05);
+            border-left-color: #8b5cf6;
+        }
+
+        .mission-card:nth-child(3) .mission-description strong {
+            color: #8b5cf6;
+        }
+
+        .mission-card:nth-child(3) .tag {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            color: #8b5cf6;
+        }
+
+        .mission-card:nth-child(3) .mission-btn {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .mission-card:nth-child(3) .mission-btn:hover {
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Mission 3 - ROUGE/ORANGE (5ème enfant car 2 dividers) */
+        .mission-card:nth-child(5) {
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .mission-card:nth-child(5)::before {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(249, 115, 22, 0.05));
+        }
+
+        .mission-card:nth-child(5):hover {
+            border-color: #f97316;
+            box-shadow: 0 20px 60px rgba(249, 115, 22, 0.4);
+        }
+
+        .mission-card:nth-child(5) .mission-header {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+        }
+
+        .mission-card:nth-child(5) .mission-description {
+            background: rgba(249, 115, 22, 0.05);
+            border-left-color: #f97316;
+        }
+
+        .mission-card:nth-child(5) .mission-description strong {
+            color: #f97316;
+        }
+
+        .mission-card:nth-child(5) .tag {
+            background: rgba(249, 115, 22, 0.1);
+            border-color: rgba(249, 115, 22, 0.3);
+            color: #f97316;
+        }
+
+        .mission-card:nth-child(5) .mission-btn {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .mission-card:nth-child(5) .mission-btn:hover {
+            box-shadow: 0 8px 30px rgba(249, 115, 22, 0.5);
+        }
+
         .mission-header {
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
             padding: 3rem 2.5rem;
             color: white;
             position: relative;
@@ -429,36 +541,13 @@
             margin-bottom: 2rem;
             line-height: 1.9;
             padding: 1.5rem;
-            background: rgba(14, 165, 233, 0.05);
-            border-left: 4px solid var(--primary-blue);
+            border-left: 4px solid;
             border-radius: 10px;
         }
 
         .mission-description strong {
-            color: var(--primary-blue);
             display: block;
             margin-bottom: 0.5rem;
-        }
-
-        .mission-image-wrapper {
-            position: relative;
-            margin: 3rem 0;
-            text-align: center;
-        }
-
-        .mission-image {
-            max-width: 650px;
-            width: 100%;
-            border-radius: 20px;
-            border: 3px solid rgba(14, 165, 233, 0.3);
-            transition: all 0.4s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .mission-image:hover {
-            transform: scale(1.05);
-            border-color: var(--primary-blue);
-            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
         }
 
         .mission-footer {
@@ -479,15 +568,13 @@
 
         .tag {
             padding: 0.5rem 1rem;
-            background: rgba(14, 165, 233, 0.1);
-            border: 1px solid rgba(14, 165, 233, 0.3);
             border-radius: 20px;
             font-size: 0.9rem;
-            color: var(--primary-blue);
             font-family: 'JetBrains Mono', monospace;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            border: 1px solid;
         }
 
         .tag i {
@@ -498,15 +585,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 1.25rem 2.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            padding: 1rem 2rem;
             color: white;
             text-decoration: none;
-            border-radius: 15px;
+            border-radius: 50px;
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
             position: relative;
             overflow: hidden;
         }
@@ -514,27 +599,36 @@
         .mission-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.5s;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
         .mission-btn:hover::before {
-            left: 100%;
+            width: 300px;
+            height: 300px;
         }
 
         .mission-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.6);
         }
 
+        .mission-btn i,
+        .mission-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Divider */
         .divider {
             height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary-blue), var(--tech-green), transparent);
-            margin: 5rem 0;
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.3), transparent);
+            margin: 4rem 0;
             position: relative;
         }
 
@@ -547,8 +641,8 @@
             width: 40px;
             height: 40px;
             background: var(--bg-dark);
-            border-radius: 50%;
             border: 3px solid var(--primary-blue);
+            border-radius: 50%;
         }
 
         /* Footer */
@@ -556,8 +650,8 @@
             background: rgba(15, 23, 42, 0.8);
             border-top: 1px solid rgba(14, 165, 233, 0.2);
             padding: 2rem 0;
-            margin-top: 4rem;
             text-align: center;
+            margin-top: 4rem;
         }
 
         .copyright {
@@ -565,7 +659,7 @@
             font-size: 0.9rem;
         }
 
-        /* Fade in animation */
+        /* Fade in */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -579,9 +673,7 @@
 
         /* Responsive */
         @media (max-width: 968px) {
-            .menu-toggle {
-                display: flex;
-            }
+            .menu-toggle { display: flex; }
             
             nav ul {
                 display: none;
@@ -602,9 +694,7 @@
                 overflow-y: auto;
             }
             
-            nav ul.active {
-                display: flex;
-            }
+            nav ul.active { display: flex; }
             
             nav ul li {
                 margin-bottom: 0;
@@ -612,9 +702,7 @@
                 width: 100%;
             }
             
-            nav ul li:last-child {
-                border-bottom: none;
-            }
+            nav ul li:last-child { border-bottom: none; }
             
             nav ul li > a {
                 display: flex;
@@ -623,13 +711,8 @@
                 width: 100%;
             }
             
-            nav ul li.has-submenu > a i.fa-chevron-down {
-                margin-left: auto;
-            }
-            
-            nav ul li.has-submenu.open > a i.fa-chevron-down {
-                transform: rotate(180deg);
-            }
+            nav ul li.has-submenu > a i.fa-chevron-down { margin-left: auto; }
+            nav ul li.has-submenu.open > a i.fa-chevron-down { transform: rotate(180deg); }
             
             .submenu {
                 position: static;
@@ -651,52 +734,22 @@
                 max-height: 500px;
             }
             
-            .submenu li {
-                border: none;
-            }
-            
+            .submenu li { border: none; }
             .submenu li a {
                 padding: 0.75rem 1rem !important;
                 font-size: 1rem !important;
             }
 
-            .page-hero h1 {
-                font-size: 2rem;
-            }
-
-            .mission-count {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            .mission-header h2 {
-                font-size: 1.5rem;
-            }
-
-            .mission-content {
-                padding: 2rem 1.5rem;
-            }
-
+            .page-hero h1 { font-size: 2.5rem; }
             .mission-footer {
                 flex-direction: column;
-                align-items: stretch;
-            }
-
-            .mission-btn {
-                width: 100%;
-                justify-content: center;
+                align-items: flex-start;
             }
         }
 
         @keyframes slideInMobile {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
@@ -766,7 +819,7 @@
     <!-- Content -->
     <section class="content-section">
         <div class="container">
-            <!-- Mission 1 -->
+            <!-- Mission 1 - ROSE/VIOLET -->
             <div class="mission-card fade-in">
                 <div class="mission-header">
                     <div class="mission-number">1</div>
@@ -777,9 +830,6 @@
                     <p class="mission-description">
                         Participation à la configuration initiale et au déploiement de plusieurs ordinateurs via un système de masterisation automatisé avec Ivanti.
                     </p>
-                    <div class="mission-image-wrapper">
-                        <img src="a3d41b14d30fa0c911c42ea03d5a1562_fgraphic.png" alt="Ivanti" class="mission-image">
-                    </div>
                     <div class="mission-footer">
                         <div class="mission-tags">
                             <span class="tag"><i class="fas fa-desktop"></i> Masterisation</span>
@@ -796,7 +846,7 @@
 
             <div class="divider"></div>
 
-            <!-- Mission 2 -->
+            <!-- Mission 2 - VIOLET/CYAN -->
             <div class="mission-card fade-in">
                 <div class="mission-header">
                     <div class="mission-number">2</div>
@@ -828,7 +878,7 @@
 
             <div class="divider"></div>
 
-            <!-- Mission 3 -->
+            <!-- Mission 3 - ROUGE/ORANGE -->
             <div class="mission-card fade-in">
                 <div class="mission-header">
                     <div class="mission-number">3</div>
@@ -839,9 +889,6 @@
                     <p class="mission-description">
                         Traitement de tickets liés à des problèmes rencontrés par les utilisateurs : dysfonctionnements logiciels, problèmes d'imprimantes, incidents réseau, et autres demandes d'assistance technique.
                     </p>
-                    <div class="mission-image-wrapper">
-                        <img src="capture-decran-2025-06-26-074828.png" alt="DoIT" class="mission-image">
-                    </div>
                     <div class="mission-footer">
                         <div class="mission-tags">
                             <span class="tag"><i class="fas fa-ticket-alt"></i> Tickets</span>
