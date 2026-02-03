@@ -26,6 +26,11 @@
         background-color: #04AA6D;
         color: white;
       }
+
+      .topnav a.active2 {
+        background-color: #17d1d1;
+        color: white;
+      }
       
       .topnav .icon {
         display: none;
