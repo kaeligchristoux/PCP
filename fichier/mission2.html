@@ -8,23 +8,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
     <style>
         :root {
             --primary-blue: #0ea5e9;
+            --deep-blue: #0c4a6e;
             --tech-green: #10b981;
+            --dark-green: #065f46;
             --bg-dark: #0f172a;
             --bg-card: #1e293b;
             --text-light: #f1f5f9;
             --text-gray: #cbd5e1;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--bg-dark);
             color: var(--text-light);
-            line-height: 1.8;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -38,34 +49,15 @@
                 radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
             z-index: -1;
+            animation: bgPulse 8s ease-in-out infinite;
         }
 
-         .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
-        }
-
-        .btn-grid {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-
+        /* Navigation */
         nav {
             position: fixed;
             top: 0;
@@ -93,6 +85,7 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
         }
 
@@ -100,6 +93,11 @@
             list-style: none;
             display: flex;
             gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
         }
 
         nav a {
@@ -107,28 +105,159 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        nav a:hover { color: var(--primary-blue); }
+        nav ul li a i {
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: lightslategray !important;
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
+        /* Page Hero */
         .page-hero {
-            padding: 150px 0 60px;
+            padding: 140px 0 60px;
             text-align: center;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border-bottom: 3px solid rgba(139, 92, 246, 0.3);
         }
 
         .page-hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .mission-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 50px;
+            margin-top: 1rem;
+            animation: slideDown 0.6s ease-out 0.2s backwards;
+        }
+
+        .mission-badge i {
+            font-size: 1.5rem;
+            color: #8b5cf6;
+        }
+
+        .mission-badge span {
+            font-weight: 600;
+            color: #8b5cf6;
         }
 
         .breadcrumb {
@@ -139,63 +268,363 @@
             margin-top: 1.5rem;
             color: var(--text-gray);
             font-size: 0.95rem;
+            animation: slideDown 0.6s ease-out 0.4s backwards;
         }
 
         .breadcrumb a {
             color: var(--primary-blue);
             text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .content-section { padding: 2rem 0 4rem; }
+        .breadcrumb a:hover {
+            color: var(--tech-green);
+        }
 
-        .intro {
-            background: var(--bg-card);
-            padding: 2rem;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Content */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        /* Intro Context Box */
+        .intro-context {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            padding: 3rem;
+            border-radius: 25px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-context::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6);
+            background-size: 200% 100%;
+            animation: gradientSlide 3s linear infinite;
+        }
+
+        @keyframes gradientSlide {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .intro-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .intro-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .intro-title h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .intro-context p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-context strong {
+            color: #8b5cf6;
+            font-weight: 700;
+        }
+
+        /* Project Stats */
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .stat-box {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 1.5rem;
             border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            margin-bottom: 3rem;
-            font-size: 1.05rem;
-            color: var(--text-gray);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            text-align: center;
+            transition: all 0.3s;
         }
 
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 4rem 0 3rem;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+            border-radius: 2px;
+        }
+
+        /* Etapes Cards */
         .etapes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
             margin-top: 3rem;
         }
 
         .etape-card {
             background: var(--bg-card);
-            border-radius: 15px;
+            border-radius: 25px;
             overflow: hidden;
-            border: 1px solid rgba(14, 165, 233, 0.2);
+            border: 3px solid rgba(139, 92, 246, 0.3);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .etape-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(6, 182, 212, 0.05));
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .etape-card:hover::before {
+            opacity: 1;
         }
 
         .etape-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.3);
+            transform: translateY(-15px) scale(1.02);
+            border-color: #8b5cf6;
+            box-shadow: 0 25px 60px rgba(139, 92, 246, 0.4);
         }
 
         .etape-header {
-            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
-            padding: 2rem;
-            text-align: center;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            padding: 3rem 2.5rem;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .etape-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, -30px); }
+        }
+
+        .etape-number {
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            z-index: 1;
         }
 
         .etape-header h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .etape-header p {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
         }
 
         .etape-content {
-            padding: 2rem;
-            color: var(--text-gray);
+            padding: 2.5rem;
         }
 
+        .etape-content p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .etape-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .etape-list li {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #8b5cf6;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .etape-list li:hover {
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateX(10px);
+            color: var(--text-light);
+        }
+
+        .etape-list li i {
+            font-size: 1.2rem;
+            color: #8b5cf6;
+            min-width: 25px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 3rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s;
+            box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .back-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
+        }
+
+        .back-button i,
+        .back-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
         footer {
             background: rgba(15, 23, 42, 0.8);
             border-top: 1px solid rgba(14, 165, 233, 0.2);
@@ -209,31 +638,170 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 768px) {
-            nav ul { display: none; }
-            .page-hero h1 { font-size: 2rem; }
-            .etapes-grid { grid-template-columns: 1fr; }
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav ul {
+                display: none;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                max-width: 320px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+                border-left: 2px solid var(--primary-blue);
+                animation: slideInMobile 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin-bottom: 0;
+                border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+                width: 100%;
+            }
+            
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            nav ul li.has-submenu > a i.fa-chevron-down {
+                margin-left: auto;
+            }
+            
+            nav ul li.has-submenu.open > a i.fa-chevron-down {
+                transform: rotate(180deg);
+            }
+            
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(6, 182, 212, 0.1);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid var(--primary-blue);
+                margin-left: 1rem;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav ul li.has-submenu.open .submenu {
+                display: block;
+                max-height: 500px;
+            }
+            
+            .submenu li {
+                border: none;
+            }
+            
+            .submenu li a {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
+            }
+
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+
+            .etapes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes slideInMobile {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
-            <ul>
-                <li><a href="index.html">Page d'accueil</a></li>
-                <li><a href="stage1.html">Stage 1</a></li>
-                <li><a href="stage2.html">Stage 2</a></li>
-                <li><a href="veille.html">Veilles</a></li>
-                <li><a href="ap.html">Ateliers Pro</a></li>
-                <li><a href="cv.html">CV</a></li>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Page Hero -->
     <section class="page-hero">
         <div class="container">
-            <h1>Mission 2 : Changement de postes</h1>
+            <h1>🔄 Mission 2 : Changement de postes</h1>
+            <div class="mission-badge">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Migration Dell → Lenovo</span>
+            </div>
             <div class="breadcrumb">
                 <a href="index.html">Accueil</a>
                 <span>›</span>
@@ -246,53 +814,141 @@
         </div>
     </section>
 
+    <!-- Content -->
     <section class="content-section">
         <div class="container">
-            <div class="intro">
-                La deuxième et majeure partie de mon stage était un <strong>projet de déploiement de changements de postes</strong>. En effet, tous les utilisateurs possédant des PC qui avaient comme modèle <strong>Dell Latitude 3500</strong> ou <strong>Dell Latitude 3510</strong>, devaient voir leur PC remplacé, c'est en fait dû au fait que tous les PC datant de plus de 5 ans ne peuvent plus être maintenus dans l'inventaire.<br><br>
-                Les nouveaux PC que nous leur donnons sont des <strong>Lenovo E13 Gen 2</strong>, nous en avons une flotte d'environ 100 PC restants. Les anciens PC Dell des utilisateurs sont ensuite donnés gratuitement à l'association <strong>Envie 35</strong> qui les réinitialisera et les vendra à un prix réduit à des citoyens dans le besoin.<br><br>
-                Je vais expliquer ci-dessous le déroulé des changements de postes, tout d'abord, la première étape qui est en autonomie et qui consiste à préparer le nouveau poste et pour finir, l'étape qui consiste au changement du PC en lui-même.
+            <!-- Intro Context -->
+            <div class="intro-context fade-in">
+                <div class="intro-title">
+                    <div class="intro-icon"><i class="fas fa-laptop"></i></div>
+                    <h2>Projet de déploiement massif</h2>
+                </div>
+                <p>
+                    La deuxième et majeure partie de mon stage était un <strong>projet de déploiement de changements de postes</strong>. En effet, tous les utilisateurs possédant des PC qui avaient comme modèle <strong>Dell Latitude 3500</strong> ou <strong>Dell Latitude 3510</strong>, devaient voir leur PC remplacé, c'est en fait dû au fait que tous les PC datant de plus de 5 ans ne peuvent plus être maintenus dans l'inventaire.
+                </p>
+                <p>
+                    Les nouveaux PC que nous leur donnons sont des <strong>Lenovo E13 Gen 2</strong>, nous en avons une flotte d'environ 100 PC restants. Les anciens PC Dell des utilisateurs sont ensuite donnés gratuitement à l'association <strong>Envie 35</strong> qui les réinitialisera et les vendra à un prix réduit à des citoyens dans le besoin.
+                </p>
+
+                <div class="project-stats">
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="fas fa-desktop"></i></div>
+                        <div class="stat-number">~100</div>
+                        <div class="stat-label">PC à migrer</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="fas fa-sync-alt"></i></div>
+                        <div class="stat-number">Dell → Lenovo</div>
+                        <div class="stat-label">Migration matérielle</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="fas fa-heart"></i></div>
+                        <div class="stat-number">Envie 35</div>
+                        <div class="stat-label">Don solidaire</div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Etapes -->
+            <h2 class="section-title fade-in">📋 Les 2 étapes du processus</h2>
 
             <div class="etapes-grid">
-                <a href="etape1.html" class="etape-card">
+                <!-- Étape 1 -->
+                <a href="etape1.html" class="etape-card fade-in">
                     <div class="etape-header">
-                        <h2>Étape 1</h2>
-                        <p>Préparation du nouveau poste</p>
+                        <div class="etape-number">1</div>
+                        <h2>Préparation du nouveau poste</h2>
+                        <p>Configuration en autonomie</p>
                     </div>
                     <div class="etape-content">
-                        <p>Configuration en autonomie du nouveau PC :</p>
-                        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                            <li style="padding: 0.5rem 0;">▹ Affectation dans l'Active Directory</li>
-                            <li style="padding: 0.5rem 0;">▹ Configuration des logiciels (Teams, OneDrive, Outlook, OneNote, Cisco Jabber)</li>
-                            <li style="padding: 0.5rem 0;">▹ Vérifications préalables</li>
+                        <p>Configuration complète du nouveau Lenovo E13 :</p>
+                        <ul class="etape-list">
+                            <li>
+                                <i class="fas fa-sitemap"></i>
+                                Affectation dans l'Active Directory
+                            </li>
+                            <li>
+                                <i class="fas fa-users"></i>
+                                Configuration de Teams
+                            </li>
+                            <li>
+                                <i class="fas fa-cloud"></i>
+                                Installation OneDrive
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                Configuration Outlook
+                            </li>
+                            <li>
+                                <i class="fas fa-sticky-note"></i>
+                                Installation OneNote
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                Configuration Cisco Jabber
+                            </li>
+                            <li>
+                                <i class="fas fa-check-double"></i>
+                                Vérifications préalables
+                            </li>
                         </ul>
                     </div>
                 </a>
 
-                <a href="etape2.html" class="etape-card">
+                <!-- Étape 2 -->
+                <a href="etape2.html" class="etape-card fade-in">
                     <div class="etape-header">
-                        <h2>Étape 2</h2>
-                        <p>Intervention avec l'utilisateur</p>
+                        <div class="etape-number">2</div>
+                        <h2>Intervention avec l'utilisateur</h2>
+                        <p>Changement effectif du poste</p>
                     </div>
                     <div class="etape-content">
-                        <p>Changement effectif du poste :</p>
-                        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                            <li style="padding: 0.5rem 0;">▹ Sauvegarde des données</li>
-                            <li style="padding: 0.5rem 0;">▹ Configuration de Colibri (VPN)</li>
-                            <li style="padding: 0.5rem 0;">▹ Configuration des imprimantes</li>
-                            <li style="padding: 0.5rem 0;">▹ Restauration des données</li>
-                            <li style="padding: 0.5rem 0;">▹ Mouvement dans l'Active Directory</li>
+                        <p>Migration complète des données et configuration :</p>
+                        <ul class="etape-list">
+                            <li>
+                                <i class="fas fa-save"></i>
+                                Sauvegarde sécurisée des données
+                            </li>
+                            <li>
+                                <i class="fas fa-shield-alt"></i>
+                                Configuration de Colibri (VPN)
+                            </li>
+                            <li>
+                                <i class="fas fa-print"></i>
+                                Configuration des imprimantes
+                            </li>
+                            <li>
+                                <i class="fas fa-undo"></i>
+                                Restauration des données
+                            </li>
+                            <li>
+                                <i class="fas fa-exchange-alt"></i>
+                                Mouvement dans l'Active Directory
+                            </li>
+                            <li>
+                                <i class="fas fa-user-check"></i>
+                                Test avec l'utilisateur
+                            </li>
+                            <li>
+                                <i class="fas fa-recycle"></i>
+                                Préparation de l'ancien PC pour don
+                            </li>
                         </ul>
                     </div>
                 </a>
             </div>
-            <div class="btn-grid">
-                    <a href="missions.html" class="btn">Retour aux missions</a>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="missions.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour aux missions</span>
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="copyright">
@@ -300,5 +956,55 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
