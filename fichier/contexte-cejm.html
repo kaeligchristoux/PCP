@@ -367,19 +367,21 @@
 
         /* Summary Cards */
         .section-title {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: var(--text-light);
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
             position: relative;
-            padding-bottom: 1rem;
+            padding-bottom: 1.5rem;
         }
 
         .section-title::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
             height: 4px;
             background: linear-gradient(90deg, var(--primary-blue), var(--tech-green));
             border-radius: 2px;
@@ -387,43 +389,86 @@
 
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
             margin-top: 3rem;
         }
 
         .summary-card {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            transition: all 0.3s;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(16, 185, 129, 0.05));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--tech-green), var(--accent-cyan));
+            background-size: 200% 100%;
+            animation: gradientSlide 3s linear infinite;
+        }
+
+        @keyframes gradientSlide {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
         .summary-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
             border-color: var(--primary-blue);
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.4);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(16, 185, 129, 0.1));
         }
 
         .summary-card h3 {
             color: var(--tech-green);
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
+            font-weight: 700;
+        }
+
+        .summary-card h3 .icon-wrapper {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(16, 185, 129, 0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .summary-card:hover h3 .icon-wrapper {
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            transform: rotate(360deg) scale(1.1);
         }
 
         .summary-card h3 i {
             color: lightslategray;
             font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .summary-card:hover h3 i {
+            color: white;
         }
 
         .summary-card p {
             color: var(--text-gray);
-            line-height: 1.8;
-            margin-bottom: 1rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
         }
 
         .summary-card ul {
@@ -433,18 +478,48 @@
         }
 
         .summary-card li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
+            padding: 0.75rem 0;
+            padding-left: 2rem;
             position: relative;
             color: var(--text-gray);
+            transition: all 0.3s;
+            border-radius: 8px;
+        }
+
+        .summary-card li:hover {
+            padding-left: 2.5rem;
+            background: rgba(14, 165, 233, 0.05);
+            color: var(--text-light);
         }
 
         .summary-card li::before {
-            content: '▹';
+            content: '';
             position: absolute;
-            left: 0;
+            left: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--tech-green));
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .summary-card li:hover::before {
+            width: 12px;
+            height: 12px;
+            box-shadow: 0 0 10px var(--primary-blue);
+        }
+
+        .summary-card strong {
             color: var(--primary-blue);
-            font-weight: bold;
+            font-weight: 700;
+        }
+
+        /* Stats badge for first card */
+        .summary-card:nth-child(1) li {
+            font-weight: 600;
+            color: var(--primary-blue);
         }
 
         /* Footer */
@@ -658,65 +733,157 @@
             <!-- Summary -->
             <h2 class="section-title">Résumé du document</h2>
             <div class="summary-grid">
-                <div class="summary-card fade-in">
+                <div class="summary-card fade-in" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(6, 182, 212, 0.05));">
                     <h3><i class="fas fa-building"></i> Caractéristiques de l'organisation</h3>
                     <p>La CARSAT Bretagne est un organisme régional de droit privé chargé d'une mission de service public.</p>
-                    <ul>
-                        <li>719 750 retraités</li>
-                        <li>11 agences retraite</li>
-                        <li>6.9 milliards € de prestations</li>
-                        <li>120 604 établissements cotisants</li>
-                    </ul>
+                    
+                    <!-- Stats cards -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+                        <div style="background: rgba(14, 165, 233, 0.1); padding: 1rem; border-radius: 10px; text-align: center; border: 1px solid rgba(14, 165, 233, 0.2);">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary-blue); font-family: 'JetBrains Mono', monospace;">719K</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.25rem;">Retraités</div>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 10px; text-align: center; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--tech-green); font-family: 'JetBrains Mono', monospace;">11</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.25rem;">Agences</div>
+                        </div>
+                        <div style="background: rgba(6, 182, 212, 0.1); padding: 1rem; border-radius: 10px; text-align: center; border: 1px solid rgba(6, 182, 212, 0.2);">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">6.9Md€</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.25rem;">Prestations</div>
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 10px; text-align: center; border: 1px solid rgba(245, 158, 11, 0.2);">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #f59e0b; font-family: 'JetBrains Mono', monospace;">120K</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.25rem;">Établissements</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="summary-card fade-in">
+                <div class="summary-card fade-in" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));">
                     <h3><i class="fas fa-bullseye"></i> Missions principales</h3>
-                    <ul>
-                        <li>Préparer et payer la retraite par répartition</li>
-                        <li>Accompagner les assurés fragilisés</li>
-                        <li>Prévenir les risques professionnels</li>
-                        <li>Assurer la santé et sécurité au travail</li>
-                    </ul>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <div style="background: rgba(14, 165, 233, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--primary-blue); transition: all 0.3s;" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+                            <div style="color: var(--primary-blue); font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-coins" style="color: lightslategray;"></i> Retraite
+                            </div>
+                            <div style="font-size: 0.9rem; color: var(--text-gray);">Préparer et payer la retraite par répartition</div>
+                        </div>
+                        <div style="background: rgba(14, 165, 233, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--tech-green); transition: all 0.3s;" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+                            <div style="color: var(--tech-green); font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-hands-helping" style="color: lightslategray;"></i> Accompagnement
+                            </div>
+                            <div style="font-size: 0.9rem; color: var(--text-gray);">Accompagner les assurés fragilisés</div>
+                        </div>
+                        <div style="background: rgba(14, 165, 233, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-cyan); transition: all 0.3s;" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+                            <div style="color: var(--accent-cyan); font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-shield-alt" style="color: lightslategray;"></i> Prévention
+                            </div>
+                            <div style="font-size: 0.9rem; color: var(--text-gray);">Prévenir les risques et assurer la sécurité au travail</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="summary-card fade-in">
+                <div class="summary-card fade-in" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));">
                     <h3><i class="fas fa-gem"></i> Valeurs de l'entreprise</h3>
-                    <ul>
-                        <li><strong>Responsabilité</strong> : Assumer ses activités</li>
-                        <li><strong>Confiance</strong> : Reconnaître les compétences</li>
-                        <li><strong>Respect</strong> : Agir avec égard</li>
-                        <li><strong>Solidarité</strong> : Aider ses collègues</li>
-                    </ul>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+                        <div style="text-align: center; padding: 1rem;">
+                            <div style="width: 60px; height: 60px; margin: 0 auto 0.75rem; background: linear-gradient(135deg, var(--primary-blue), var(--tech-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);">
+                                <i class="fas fa-user-shield" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <div style="font-weight: 700; color: var(--primary-blue); margin-bottom: 0.25rem;">Responsabilité</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray);">Assumer ses activités</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem;">
+                            <div style="width: 60px; height: 60px; margin: 0 auto 0.75rem; background: linear-gradient(135deg, var(--tech-green), var(--dark-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">
+                                <i class="fas fa-handshake" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <div style="font-weight: 700; color: var(--tech-green); margin-bottom: 0.25rem;">Confiance</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray);">Reconnaître les compétences</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem;">
+                            <div style="width: 60px; height: 60px; margin: 0 auto 0.75rem; background: linear-gradient(135deg, var(--accent-cyan), var(--deep-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(6, 182, 212, 0.3);">
+                                <i class="fas fa-heart" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <div style="font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.25rem;">Respect</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray);">Agir avec égard</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem;">
+                            <div style="width: 60px; height: 60px; margin: 0 auto 0.75rem; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);">
+                                <i class="fas fa-users" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.25rem;">Solidarité</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray);">Aider ses collègues</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="summary-card fade-in">
                     <h3><i class="fas fa-server"></i> Système d'information</h3>
-                    <ul>
-                        <li>Matériel : PC, serveurs, réseau sécurisé</li>
-                        <li>Logiciels : DoIT (support utilisateur) et outils bureautiques</li>
-                        <li>Formation continue des agents</li>
-                        <li>Protection des données (RGPD)</li>
-                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <div style="background: rgba(14, 165, 233, 0.05); padding: 1.25rem; border-radius: 10px; margin-bottom: 1rem; border: 1px dashed rgba(14, 165, 233, 0.3);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <i class="fas fa-desktop" style="color: var(--primary-blue); font-size: 1.5rem;"></i>
+                                <span style="font-weight: 600; color: var(--text-light);">Matériel</span>
+                            </div>
+                            <div style="color: var(--text-gray); font-size: 0.95rem;">PC, serveurs, réseau sécurisé</div>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 1.25rem; border-radius: 10px; margin-bottom: 1rem; border: 1px dashed rgba(16, 185, 129, 0.3);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <i class="fas fa-code" style="color: var(--tech-green); font-size: 1.5rem;"></i>
+                                <span style="font-weight: 600; color: var(--text-light);">Logiciels</span>
+                            </div>
+                            <div style="color: var(--text-gray); font-size: 0.95rem;">DoIT + outils bureautiques</div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <span style="padding: 0.4rem 0.8rem; background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 15px; font-size: 0.85rem; color: var(--primary-blue);">
+                                <i class="fas fa-graduation-cap"></i> Formation
+                            </span>
+                            <span style="padding: 0.4rem 0.8rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 15px; font-size: 0.85rem; color: var(--tech-green);">
+                                <i class="fas fa-lock"></i> RGPD
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="summary-card fade-in">
                     <h3><i class="fas fa-balance-scale"></i> Liens avec le CEJM</h3>
-                    <ul>
-                        <li>Aspects juridiques (RGPD, contrats)</li>
-                        <li>Organisation managériale</li>
-                        <li>Gestion économique et budgétaire</li>
-                        <li>Dialogue social et accords d'entreprise</li>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li style="padding: 0.75rem; margin-bottom: 0.75rem; background: rgba(14, 165, 233, 0.05); border-radius: 8px; border-left: 3px solid var(--primary-blue); position: relative; padding-left: 3rem;">
+                            <i class="fas fa-gavel" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--primary-blue); font-size: 1.2rem;"></i>
+                            <span style="color: var(--text-light); font-weight: 500;">Aspects juridiques (RGPD, contrats)</span>
+                        </li>
+                        <li style="padding: 0.75rem; margin-bottom: 0.75rem; background: rgba(16, 185, 129, 0.05); border-radius: 8px; border-left: 3px solid var(--tech-green); position: relative; padding-left: 3rem;">
+                            <i class="fas fa-sitemap" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--tech-green); font-size: 1.2rem;"></i>
+                            <span style="color: var(--text-light); font-weight: 500;">Organisation managériale</span>
+                        </li>
+                        <li style="padding: 0.75rem; margin-bottom: 0.75rem; background: rgba(6, 182, 212, 0.05); border-radius: 8px; border-left: 3px solid var(--accent-cyan); position: relative; padding-left: 3rem;">
+                            <i class="fas fa-chart-line" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--accent-cyan); font-size: 1.2rem;"></i>
+                            <span style="color: var(--text-light); font-weight: 500;">Gestion économique et budgétaire</span>
+                        </li>
+                        <li style="padding: 0.75rem; background: rgba(245, 158, 11, 0.05); border-radius: 8px; border-left: 3px solid #f59e0b; position: relative; padding-left: 3rem;">
+                            <i class="fas fa-comments" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #f59e0b; font-size: 1.2rem;"></i>
+                            <span style="color: var(--text-light); font-weight: 500;">Dialogue social et accords d'entreprise</span>
+                        </li>
                     </ul>
                 </div>
 
-                <div class="summary-card fade-in">
+                <div class="summary-card fade-in" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.05));">
                     <h3><i class="fas fa-book"></i> Sources utilisées</h3>
-                    <ul>
-                        <li>Site officiel CARSAT Bretagne</li>
-                        <li>Rapport d'activité 2023</li>
-                        <li>CNAV et CNAM</li>
-                        <li>Cours de CEJM</li>
-                    </ul>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                        <a href="https://www.carsat-bretagne.fr" target="_blank" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 8px; text-decoration: none; transition: all 0.3s; border: 1px solid rgba(14, 165, 233, 0.2);" onmouseover="this.style.background='rgba(14, 165, 233, 0.1)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(14, 165, 233, 0.05)'; this.style.transform='translateX(0)'">
+                            <i class="fas fa-globe" style="color: var(--primary-blue); font-size: 1.2rem;"></i>
+                            <span style="color: var(--text-light); font-weight: 500;">Site officiel CARSAT Bretagne</span>
+                            <i class="fas fa-external-link-alt" style="color: var(--text-gray); font-size: 0.8rem; margin-left: auto;"></i>
+                        </a>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(16, 185, 129, 0.05); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <i class="fas fa-file-alt" style="color: var(--tech-green); font-size: 1.2rem;"></i>
+                            <span style="color: var(--text-light); font-weight: 500;">Rapport d'activité 2023</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                            <span style="padding: 0.5rem 1rem; background: rgba(6, 182, 212, 0.1); border-radius: 20px; font-size: 0.9rem; color: var(--accent-cyan); border: 1px solid rgba(6, 182, 212, 0.3);">CNAV</span>
+                            <span style="padding: 0.5rem 1rem; background: rgba(6, 182, 212, 0.1); border-radius: 20px; font-size: 0.9rem; color: var(--accent-cyan); border: 1px solid rgba(6, 182, 212, 0.3);">CNAM</span>
+                            <span style="padding: 0.5rem 1rem; background: rgba(99, 102, 241, 0.1); border-radius: 20px; font-size: 0.9rem; color: #6366f1; border: 1px solid rgba(99, 102, 241, 0.3);">Cours CEJM</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
