@@ -19,7 +19,6 @@
             --text-gray: #cbd5e1;
             --electric-cyan: #06b6d4;
             --electric-blue: #3b82f6;
-            --dark-cyan: #0891b2;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,10 +34,8 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: 
                 radial-gradient(circle at 20% 50%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
@@ -53,9 +50,7 @@
 
         /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
+            position: fixed; top: 0; width: 100%;
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(15px);
             padding: 1.5rem 0;
@@ -77,7 +72,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--electric-cyan), var(--electric-blue));
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
@@ -128,8 +123,7 @@
         .submenu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
+            top: 100%; left: 0;
             background: rgba(15, 23, 42, 0.98);
             backdrop-filter: blur(10px);
             min-width: 180px;
@@ -177,8 +171,7 @@
         }
 
         .menu-toggle span {
-            width: 25px;
-            height: 3px;
+            width: 25px; height: 3px;
             background: var(--electric-cyan);
             border-radius: 2px;
             transition: all 0.3s ease;
@@ -188,9 +181,7 @@
             transform: rotate(45deg) translate(8px, 8px);
         }
 
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
 
         .menu-toggle.active span:nth-child(3) {
             transform: rotate(-45deg) translate(7px, -7px);
@@ -202,7 +193,7 @@
             padding: 0 2rem;
         }
 
-        /* Hero CYAN/BLEU */
+        /* Hero */
         .page-hero {
             padding: 140px 0 60px;
             text-align: center;
@@ -251,9 +242,7 @@
             transition: color 0.3s;
         }
 
-        .breadcrumb a:hover {
-            color: var(--electric-blue);
-        }
+        .breadcrumb a:hover { color: var(--electric-blue); }
 
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-30px); }
@@ -276,10 +265,8 @@
         .summary-box::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
             background: linear-gradient(90deg, #06b6d4, #3b82f6, #06b6d4);
             background-size: 200% 100%;
             animation: gradientSlide 3s linear infinite;
@@ -305,43 +292,76 @@
             margin-bottom: 2rem;
         }
 
-        .summary-box strong {
-            color: var(--electric-cyan);
-        }
+        .summary-box strong { color: var(--electric-cyan); }
 
-        /* Day Cards */
+        /* ACCORDÉON - Chaque jour dépliant */
         .day-card {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.05));
-            padding: 2rem;
             border-radius: 15px;
             border-left: 5px solid var(--electric-cyan);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
             transition: all 0.3s;
         }
 
         .day-card:hover {
-            transform: translateX(10px);
             border-left-color: var(--electric-blue);
             box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
         }
 
-        .day-card h3 {
+        .day-header {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .day-header:hover {
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .day-header h3 {
             font-size: 1.5rem;
             background: linear-gradient(135deg, #06b6d4, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
+            margin: 0;
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
 
-        .day-card h3 i {
+        .day-header h3 i {
             color: var(--electric-cyan);
             font-size: 1.5rem;
         }
 
-        .day-card h4 {
+        .day-toggle {
+            font-size: 1.5rem;
+            color: var(--electric-cyan);
+            transition: transform 0.3s;
+        }
+
+        .day-card.active .day-toggle {
+            transform: rotate(180deg);
+        }
+
+        .day-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 2rem;
+        }
+
+        .day-card.active .day-content {
+            max-height: 2000px;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .day-content h4 {
             color: var(--electric-cyan);
             margin: 1.5rem 0 1rem;
             font-size: 1.2rem;
@@ -350,37 +370,31 @@
             gap: 0.5rem;
         }
 
-        .day-card h4 i {
-            color: lightslategray;
-        }
+        .day-content h4 i { color: lightslategray; }
 
-        .day-card ul {
+        .day-content ul {
             list-style: none;
             padding-left: 0;
         }
 
-        .day-card li {
+        .day-content li {
             padding: 0.75rem 0 0.75rem 2rem;
             color: var(--text-gray);
             position: relative;
             line-height: 1.7;
         }
 
-        .day-card li::before {
+        .day-content li::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 50%;
+            left: 0; top: 50%;
             transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background: linear-gradient(135deg, #06b6d4, #3b82f6);
             border-radius: 50%;
         }
 
-        .day-card strong {
-            color: var(--electric-cyan);
-        }
+        .day-content strong { color: var(--electric-cyan); }
 
         /* Compétences */
         .competences {
@@ -402,9 +416,7 @@
             gap: 0.75rem;
         }
 
-        .competences h3 i {
-            color: var(--electric-cyan);
-        }
+        .competences h3 i { color: var(--electric-cyan); }
 
         .competence-tag {
             display: inline-block;
@@ -449,10 +461,8 @@
         .btn::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.3);
             transform: translate(-50%, -50%);
@@ -469,8 +479,7 @@
             box-shadow: 0 12px 40px rgba(6, 182, 212, 0.6);
         }
 
-        .btn i,
-        .btn span {
+        .btn i, .btn span {
             position: relative;
             z-index: 1;
         }
@@ -500,11 +509,11 @@
             font-weight: 500;
         }
 
+        /* COULEURS RÉFÉRENTIEL - B1 B2 B3 */
         .bloc-container {
             background: var(--bg-card);
             padding: 3rem;
             border-radius: 20px;
-            border: 2px solid rgba(6, 182, 212, 0.3);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             margin-bottom: 3rem;
         }
@@ -515,38 +524,25 @@
             gap: 1rem;
             margin-bottom: 2.5rem;
             padding-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(6, 182, 212, 0.2);
         }
 
         .bloc-number {
-            background: linear-gradient(135deg, #06b6d4, #3b82f6);
             padding: 0.75rem 1.5rem;
             border-radius: 12px;
             color: white;
             font-family: 'JetBrains Mono', monospace;
             font-size: 1.5rem;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
         }
 
         .bloc-title {
-            color: var(--electric-cyan);
             font-size: 1.8rem;
             margin: 0;
             flex: 1;
         }
 
-        .competence-item {
-            background: rgba(6, 182, 212, 0.05);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid var(--electric-cyan);
-            margin-bottom: 1.5rem;
-        }
-
         .competence-code {
             display: inline-block;
-            background: linear-gradient(135deg, #06b6d4, #3b82f6);
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -555,10 +551,98 @@
             margin-bottom: 0.75rem;
         }
 
+        .competence-item {
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+            margin-bottom: 1.5rem;
+        }
+
         .competence-desc {
             color: var(--text-light);
             font-size: 1.05rem;
             line-height: 1.7;
+        }
+
+        /* B1 = BLEU CYAN */
+        .bloc-b1 {
+            border: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .bloc-b1 .bloc-header {
+            border-bottom: 2px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .bloc-b1 .bloc-number {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .bloc-b1 .bloc-title {
+            color: #06b6d4;
+        }
+
+        .bloc-b1 .competence-code {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+        }
+
+        .bloc-b1 .competence-item {
+            background: rgba(6, 182, 212, 0.05);
+            border-left-color: #06b6d4;
+        }
+
+        /* B2 = VIOLET/MAUVE */
+        .bloc-b2 {
+            border: 2px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .bloc-b2 .bloc-header {
+            border-bottom: 2px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .bloc-b2 .bloc-number {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .bloc-b2 .bloc-title {
+            color: #8b5cf6;
+        }
+
+        .bloc-b2 .competence-code {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+        }
+
+        .bloc-b2 .competence-item {
+            background: rgba(139, 92, 246, 0.05);
+            border-left-color: #8b5cf6;
+        }
+
+        /* B3 = ROUGE/ORANGE */
+        .bloc-b3 {
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .bloc-b3 .bloc-header {
+            border-bottom: 2px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .bloc-b3 .bloc-number {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .bloc-b3 .bloc-title {
+            color: #f97316;
+        }
+
+        .bloc-b3 .competence-code {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+        }
+
+        .bloc-b3 .competence-item {
+            background: rgba(239, 68, 68, 0.05);
+            border-left-color: #f97316;
         }
 
         /* Footer */
@@ -582,8 +666,7 @@
             nav ul {
                 display: none;
                 position: fixed;
-                top: 80px;
-                right: 0;
+                top: 80px; right: 0;
                 width: 100%;
                 max-width: 320px;
                 height: calc(100vh - 80px);
@@ -645,7 +728,6 @@
             }
 
             .page-hero h1 { font-size: 2rem; }
-            .day-card:hover { transform: translateX(5px); }
         }
 
         @keyframes slideInMobile {
@@ -654,7 +736,9 @@
         }
     </style>
 </head>
-<body><nav>
+<body>
+    <!-- Navigation -->
+    <nav>
         <div class="container">
             <a href="index.html" class="logo">&lt;KC/&gt;</a>
             
@@ -687,6 +771,7 @@
             </ul>
         </div>
     </nav>
+
     <!-- Hero -->
     <section class="page-hero">
         <div class="container">
@@ -711,42 +796,105 @@
                     Dernière semaine de stage avec 19 changements de postes finalisés. Inventaire de réplicateurs et d'écrans. Résolution d'incidents complémentaires déjà documentés dans les réalisations professionnelles.
                 </p>
 
+                
+                <!-- Lundi -->
                 <div class="day-card">
-                    <h3><i class="fas fa-calendar-day"></i> Lundi 23/06</h3>
-                    <h4>Matin :</h4>
-                    <ul><li>En autonomie : changement de 2 PC</li><li>Préparation de postes</li></ul>
-                    <h4>Après-midi :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li><li>Résolution d'incidents (voir réalisations pro)</li></ul>
+                    <div class="day-header">
+                        <h3><i class="fas fa-calendar-day"></i> Lundi 23/06</h3>
+                        <i class="fas fa-chevron-down day-toggle"></i>
+                    </div>
+                    <div class="day-content">
+                        <h4><i class="fas fa-sun"></i> Matin :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 2 PC</li>
+                            <li>Préparation de postes</li>
+                        </ul>
+                        <h4><i class="fas fa-moon"></i> Après-midi :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                            <li>Résolution d'incidents (voir réalisations pro)</li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Mardi -->
                 <div class="day-card">
-                    <h3><i class="fas fa-calendar-day"></i> Mardi 24/06</h3>
-                    <h4>Matin :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li><li>Réunion (confidentielle)</li><li>Préparation de postes</li></ul>
-                    <h4>Après-midi :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li><li>Réunion (confidentielle)</li></ul>
+                    <div class="day-header">
+                        <h3><i class="fas fa-calendar-day"></i> Mardi 24/06</h3>
+                        <i class="fas fa-chevron-down day-toggle"></i>
+                    </div>
+                    <div class="day-content">
+                        <h4><i class="fas fa-sun"></i> Matin :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                            <li>Réunion (confidentielle)</li>
+                            <li>Préparation de postes</li>
+                        </ul>
+                        <h4><i class="fas fa-moon"></i> Après-midi :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                            <li>Réunion (confidentielle)</li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Mercredi -->
                 <div class="day-card">
-                    <h3><i class="fas fa-calendar-day"></i> Mercredi 25/06</h3>
-                    <h4>Matin :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li><li>Préparation de postes</li></ul>
-                    <h4>Après-midi :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li></ul>
+                    <div class="day-header">
+                        <h3><i class="fas fa-calendar-day"></i> Mercredi 25/06</h3>
+                        <i class="fas fa-chevron-down day-toggle"></i>
+                    </div>
+                    <div class="day-content">
+                        <h4><i class="fas fa-sun"></i> Matin :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                            <li>Préparation de postes</li>
+                        </ul>
+                        <h4><i class="fas fa-moon"></i> Après-midi :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Jeudi -->
                 <div class="day-card">
-                    <h3><i class="fas fa-calendar-day"></i> Jeudi 26/06</h3>
-                    <h4>Matin :</h4>
-                    <ul><li>En autonomie : changement de 2 PC</li><li>Inventaire de réplicateurs</li></ul>
-                    <h4>Après-midi :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li></ul>
+                    <div class="day-header">
+                        <h3><i class="fas fa-calendar-day"></i> Jeudi 26/06</h3>
+                        <i class="fas fa-chevron-down day-toggle"></i>
+                    </div>
+                    <div class="day-content">
+                        <h4><i class="fas fa-sun"></i> Matin :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 2 PC</li>
+                            <li>Inventaire de réplicateurs</li>
+                        </ul>
+                        <h4><i class="fas fa-moon"></i> Après-midi :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Vendredi -->
                 <div class="day-card">
-                    <h3><i class="fas fa-calendar-day"></i> Vendredi 27/06</h3>
-                    <h4>Matin :</h4>
-                    <ul><li>En autonomie : changement de 3 PC</li><li>Préparation de postes</li><li>Inventaire d'écrans</li></ul>
-                    <h4>Après-midi :</h4>
-                    <ul><li>Préparation de postes</li></ul>
+                    <div class="day-header">
+                        <h3><i class="fas fa-calendar-day"></i> Vendredi 27/06</h3>
+                        <i class="fas fa-chevron-down day-toggle"></i>
+                    </div>
+                    <div class="day-content">
+                        <h4><i class="fas fa-sun"></i> Matin :</h4>
+                        <ul>
+                            <li><strong>En autonomie :</strong> changement de 3 PC</li>
+                            <li>Préparation de postes</li>
+                            <li>Inventaire d'écrans</li>
+                        </ul>
+                        <h4><i class="fas fa-moon"></i> Après-midi :</h4>
+                        <ul>
+                            <li>Préparation de postes</li>
+                        </ul>
+                    </div>
                 </div>
-            
             </div>
 
             <!-- Compétences -->
@@ -770,14 +918,32 @@
         </div>
     </section>
 
-    <!-- Référentiel Section -->
+    <!-- Référentiel BTS SIO -->
     <section class="referentiel-section">
         <div class="container">
             <h2 class="section-title"><i class="fas fa-book" style="color: var(--electric-cyan); margin-right: 1rem;"></i>Référentiel BTS SIO - SISR</h2>
-            <p class="section-subtitle">Compétences détaillées ci-dessous</p>
+            <p class="section-subtitle">Compétences mobilisées cette semaine</p>
+
+                        <!-- B2 - VIOLET -->
+            <div class="bloc-container bloc-b2">
+                <div class="bloc-header">
+                    <span class="bloc-number">B2</span>
+                    <h3 class="bloc-title">Administration des systèmes et des réseaux</h3>
+                </div>
+                <div>
+                    <div class="competence-item">
+                        <span class="competence-code">B2.2.4</span>
+                        <p class="competence-desc">Automatisation de tâches d'administration</p>
+                    </div>
+                    <div class="competence-item">
+                        <span class="competence-code">B2.2.5</span>
+                        <p class="competence-desc">Gestion et optimisation du stockage</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
-<!-- Footer -->
+
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="copyright">
@@ -812,6 +978,22 @@
                 document.getElementById('navMenu')?.classList.remove('active');
                 subMenuItems.forEach(item => item.classList.remove('open'));
             }
+        });
+
+        // ACCORDÉON - Tous fermés par défaut
+        document.querySelectorAll('.day-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const card = header.parentElement;
+                const wasActive = card.classList.contains('active');
+                
+                // Fermer tous les autres
+                document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+                
+                // Toggle celui-ci
+                if (!wasActive) {
+                    card.classList.add('active');
+                }
+            });
         });
     </script>
 </body>
