@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 2 - Proxmox & Zabbix | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --deep-blue: #0284c7;
+            --accent-cyan: #06b6d4;
+            --dark-cyan: #0891b2;
+            --sncf-red: #ed1c24;
+            --tech-green: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Background animé bleu */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 40%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 60%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(2, 132, 199, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: bluePulse 12s ease-in-out infinite;
+        }
+
+        @keyframes bluePulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: var(--rail-gray) !important;
+        }
+
+        nav a:hover {
+            color: var(--primary-blue);
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            padding: 160px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 40%, rgba(14, 165, 233, 0.08) 100%);
+            z-index: -1;
+        }
+
+        .mission-badge-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(6, 182, 212, 0.15));
+            border: 2px solid var(--primary-blue);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .page-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-cyan) 50%, var(--deep-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: heroGlowBlue 3s ease-in-out infinite;
+        }
+
+        @keyframes heroGlowBlue {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            max-width: 850px;
+            margin: 0 auto 2rem;
+            line-height: 1.9;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-top: 2rem;
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        /* Section PVE Explanation */
+        .pve-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pve-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-cyan), var(--deep-blue));
+        }
+
+        .pve-section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pve-section h2 i {
+            color: var(--primary-blue);
+            font-size: 2rem;
+        }
+
+        .pve-content {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            line-height: 1.9;
+        }
+
+        .pve-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .pve-content strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .pve-highlight {
+            background: rgba(14, 165, 233, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        /* Parts Grid */
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .part-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            transition: all 0.4s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .part-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-cyan));
+            transition: height 0.4s;
+        }
+
+        .part-card:hover::before {
+            height: 8px;
+        }
+
+        .part-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 25px 60px rgba(14, 165, 233, 0.35);
+        }
+
+        .part-header {
+            padding: 2.5rem 2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(6, 182, 212, 0.1));
+        }
+
+        .part-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: white;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+            transition: all 0.4s;
+        }
+
+        .part-card:hover .part-number {
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 12px 35px rgba(14, 165, 233, 0.6);
+        }
+
+        .part-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .part-subtitle {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .part-body {
+            padding: 2rem;
+        }
+
+        .part-description {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .part-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .part-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(14, 165, 233, 0.15);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+            transition: all 0.3s;
+        }
+
+        .part-tag:hover {
+            background: rgba(14, 165, 233, 0.25);
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .part-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        .part-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.6);
+        }
+
+        .part-link i {
+            transition: transform 0.3s;
+        }
+
+        .part-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Special styling for part 3 (split in 2) */
+        .part-card.part-split {
+            grid-column: span 2;
+        }
+
+        .split-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .split-link-item {
+            background: rgba(14, 165, 233, 0.08);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .split-link-item:hover {
+            background: rgba(14, 165, 233, 0.15);
+            border-color: var(--primary-blue);
+        }
+
+        .split-link-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .split-link-desc {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 2px solid rgba(14, 165, 233, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .copyright a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .copyright a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(14, 165, 233, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                padding: 0.5rem 0;
+                background: rgba(30, 41, 59, 0.8);
+                border-radius: 8px;
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .page-hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .pve-section {
+                padding: 2rem;
+            }
+
+            .parts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .part-card.part-split {
+                grid-column: span 1;
+            }
+
+            .split-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="mission-badge-hero">
+                <i class="fas fa-rocket"></i>
+                <span>Mission Principale</span>
+            </div>
+            
+            <h1><i class="fas fa-cube"></i> Serveur Proxmox & Supervision Zabbix</h1>
+            <p class="subtitle">
+                Mise en place d'une infrastructure de virtualisation et déploiement d'un système de supervision réseau pour le monitoring temps réel des équipements SNCF Réseau en Bretagne.
+            </p>
+
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <span>›</span>
+                <a href="stage2.html">Stage 2</a>
+                <span>›</span>
+                <a href="missions-sncf.html">Missions</a>
+                <span>›</span>
+                <span>Mission 2</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            <!-- Section Qu'est-ce que le PVE -->
+            <div class="pve-section">
+                <h2>
+                    <i class="fas fa-question-circle"></i>
+                    Qu'est-ce que Proxmox VE (PVE) ?
+                </h2>
+                <div class="pve-content">
+                    <p>
+                        <strong>Proxmox Virtual Environment (PVE)</strong> est une plateforme de virtualisation open-source complète qui combine deux technologies de virtualisation majeures : <strong>KVM</strong> (Kernel-based Virtual Machine) pour la virtualisation complète et <strong>LXC</strong> (Linux Containers) pour la conteneurisation légère.
+                    </p>
+                    
+                    <div class="pve-highlight">
+                        <p>
+                            <strong>💡 Pourquoi Proxmox pour la SNCF ?</strong><br>
+                            Proxmox permet de centraliser plusieurs machines virtuelles sur un seul serveur physique, optimisant ainsi les ressources matérielles tout en offrant une interface web intuitive pour la gestion complète de l'infrastructure. Cette solution est idéale pour déployer des services critiques comme Zabbix dans un environnement professionnel.
+                        </p>
+                    </div>
+
+                    <p>
+                        Les <strong>fonctionnalités principales</strong> de Proxmox incluent :
+                    </p>
+                    <ul style="margin-left: 2rem; margin-top: 1rem; color: var(--text-gray);">
+                        <li>Gestion centralisée via interface web</li>
+                        <li>Support de la haute disponibilité (HA)</li>
+                        <li>Snapshots et sauvegardes automatisées</li>
+                        <li>Migration à chaud des VMs</li>
+                        <li>Stockage flexible (local, NFS, iSCSI, Ceph)</li>
+                        <li>Gestion réseau avancée (VLAN, bonds, bridges)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Parts Grid -->
+            <div class="parts-grid">
+                <!-- Partie 1 -->
+                <div class="part-card">
+                    <div class="part-header">
+                        <div class="part-number">1</div>
+                        <h3 class="part-title">Installation de Proxmox</h3>
+                        <p class="part-subtitle">Configuration initiale du serveur PVE</p>
+                    </div>
+                    <div class="part-body">
+                        <p class="part-description">
+                            Installation complète de Proxmox VE sur un serveur physique, incluant la configuration des paramètres système essentiels, le choix de l'architecture réseau, l'allocation des ressources et la définition de l'adresse IP statique pour l'accès à l'interface de gestion.
+                        </p>
+                        <div class="part-tags">
+                            <span class="part-tag"><i class="fas fa-download"></i> Installation</span>
+                            <span class="part-tag"><i class="fas fa-cogs"></i> Configuration</span>
+                            <span class="part-tag"><i class="fas fa-network-wired"></i> Réseau</span>
+                            <span class="part-tag"><i class="fas fa-server"></i> Serveur</span>
+                        </div>
+                        <a href="partie1-mission2.html" class="part-link">
+                            <span>Consulter cette partie</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Partie 2 -->
+                <div class="part-card">
+                    <div class="part-header">
+                        <div class="part-number">2</div>
+                        <h3 class="part-title">Branchements & Interfaces</h3>
+                        <p class="part-subtitle">Configuration physique et réseau</p>
+                    </div>
+                    <div class="part-body">
+                        <p class="part-description">
+                            Mise en place physique du serveur dans l'infrastructure : branchement des ports réseau au cœur de réseau, configuration de l'interface iLO (Integrated Lights-Out) pour la gestion à distance, et paramétrage des interfaces réseau directement sur le commutateur cœur de réseau.
+                        </p>
+                        <div class="part-tags">
+                            <span class="part-tag"><i class="fas fa-plug"></i> Câblage</span>
+                            <span class="part-tag"><i class="fas fa-ethernet"></i> Interfaces</span>
+                            <span class="part-tag"><i class="fas fa-hdd"></i> iLO</span>
+                            <span class="part-tag"><i class="fas fa-project-diagram"></i> Switch</span>
+                        </div>
+                        <a href="partie2-mission2.html" class="part-link">
+                            <span>Consulter cette partie</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Partie 3 - Split en 2 -->
+                <div class="part-card part-split">
+                    <div class="part-header">
+                        <div class="part-number">3</div>
+                        <h3 class="part-title">Installation de Zabbix</h3>
+                        <p class="part-subtitle">Déploiement de la solution de supervision</p>
+                    </div>
+                    <div class="part-body">
+                        <p class="part-description">
+                            Création et configuration complète de la machine virtuelle Zabbix sur Proxmox. Cette partie majeure comprend l'installation graphique de Debian 12.3.0, suivie du déploiement et de la configuration de l'outil de supervision Zabbix pour le monitoring des équipements réseau SNCF.
+                        </p>
+                        <div class="part-tags">
+                            <span class="part-tag"><i class="fas fa-desktop"></i> VM</span>
+                            <span class="part-tag"><i class="fab fa-debian"></i> Debian 12.3.0</span>
+                            <span class="part-tag"><i class="fas fa-chart-line"></i> Zabbix</span>
+                            <span class="part-tag"><i class="fas fa-eye"></i> Monitoring</span>
+                        </div>
+
+                        <div class="split-links">
+                            <div class="split-link-item">
+                                <div class="split-link-title">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Partie 3.1
+                                </div>
+                                <div class="split-link-desc">
+                                    Création de la machine virtuelle sur Proxmox et installation graphique complète de Debian 12.3.0
+                                </div>
+                                <a href="partie3-1-mission2.html" class="part-link">
+                                    <span>VM & Debian</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+
+                            <div class="split-link-item">
+                                <div class="split-link-title">
+                                    <i class="fas fa-cog"></i>
+                                    Partie 3.2
+                                </div>
+                                <div class="split-link-desc">
+                                    Installation et configuration complète de Zabbix : dépendances, serveur, frontend et paramétrage
+                                </div>
+                                <a href="partie3-2-mission2.html" class="part-link">
+                                    <span>Config Zabbix</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.part-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `all 0.6s ease ${index * 0.15}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
