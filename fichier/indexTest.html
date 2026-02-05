@@ -456,8 +456,9 @@
             nav ul li { border-bottom: 1px solid var(--border); width: 100%; }
             nav ul li:last-child { border-bottom: none; }
             nav ul li > a { padding: 1rem 0; width: 100%; }
-            .submenu { position: static; display: none; background: transparent; border: none; box-shadow: none; border-left: 2px solid var(--primary); margin-left: 1rem; padding: 0; }
-            nav ul li.has-submenu.open .submenu { display: block; }
+            .submenu { position: static; display: none; background: transparent; border: none; box-shadow: none; border-left: 2px solid var(--primary); margin-left: auto; padding: 0; }
+            nav ul li.has-submenu.open .submenu { display: block;
+                                                  max-height: 500px;}
             .submenu li a { padding: 0.6rem 1rem !important; }
             .hero-content { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
             .hero-text h1 { font-size: 2.5rem; }
