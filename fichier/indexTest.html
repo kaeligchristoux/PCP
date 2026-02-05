@@ -7,68 +7,53 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" href="favicon.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>    
     <style>
         :root {
             --primary: #3b82f6;
-            --primary-dark: #2563eb;
             --secondary: #10b981;
             --accent: #8b5cf6;
-            --dark: #0f172a;
-            --darker: #020617;
-            --card: #1e293b;
-            --card-hover: #334155;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
+            --bg-dark: #0a0a0b;
+            --bg-card: #141416;
+            --bg-card-hover: #1a1a1d;
+            --border: #27272a;
+            --border-light: #3f3f46;
+            --text: #fafafa;
+            --text-muted: #a1a1aa;
+            --text-subtle: #71717a;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--dark);
+            background: 
+                radial-gradient(ellipse at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+                radial-gradient(ellipse at 50% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 60%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                var(--bg-dark);
+            background-attachment: fixed;
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
 
-        /* SUBTLE BACKGROUND */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: 
-                radial-gradient(600px circle at 50% -20%, rgba(59, 130, 246, 0.05), transparent),
-                radial-gradient(800px circle at 80% 60%, rgba(16, 185, 129, 0.03), transparent);
-            z-index: -1;
-        }
-
-        /* NAVIGATION PRO */
+        /* NAV */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 10, 11, 0.85);
+            backdrop-filter: blur(12px);
             padding: 1rem 0;
             z-index: 1000;
-            transition: all 0.3s;
+            border-bottom: 1px solid var(--border);
         }
-
-        nav.scrolled {
-            padding: 0.75rem 0;
-            background: rgba(15, 23, 42, 0.95);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
         nav .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -77,851 +62,608 @@
             justify-content: space-between;
             align-items: center;
         }
-
         nav .logo {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
-
-        nav .logo::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
+        nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+        nav ul li { position: relative; }
         nav a {
             color: var(--text-muted);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            position: relative;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+        nav a i { font-size: 0.9rem; color: var(--text-subtle); transition: color 0.2s ease; }
+        nav a i.fa-chevron-down { font-size: 0.65rem; margin-left: 0.25rem; transition: transform 0.2s ease; }
+        nav ul li.has-submenu:hover > a i.fa-chevron-down { transform: rotate(180deg); }
+        nav a:hover, nav a:hover i { color: var(--text); }
 
-        nav a::after {
-            content: '';
+        .submenu {
+            display: none;
             position: absolute;
-            bottom: -4px;
+            top: calc(100% + 10px);
             left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s;
+            background: var(--bg-card);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            list-style: none;
         }
+        nav ul li.has-submenu:hover .submenu { display: block; }
+        .submenu li a { display: flex; padding: 0.65rem 1.25rem; color: var(--text-muted); transition: all 0.2s ease; }
+        .submenu li a:hover { background: var(--bg-card-hover); color: var(--text); }
 
-        nav a:hover {
-            color: var(--text);
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
         }
+        .menu-toggle span { width: 24px; height: 2px; background: var(--primary); border-radius: 2px; transition: all 0.3s ease; }
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        nav a:hover::after {
-            width: 100%;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* HERO SECTION PRO */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 120px 0 80px;
-            position: relative;
-        }
-
-        .hero-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: center;
-        }
-
-        .hero-text h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-text h1 span {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-text .tagline {
-            font-size: 1.25rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .hero-text p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 2.5rem;
-            max-width: 540px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; }
+        .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-text h1 { font-size: 3.25rem; font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .hero-text .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-text .subtitle { font-size: 1.25rem; color: var(--text-muted); margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+        .hero-text > p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
 
         .btn {
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
+            padding: 0.85rem 1.75rem;
+            border-radius: 10px;
+            text-decoration: none;
             font-weight: 600;
             font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            border: none;
+            cursor: pointer;
         }
+        .btn-primary { background: var(--gradient); color: white; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45); }
+        .btn-primary i { color: #6ee7b7; }
+        .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
+        .btn-secondary i { color: var(--secondary); }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
+        .hero-image img { width: 100%; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-lg); transition: transform 0.3s ease; }
+        .hero-image:hover img { transform: scale(1.02); }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-        }
+        /* SECTIONS */
+        section { padding: 6rem 0; }
+        .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 3rem; text-align: center; letter-spacing: -0.02em; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--gradient); margin: 1rem auto 0; border-radius: 2px; }
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--card);
-            border-color: var(--primary);
-        }
-
-        .hero-image {
-            position: relative;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
-        }
-
-        .hero-image:hover img {
-            transform: translateY(-8px);
-        }
-
-        /* SECTION STYLING */
-        section {
-            padding: 5rem 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-label {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.75rem;
-        }
-
-        .section-title {
-            font-size: 2.75rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .section-description {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* ABOUT CARDS */
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .about-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s;
-        }
-
-        .about-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
-        }
-
-        .about-card .icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.25rem;
-        }
-
-        .about-card .icon i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .about-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .about-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
+        /* ABOUT */
+        .about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .about-card { background: var(--bg-card); padding: 1.75rem; border-radius: 14px; border: 1px solid var(--border); transition: all 0.25s ease; }
+        .about-card:hover { background: var(--bg-card-hover); border-color: var(--border-light); transform: translateY(-4px); }
+        .about-card h3 { color: var(--text); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.6rem; }
+        .about-card h3 i { color: var(--primary); font-size: 1.1rem; }
+        .about-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; }
 
         /* TIMELINE */
-        .timeline {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 0;
-            width: 14px;
-            height: 14px;
-            background: var(--primary);
-            border-radius: 50%;
-            border: 3px solid var(--dark);
-        }
-
-        .timeline-content {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .timeline-content:hover {
-            border-color: var(--primary);
-            transform: translateX(8px);
-        }
-
-        .timeline-content .period {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-content p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
+        .timeline { position: relative; max-width: 900px; margin: 0 auto; }
+        .timeline::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background: var(--border); }
+        .timeline-item { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; position: relative; }
+        .timeline-item:nth-child(odd) .timeline-content { grid-column: 1; text-align: right; }
+        .timeline-item:nth-child(odd) .timeline-empty { grid-column: 2; }
+        .timeline-item:nth-child(even) .timeline-content { grid-column: 2; grid-row: 1; }
+        .timeline-item:nth-child(even) .timeline-empty { grid-column: 1; }
+        .timeline-content { background: var(--bg-card); padding: 1.75rem; border-radius: 14px; border: 1px solid var(--border); position: relative; transition: all 0.25s ease; }
+        .timeline-content:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
+        .timeline-content::before { content: ''; position: absolute; top: 24px; width: 14px; height: 14px; background: var(--primary); border-radius: 50%; border: 3px solid var(--bg-dark); }
+        .timeline-item:nth-child(odd) .timeline-content::before { right: -38px; }
+        .timeline-item:nth-child(even) .timeline-content::before { left: -38px; }
+        .timeline-content h3 { color: var(--text); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+        .timeline-item:nth-child(odd) .timeline-content h3 { justify-content: flex-end; }
+        .timeline-content h3 i { color: var(--secondary); }
+        .timeline-content .period { color: var(--primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .timeline-content p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; }
+        .timeline-content strong { color: var(--secondary); }
 
         /* SKILLS */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .skill-category {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s;
-        }
-
-        .skill-category:hover {
-            border-color: var(--secondary);
-            transform: translateY(-4px);
-        }
-
-        .skill-category h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .skill-category h3 i {
-            color: var(--secondary);
-            font-size: 1.25rem;
-        }
-
-        .skill-item {
-            margin-bottom: 1.25rem;
-        }
-
-        .skill-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .skill-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 1rem;
-            overflow: hidden;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 1rem;
-            transition: width 1s ease;
-        }
+        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .skill-category { background: var(--bg-card); padding: 1.75rem; border-radius: 14px; border: 1px solid var(--border); transition: all 0.25s ease; }
+        .skill-category:hover { border-color: var(--border-light); }
+        .skill-category h3 { color: var(--text); font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem; }
+        .skill-category h3 i { color: var(--primary); }
+        .skill-item { margin-bottom: 1.25rem; }
+        .skill-item:last-child { margin-bottom: 0; }
+        .skill-name { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .skill-name span:first-child { color: var(--text-muted); }
+        .skill-name span:last-child { color: var(--primary); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+        .skill-bar { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
+        .skill-progress { height: 100%; background: var(--gradient); border-radius: 10px; transition: width 0.8s ease-out; }
 
         /* STAGES */
-        .stages-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .stage-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: all 0.3s;
-            text-decoration: none;
+        .stages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 950px; margin: 0 auto; }
+        .stage-card { 
+            background: var(--bg-card); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid var(--border); 
+            transition: all 0.3s ease; 
+            text-decoration: none; 
             display: block;
-        }
-
-        .stage-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
-        }
-
-        .stage-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .stage-header h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .stage-header .period {
-            color: var(--primary);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .stage-content {
-            padding: 1.5rem;
-        }
-
-        .stage-content .company {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .stage-content ul {
-            list-style: none;
-            color: var(--text-muted);
-        }
-
-        .stage-content ul li {
-            padding: 0.375rem 0;
-            padding-left: 1.5rem;
             position: relative;
         }
-
-        .stage-content ul li::before {
-            content: '•';
+        .stage-card::before {
+            content: '';
             position: absolute;
+            top: 0;
             left: 0;
-            color: var(--primary);
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
+        .stage-card:hover::before { opacity: 1; }
+        .stage-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25); border-color: rgba(59, 130, 246, 0.3); }
+        .stage-header { 
+            background: var(--gradient); 
+            padding: 1.75rem; 
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .stage-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            transform: rotate(25deg);
+        }
+        .stage-header h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+        .stage-header .period { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; opacity: 0.9; position: relative; z-index: 1; }
+        .stage-content { padding: 1.75rem; }
+        .stage-content > p { color: var(--text); font-weight: 600; margin-bottom: 1.25rem; font-size: 1.1rem; }
+        .stage-content ul { list-style: none; }
+        .stage-content li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; color: var(--text-muted); font-size: 0.95rem; transition: all 0.2s ease; }
+        .stage-content li::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: var(--secondary); border-radius: 50%; transition: all 0.2s ease; }
+        .stage-card:hover .stage-content li { color: var(--text); padding-left: 1.75rem; }
+        .stage-card:hover .stage-content li::before { width: 8px; height: 8px; box-shadow: 0 0 10px var(--secondary); }
+        .stage-red .stage-header { background: linear-gradient(135deg, #dc2626, #991b1b); }
+        .stage-red:hover { box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.25); border-color: rgba(220, 38, 38, 0.3); }
+        .stage-red:hover::before { background: linear-gradient(135deg, rgba(220, 38, 38, 0.03) 0%, transparent 50%); }
+        .stage-red .stage-content li::before { background: #dc2626; }
+        .stage-red:hover .stage-content li::before { box-shadow: 0 0 10px #dc2626; }
 
         /* VEILLES */
-        .veilles-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .veille-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s;
-            text-decoration: none;
+        .veilles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 950px; margin: 0 auto; }
+        .veille-card { 
+            background: var(--bg-card); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid rgba(139, 92, 246, 0.2); 
+            transition: all 0.3s ease; 
+            text-decoration: none; 
             display: block;
+            position: relative;
         }
-
-        .veille-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.15);
+        .veille-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa, #8b5cf6);
+            background-size: 200% 100%;
         }
-
-        .veille-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .veille-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .veille-card:hover::after { opacity: 1; }
+        .veille-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.3); border-color: rgba(139, 92, 246, 0.4); }
+        .veille-card.coming-soon { border-style: dashed; opacity: 0.6; }
+        .veille-card.coming-soon:hover { transform: none; box-shadow: none; }
+        .veille-card.coming-soon::after { display: none; }
+        .veille-header { 
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+            padding: 1.75rem; 
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .veille-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            transform: rotate(25deg);
+        }
+        .veille-number { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 45px; 
+            height: 45px; 
+            background: rgba(255, 255, 255, 0.2); 
+            border-radius: 12px; 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            font-family: 'JetBrains Mono', monospace; 
             margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
         }
-
-        .veille-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text);
+        .veille-header h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; position: relative; z-index: 1; }
+        .veille-header .subtitle-text { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; opacity: 0.9; position: relative; z-index: 1; }
+        .veille-content { padding: 1.75rem; position: relative; z-index: 1; }
+        .veille-content p { color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.7; font-size: 0.95rem; }
+        .veille-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .veille-tag { 
+            padding: 0.4rem 0.85rem; 
+            background: rgba(139, 92, 246, 0.1); 
+            border: 1px solid rgba(139, 92, 246, 0.2); 
+            border-radius: 8px; 
+            font-size: 0.8rem; 
+            color: #a78bfa; 
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s ease;
         }
-
-        .veille-subtitle {
-            color: var(--accent);
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
+        .veille-card:hover .veille-tag { background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.35); }
+        .veille-button { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.6rem; 
+            padding: 0.75rem 1.5rem; 
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+            color: white; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
-
-        .veille-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 1.25rem;
-        }
-
-        .veille-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .veille-tag {
-            padding: 0.375rem 0.75rem;
-            background: rgba(139, 92, 246, 0.1);
-            color: var(--accent);
-            border-radius: 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
+        .veille-card:hover .veille-button { transform: translateX(5px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); }
+        .veille-card.coming-soon .veille-button { background: rgba(139, 92, 246, 0.3); cursor: not-allowed; box-shadow: none; }
+        .coming-soon-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.85rem; background: rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 0.8rem; margin-bottom: 0.75rem; backdrop-filter: blur(10px); }
 
         /* AP REDIRECT */
-        .ap-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(16, 185, 129, 0.05));
-            border: 1px solid var(--border);
-            border-radius: 1.5rem;
-            padding: 4rem;
-            text-align: center;
-            transition: all 0.3s;
+        #ap-redirect { padding: 5rem 0; }
+        .ap-redirect-card { 
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(20, 20, 22, 0.8) 100%);
+            border: 1px solid var(--border); 
+            border-radius: 24px; 
+            padding: 3.5rem; 
+            text-align: center; 
+            max-width: 850px; 
+            margin: 0 auto; 
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-
-        .ap-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
+        .ap-redirect-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
         }
-
-        .ap-icon {
-            font-size: 3rem;
-            color: var(--primary);
+        .ap-redirect-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .ap-redirect-card:hover { border-color: rgba(59, 130, 246, 0.3); box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.15); }
+        .ap-redirect-icon { 
+            font-size: 3.5rem; 
             margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
-
-        .ap-card h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        .ap-redirect-icon i { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .ap-redirect-title { color: var(--text); font-size: 2rem; font-weight: 700; margin-bottom: 1rem; position: relative; z-index: 1; }
+        .ap-redirect-description { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2.5rem; max-width: 580px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+        .ap-redirect-button { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.75rem; 
+            padding: 1.1rem 2.5rem; 
+            background: var(--gradient); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 14px; 
+            font-weight: 600; 
+            font-size: 1.05rem; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
+            position: relative;
+            z-index: 1;
         }
-
-        .ap-card p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .ap-redirect-button:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45); }
+        .ap-redirect-button .arrow { transition: transform 0.3s ease; }
+        .ap-redirect-button:hover .arrow { transform: translateX(5px); }
 
         /* FOOTER */
-        footer {
-            background: var(--darker);
-            border-top: 1px solid var(--border);
-            padding: 2rem 0;
-            text-align: center;
-        }
+        footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; }
+        .copyright { color: var(--text-subtle); font-size: 0.9rem; }
 
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        /* ANIMATIONS */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .about-grid, .skills-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 968px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .about-grid,
-            .skills-grid,
-            .stages-grid,
-            .veilles-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .timeline::before {
-                left: 1rem;
-            }
-
-            .timeline-item {
-                padding-left: 3rem;
-            }
+            .menu-toggle { display: flex; }
+            nav ul { display: none; position: fixed; top: 60px; right: 0; width: 280px; height: calc(100vh - 60px); background: var(--bg-card); flex-direction: column; padding: 1.5rem; gap: 0; border-left: 1px solid var(--border); overflow-y: auto; }
+            nav ul.active { display: flex; }
+            nav ul li { border-bottom: 1px solid var(--border); width: 100%; }
+            nav ul li:last-child { border-bottom: none; }
+            nav ul li > a { padding: 1rem 0; width: 100%; }
+            .submenu { position: static; display: none; background: transparent; border: none; box-shadow: none; border-left: 2px solid var(--primary); margin-left: 1rem; padding: 0; }
+            nav ul li.has-submenu.open .submenu { display: block; }
+            .submenu li a { padding: 0.6rem 1rem !important; }
+            .hero-content { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .hero-buttons { justify-content: center; }
+            .hero-image { max-width: 450px; margin: 0 auto; order: -1; }
+            .timeline::before { left: 15px; }
+            .timeline-item { grid-template-columns: 1fr; padding-left: 40px; }
+            .timeline-item:nth-child(odd) .timeline-content, .timeline-item:nth-child(even) .timeline-content { grid-column: 1; text-align: left; }
+            .timeline-item:nth-child(odd) .timeline-content h3, .timeline-item:nth-child(even) .timeline-content h3 { justify-content: flex-start; }
+            .timeline-item:nth-child(odd) .timeline-content::before, .timeline-item:nth-child(even) .timeline-content::before { left: -33px; }
+            .timeline-empty { display: none; }
+            .stages-grid, .veilles-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .container { padding: 0 1.25rem; }
+            .about-grid, .skills-grid { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: 2rem; }
+            .section-title { font-size: 1.75rem; }
+            section { padding: 4rem 0; }
+            .ap-redirect-card { padding: 2rem 1.5rem; }
         }
     </style>
 </head>
 <body>
     <nav>
         <div class="container">
-            <a href="index.html" class="logo">KC</a>
-            <ul>
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#apropos">À propos</a></li>
-                <li><a href="#parcours">Parcours</a></li>
-                <li><a href="#competences">Compétences</a></li>
-                <li><a href="#stages">Stages</a></li>
-                <li><a href="cv.html">CV</a></li>
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase"></i> Stages <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open"></i> Autres <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                <li><a href="cv.html"><i class="fas fa-file-alt"></i> CV</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- HERO -->
     <section id="accueil" class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Bonjour, je suis<br><span>Kaëlig CHRISTOUX</span></h1>
-                    <p class="tagline">Étudiant BTS SIO - Option SISR</p>
+                    <h1>Bonjour, je suis<br><span class="gradient-text">Kaëlig CHRISTOUX</span></h1>
+                    <p class="subtitle">Étudiant BTS SIO • Option SISR</p>
                     <p>Passionné par l'informatique, les réseaux et les systèmes. Je développe mes compétences techniques au quotidien pour devenir un professionnel du numérique.</p>
                     <div class="hero-buttons">
-                        <a href="cv.html" class="btn btn-primary">
-                            <i class="fas fa-file-alt"></i>
-                            Voir mon CV
-                        </a>
-                        <a href="#stages" class="btn btn-secondary">
-                            <i class="fas fa-briefcase"></i>
-                            Mes stages
-                        </a>
+                        <a href="cv.html" class="btn btn-primary"><i class="fas fa-file-alt"></i> CV</a>
+                        <a href="#stages" class="btn btn-secondary"><i class="fas fa-briefcase"></i> Stages</a>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="#veilles" class="btn btn-secondary"><i class="fas fa-binoculars"></i> Veilles</a>
+                        <a href="#ap-redirect" class="btn btn-secondary"><i class="fas fa-tools"></i> Ateliers Pro</a>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="dsc02290-1024x685-1.jpg" alt="Lycée Victor et Hélène Basch">
+                    <a href="https://lycee-basch.fr/" target="_blank">
+                        <img src="dsc02290-1024x685-1.jpg" alt="Lycée Victor et Hélène Basch">
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ABOUT -->
     <section id="apropos">
         <div class="container">
-            <div class="section-header">
-                <div class="section-label">À propos</div>
-                <h2 class="section-title">Moi en quelques points</h2>
-            </div>
+            <h2 class="section-title">Moi en quelques points</h2>
             <div class="about-grid">
-                <div class="about-card">
-                    <div class="icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>Étudiant dans l'informatique</h3>
+                <div class="about-card fade-in">
+                    <h3><i class="fas fa-graduation-cap"></i> Étudiant en informatique</h3>
                     <p>Je suis actuellement en formation dans le domaine de l'informatique. J'apprends chaque jour à mieux comprendre les systèmes, les réseaux et tout ce qui fait tourner le numérique.</p>
                 </div>
-                <div class="about-card">
-                    <div class="icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h3>Une vraie expérience en entreprise</h3>
-                    <p>Mes stages m'ont permis de passer à la pratique : installation de PC, gestion d'utilisateurs, dépannage... J'ai gagné en autonomie et en efficacité.</p>
+                <div class="about-card fade-in">
+                    <h3><i class="fas fa-briefcase"></i> Expérience en entreprise</h3>
+                    <p>Mon stage m'a permis de passer à la pratique : installation de PC, gestion d'utilisateurs, dépannage... J'ai gagné en autonomie et en efficacité.</p>
                 </div>
-                <div class="about-card">
-                    <div class="icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h3>Curieux et débrouillard</h3>
+                <div class="about-card fade-in">
+                    <h3><i class="fas fa-lightbulb"></i> Curieux et débrouillard</h3>
                     <p>J'aime apprendre par moi-même. Quand un sujet m'intrigue, je cherche, je teste, je me plante parfois... mais je progresse toujours.</p>
                 </div>
-                <div class="about-card">
-                    <div class="icon">
-                        <i class="fas fa-table-tennis"></i>
-                    </div>
-                    <h3>Passionné du tennis</h3>
+                <div class="about-card fade-in">
+                    <h3><i class="fas fa-table-tennis"></i> Passionné de tennis</h3>
                     <p>Je me suis lancé récemment dans le tennis. C'est un sport exigeant, qui m'apprend la concentration, la patience et le dépassement de soi.</p>
                 </div>
-                <div class="about-card">
-                    <div class="icon">
-                        <i class="fas fa-hands-helping"></i>
-                    </div>
-                    <h3>Impliqué et accessible</h3>
+                <div class="about-card fade-in">
+                    <h3><i class="fas fa-hands-helping"></i> Impliqué et accessible</h3>
                     <p>Je prends mon travail au sérieux, mais je garde toujours une attitude simple et ouverte. Pour moi, bien faire les choses n'empêche pas de rester soi-même.</p>
                 </div>
-                <div class="about-card">
-                    <div class="icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>Motivé à évoluer</h3>
+                <div class="about-card fade-in">
+                    <h3><i class="fas fa-rocket"></i> Motivé à évoluer</h3>
                     <p>Je me vois clairement dans un métier technique, avec du concret, du challenge, et la possibilité d'apprendre tous les jours.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PARCOURS -->
     <section id="parcours">
         <div class="container">
-            <div class="section-header">
-                <div class="section-label">Formation</div>
-                <h2 class="section-title">Mon parcours scolaire</h2>
-            </div>
+            <h2 class="section-title">Mon parcours scolaire</h2>
             <div class="timeline">
-                <div class="timeline-item">
+                <div class="timeline-item fade-in">
                     <div class="timeline-content">
+                        <h3><i class="fas fa-school"></i> Collège</h3>
                         <p class="period">2017 - 2021</p>
-                        <h3>Collège</h3>
-                        <p>Diplôme National du Brevet obtenu avec mention Assez Bien<br>Collège Pierre-Olivier Malherbe, Châteaubourg</p>
+                        <p>Diplôme National du Brevet obtenu avec <strong>mention Assez Bien</strong><br>Collège Pierre-Olivier Malherbe, Châteaubourg</p>
                     </div>
+                    <div class="timeline-empty"></div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-empty"></div>
                     <div class="timeline-content">
+                        <h3><i class="fas fa-university"></i> Lycée</h3>
                         <p class="period">2021 - 2024</p>
-                        <h3>Lycée</h3>
-                        <p>Baccalauréat Professionnel : Systèmes Numériques, option RISC<br>Lycée Bréquigny, Rennes</p>
+                        <p>Baccalauréat Professionnel : Systèmes Numériques, option RISC<br><em>(Réseaux Informatiques et Systèmes Communicants)</em><br>Baccalauréat obtenu avec <strong>mention Bien</strong><br>Lycée Charles Tillon, Rennes</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item fade-in">
                     <div class="timeline-content">
+                        <h3><i class="fas fa-laptop-code"></i> BTS SIO - SISR</h3>
                         <p class="period">2024 - 2026</p>
-                        <h3>BTS SIO SISR</h3>
                         <p>BTS Services Informatiques aux Organisations<br>Option Solutions d'Infrastructure, Systèmes et Réseaux<br>Lycée Victor et Hélène Basch, Rennes</p>
                     </div>
+                    <div class="timeline-empty"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- COMPETENCES -->
     <section id="competences">
         <div class="container">
-            <div class="section-header">
-                <div class="section-label">Expertise</div>
-                <h2 class="section-title">Compétences techniques</h2>
-            </div>
+            <h2 class="section-title">Compétences techniques</h2>
             <div class="skills-grid">
-                <div class="skill-category">
-                    <h3><i class="fas fa-network-wired"></i> Systèmes & Réseaux</h3>
+                <div class="skill-category fade-in">
+                    <h3><i class="fas fa-server"></i> Systèmes & Réseaux</h3>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Administration Windows/Linux</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 75%"></div>
-                        </div>
+                        <div class="skill-name"><span>Administration Windows/Linux</span><span>75%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
                     </div>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Configuration réseau</span>
-                            <span>70%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 70%"></div>
-                        </div>
+                        <div class="skill-name"><span>Configuration réseau</span><span>70%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
                     </div>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Active Directory</span>
-                            <span>65%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 65%"></div>
-                        </div>
+                        <div class="skill-name"><span>Active Directory</span><span>65%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="65"></div></div>
                     </div>
                 </div>
-
-                <div class="skill-category">
-                    <h3><i class="fas fa-tools"></i> Support & Maintenance</h3>
+                <div class="skill-category fade-in">
+                    <h3><i class="fas fa-headset"></i> Support & Maintenance</h3>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Gestion de tickets</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 80%"></div>
-                        </div>
+                        <div class="skill-name"><span>Gestion de tickets</span><span>80%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
                     </div>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Installation matériel</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 85%"></div>
-                        </div>
+                        <div class="skill-name"><span>Installation matériel</span><span>85%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
                     </div>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Dépannage</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 75%"></div>
-                        </div>
+                        <div class="skill-name"><span>Dépannage</span><span>75%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
                     </div>
                 </div>
-
-                <div class="skill-category">
+                <div class="skill-category fade-in">
                     <h3><i class="fas fa-cogs"></i> Outils & Technologies</h3>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Virtualisation</span>
-                            <span>70%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 70%"></div>
-                        </div>
+                        <div class="skill-name"><span>Virtualisation</span><span>70%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
                     </div>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Scripts PowerShell/Bash</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 60%"></div>
-                        </div>
+                        <div class="skill-name"><span>Scripts PowerShell/Bash</span><span>60%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="60"></div></div>
                     </div>
                     <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Documentation</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 75%"></div>
-                        </div>
+                        <div class="skill-name"><span>Sécurité informatique</span><span>65%</span></div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="65"></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- STAGES -->
     <section id="stages">
         <div class="container">
-            <div class="section-header">
-                <div class="section-label">Expérience</div>
-                <h2 class="section-title">Mes stages en entreprise</h2>
-            </div>
+            <h2 class="section-title">Mes expériences en stage</h2>
             <div class="stages-grid">
-                <a href="stage1.html" class="stage-card">
+                <a href="stage1.html" class="stage-card fade-in">
                     <div class="stage-header">
                         <h3>Stage 1ère année</h3>
                         <p class="period">19 mai au 27 juin 2025</p>
                     </div>
                     <div class="stage-content">
-                        <p class="company">CARSAT Bretagne</p>
+                        <p><strong>CARSAT Bretagne</strong></p>
                         <ul>
-                            <li>Installation et configuration de postes de travail</li>
+                            <li>Installation et configuration de postes</li>
                             <li>Gestion des comptes utilisateurs</li>
                             <li>Support technique niveau 1</li>
                             <li>Traitement de tickets d'incidents</li>
@@ -929,18 +671,17 @@
                         </ul>
                     </div>
                 </a>
-
-                <a href="stage2.html" class="stage-card">
+                <a href="stage2.html" class="stage-card stage-red fade-in">
                     <div class="stage-header">
                         <h3>Stage 2ème année</h3>
                         <p class="period">12 janvier au 20 février 2026</p>
                     </div>
                     <div class="stage-content">
-                        <p class="company">SNCF Réseau</p>
+                        <p><strong>SNCF Réseau</strong></p>
                         <ul>
                             <li>Administration systèmes et réseaux</li>
                             <li>Déploiement d'infrastructures</li>
-                            <li>Mise en place d'une solution de centralisation</li>
+                            <li>Solution de centralisation</li>
                             <li>Projets divers</li>
                             <li>Documentation technique</li>
                         </ul>
@@ -950,51 +691,55 @@
         </div>
     </section>
 
-    <!-- VEILLES -->
     <section id="veilles">
         <div class="container">
-            <div class="section-header">
-                <div class="section-label">Recherche</div>
-                <h2 class="section-title">Mes Veilles Technologiques</h2>
-            </div>
+            <h2 class="section-title">Mes Veilles Technologiques</h2>
             <div class="veilles-grid">
-                <a href="veille1.html" class="veille-card">
-                    <div class="veille-number">01</div>
-                    <h3>Supervision avec Zabbix</h3>
-                    <p class="veille-subtitle">Monitoring et supervision réseau</p>
-                    <p>Veille sur Zabbix 7.0, l'outil de supervision installé durant mon stage à la SNCF. Comparaison avec Spectrum, templates Huawei, et configuration SNMP.</p>
-                    <div class="veille-tags">
-                        <span class="veille-tag">Zabbix 7.0</span>
-                        <span class="veille-tag">Monitoring</span>
-                        <span class="veille-tag">SNMP</span>
+                <a href="veille1.html" class="veille-card fade-in">
+                    <div class="veille-header">
+                        <div class="veille-number">01</div>
+                        <h3><i class="fas fa-server"></i> Supervision avec Zabbix</h3>
+                        <p class="subtitle-text">Monitoring et supervision réseau</p>
+                    </div>
+                    <div class="veille-content">
+                        <p>Veille sur <strong>Zabbix 7.0</strong>, l'outil de supervision installé durant mon stage à la SNCF. Comparaison avec Spectrum, templates Huawei, et configuration SNMP.</p>
+                        <div class="veille-tags">
+                            <span class="veille-tag">Zabbix 7.0</span>
+                            <span class="veille-tag">Monitoring</span>
+                            <span class="veille-tag">SNMP</span>
+                            <span class="veille-tag">Spectrum</span>
+                        </div>
+                        <span class="veille-button">Découvrir <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
-
-                <div class="veille-card">
-                    <div class="veille-number">02</div>
-                    <h3>Veille technologique #2</h3>
-                    <p class="veille-subtitle">En cours de préparation</p>
-                    <p>Cette veille sera complétée prochainement. Elle portera sur un sujet lié aux infrastructures systèmes et réseaux.</p>
-                    <div class="veille-tags">
-                        <span class="veille-tag">À venir</span>
+                <div class="veille-card coming-soon fade-in">
+                    <div class="veille-header">
+                        <div class="veille-number">02</div>
+                        <span class="coming-soon-badge"><i class="fas fa-clock"></i> À venir</span>
+                        <h3>Veille technologique #2</h3>
+                        <p class="subtitle-text">En cours de préparation</p>
+                    </div>
+                    <div class="veille-content">
+                        <p>Cette veille sera complétée prochainement. Elle portera sur un sujet lié aux infrastructures systèmes et réseaux en relation avec mes missions de stage.</p>
+                        <div class="veille-tags">
+                            <span class="veille-tag">À définir</span>
+                        </div>
+                        <span class="veille-button">Bientôt disponible</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- AP -->
     <section id="ap-redirect">
         <div class="container">
-            <div class="ap-card">
-                <div class="ap-icon">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <h2>Découvrez mes Ateliers Professionnels</h2>
-                <p>Projets techniques réalisés en BTS SIO : déploiement d'infrastructures, administration systèmes, développement d'applications et bien plus encore.</p>
-                <a href="ap.html" class="btn btn-primary">
-                    Voir mes projets
-                    <i class="fas fa-arrow-right"></i>
+            <div class="ap-redirect-card fade-in">
+                <div class="ap-redirect-icon"><i class="fas fa-tools"></i></div>
+                <h2 class="ap-redirect-title">Découvrez mes Ateliers Professionnels</h2>
+                <p class="ap-redirect-description">Projets techniques réalisés en BTS SIO : déploiement d'infrastructures, administration systèmes, développement d'applications et bien plus encore.</p>
+                <a href="ap.html" class="ap-redirect-button">
+                    <span>Voir mes projets</span>
+                    <span class="arrow"><i class="fas fa-arrow-right"></i></span>
                 </a>
             </div>
         </div>
@@ -1002,30 +747,53 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Kaëlig CHRISTOUX. Tous droits réservés.</p>
+            <div class="copyright">
+                <p>&copy; 2026 Kaëlig CHRISTOUX. Tous droits réservés.</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Scroll navigation effect
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.querySelectorAll('.skill-progress').forEach(bar => {
+                        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 150);
+                    });
                 }
             });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.skill-category').forEach(el => observer.observe(el));
+        document.querySelectorAll('.skill-progress').forEach(bar => { bar.style.width = '0%'; });
+
+        function toggleMenu() {
+            document.querySelector('.menu-toggle').classList.toggle('active');
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        document.querySelectorAll('.has-submenu').forEach(item => {
+            item.querySelector('a').addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) { e.preventDefault(); item.classList.toggle('open'); }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                document.querySelectorAll('.has-submenu').forEach(item => item.classList.remove('open'));
+            }
         });
     </script>
 </body>
