@@ -129,6 +129,10 @@
             list-style: none;
         }
 
+        nav ul li.has-submenu {
+            position: relative;
+        }
+
         nav ul li.has-submenu:hover .submenu {
             display: block;
             animation: fadeInSubmenu 0.3s ease;
@@ -677,7 +681,7 @@
         <div class="container">
             <div class="copyright">
               
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Menu hamburger toggle
         function toggleMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
@@ -702,11 +706,4 @@
         // Fermer le menu si on clique en dehors
         document.addEventListener('click', (e) => {
             if (!e.target.closest('nav')) {
-                document.querySelector('.menu-toggle')?.classList.remove('active');
-                document.getElementById('navMenu')?.classList.remove('active');
-                subMenuItems.forEach(item => item.classList.remove('open'));
-            }
-        });
-    </script>
-</body>
-</html>
+                document.q
