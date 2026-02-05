@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 3.1 - VM & Installation Debian | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --deep-blue: #0284c7;
+            --accent-cyan: #06b6d4;
+            --dark-cyan: #0891b2;
+            --sncf-red: #ed1c24;
+            --tech-green: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 40%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 60%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(2, 132, 199, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: bluePulse 12s ease-in-out infinite;
+        }
+
+        @keyframes bluePulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: var(--rail-gray) !important;
+        }
+
+        nav a:hover {
+            color: var(--primary-blue);
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-blue) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--primary-blue);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            padding: 140px 0 60px;
+            text-align: center;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 30px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-nav:hover {
+            background: rgba(14, 165, 233, 0.2);
+            border-color: var(--primary-blue);
+            transform: translateX(-5px);
+        }
+
+        .part-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(6, 182, 212, 0.15));
+            border: 2px solid var(--primary-blue);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 3rem 0 5rem;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-cyan));
+        }
+
+        .section-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-card h2 i {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+        }
+
+        .section-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-card p {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .section-card ul {
+            margin-left: 2rem;
+            margin-top: 1rem;
+            color: var(--text-gray);
+        }
+
+        .section-card ul li {
+            margin-bottom: 0.7rem;
+            line-height: 1.8;
+        }
+
+        /* Image Container */
+        .image-container {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(14, 165, 233, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box strong {
+            color: var(--primary-blue);
+        }
+
+        /* Split Layout */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .split-item {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .split-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.25);
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.5);
+        }
+
+        .nav-btn.secondary {
+            background: rgba(14, 165, 233, 0.15);
+            border: 2px solid var(--primary-blue);
+            color: var(--accent-cyan);
+        }
+
+        .nav-btn.secondary:hover {
+            background: rgba(14, 165, 233, 0.25);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 2px solid rgba(14, 165, 233, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .copyright a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .copyright a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(14, 165, 233, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <a href="mission2-sncf.html" class="back-nav">
+                <i class="fas fa-arrow-left"></i>
+                Retour à la mission 2
+            </a>
+            
+            <div class="part-badge">
+                <i class="fas fa-cube"></i>
+                <span>Partie 3.1</span>
+            </div>
+            
+            <h1><i class="fas fa-plus-circle"></i> Création VM & Installation Debian</h1>
+            <p class="subtitle">
+                Création de la machine virtuelle Zabbix sur Proxmox et installation graphique complète de Debian 13.3.0
+            </p>
+
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <span>›</span>
+                <a href="stage2.html">Stage 2</a>
+                <span>›</span>
+                <a href="missions-sncf.html">Missions</a>
+                <span>›</span>
+                <a href="mission2-sncf.html">Mission 2</a>
+                <span>›</span>
+                <span>Partie 3.1</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            <!-- Introduction -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-info-circle"></i>
+                    Introduction à l'installation de Zabbix
+                </h2>
+                
+                <p>
+                    Une fois l'installation Proxmox terminée, je vais donc passer à la seconde partie de ma mission qui est de <strong>créer une machine virtuelle Zabbix</strong>, qui aura les mêmes fonctionnalités et la même utilité que Spectrum (voir <em>DT_RealisationSchemaReseau</em>).
+                </p>
+
+                <div class="info-box">
+                    <p>
+                        <strong><i class="fas fa-exclamation-circle"></i> Note importante :</strong> 
+                        Le seul nœud disponible est <strong>S36RESPVE01</strong> car il s'agit du serveur Proxmox. Les VM ID sont choisis à la chaîne, c'est-à-dire que les VM ID commencent à 100 et qu'une machine virtuelle avait déjà été créée, celle que je vais créer ici est la deuxième donc la VM ID de cette machine virtuelle sera de réaliser des tests Zabbix afin de ne pas endommager la machine Zabbix de production.
+                    </p>
+                </div>
+
+                <p>
+                    La machine virtuelle sera donc créée sous l'environnement Proxmox, je clique donc sur « Créer une VM » dans l'interface web Proxmox.
+                </p>
+            </div>
+
+            <!-- Section 1: Configuration générale -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-cog"></i>
+                    Configuration générale de la VM
+                </h2>
+
+                <h3><i class="fas fa-id-card"></i> Identification de la machine virtuelle</h3>
+
+                <div class="image-container">
+                    <img src="1770301294477_image.png" alt="Configuration générale VM">
+                    <p class="image-caption">Paramètres généraux : Nœud, VM ID et nom de la machine virtuelle</p>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Nœud :</strong> S36RESPVE01</p>
+                    <p><strong>VM ID :</strong> 101</p>
+                    <p><strong>Nom :</strong> ZABBIX-SANDBOX (car l'utilité de cette machine virtuelle est de réaliser des tests)</p>
+                </div>
+
+                <h3><i class="fas fa-compact-disc"></i> Sélection de l'image ISO</h3>
+
+                <div class="image-container">
+                    <img src="1770301294477_image.png" alt="Sélection ISO Debian">
+                    <p class="image-caption">Choix de l'image ISO Debian 13.3.0 depuis le stockage Images_ISO</p>
+                </div>
+
+                <p>
+                    Afin de choisir l'image ISO, sélection du dossier <strong>Images_ISO</strong> où toutes les images ISO sont stockées. L'image ISO choisie est donc la <strong>debian 13.3.0</strong> qui correspond à la dernière version de Debian.
+                </p>
+            </div>
+
+            <!-- Section 2: Configuration système -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-microchip"></i>
+                    Configuration système et matérielle
+                </h2>
+
+                <h3><i class="fas fa-desktop"></i> Agent QEMU</h3>
+
+                <p>
+                    Ensuite, activation de <strong>l'agent QEMU</strong> qui permet de multiples améliorations pratiques :
+                </p>
+                <ul>
+                    <li>Arrêts et redémarrages propres (sans l'agent, Proxmox agit comme s'il coupait directement l'alimentation)</li>
+                    <li>Meilleure gestion des snapshots (moins de corruption des fichiers)</li>
+                    <li>Il a bien d'autres fonctionnalités qui sont très pratiques pour l'entretien et le bon fonctionnement de la machine</li>
+                </ul>
+
+                <div class="split-layout">
+                    <div class="split-item">
+                        <img src="1770301306140_image.png" alt="Configuration système QEMU">
+                        <p class="image-caption">Activation de l'agent QEMU et configuration par défaut</p>
+                    </div>
+                    <div class="split-item">
+                        <img src="1770301306140_image.png" alt="Sélection disque DATA1">
+                        <p class="image-caption">Sélection du disque DATA1 (Array B, 150Go)</p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-hdd"></i> Stockage</h3>
+
+                <p>
+                    Sélection du disque <strong>DATA1</strong> qui correspond au <strong>Array B</strong> créé dans l'installation du serveur Proxmox ainsi que 150go, car c'est seulement l'espace dont j'ai besoin pour la machine virtuelle.
+                </p>
+
+                <h3><i class="fas fa-microchip"></i> Processeur et mémoire</h3>
+
+                <div class="split-layout">
+                    <div class="split-item">
+                        <img src="1770301306140_image.png" alt="Configuration processeur">
+                        <p class="image-caption">Sélection de 1 processeur et 2 cœurs</p>
+                    </div>
+                    <div class="split-item">
+                        <img src="1770301306140_image.png" alt="Configuration mémoire">
+                        <p class="image-caption">Allocation de 16 Go de RAM (16368 MB)</p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>Processeur :</strong> Sélection de 1 processeur et 2 cœurs pour faire fonctionner la machine.
+                </p>
+                <p>
+                    <strong>Mémoire :</strong> Sélection d'environ 16 Go de RAM pour faire fonctionner la machine.
+                </p>
+            </div>
+
+            <!-- Section 3: Configuration réseau -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-network-wired"></i>
+                    Configuration réseau
+                </h2>
+
+                <h3><i class="fas fa-sitemap"></i> Bridge et VLAN</h3>
+
+                <div class="image-container">
+                    <img src="1770301318520_image.png" alt="Configuration réseau">
+                    <p class="image-caption">Configuration du pont Trunk avec VLAN correspondant au Bridge Aggregation</p>
+                </div>
+
+                <p>
+                    Le pont choisi est <strong>Trunk</strong> car il s'agit du <strong>Bridge Aggregation</strong> effectué lors de la configuration des interfaces nic0 sur le serveur Proxmox.
+                </p>
+                <p>
+                    Choix donc du Vlan correspondant au <strong>Bridge Aggregation</strong> réalisé plus tôt.
+                </p>
+
+                <h3><i class="fas fa-clipboard-check"></i> Récapitulatif de création</h3>
+
+                <div class="image-container">
+                    <img src="1770301318520_image.png" alt="Récapitulatif VM">
+                    <p class="image-caption">Fin de la création de la machine virtuelle - Résumé de toutes les informations</p>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Récapitulatif de la configuration :</strong></p>
+                    <p><strong>• Agent :</strong> 1 (QEMU activé)</p>
+                    <p><strong>• Cores :</strong> 2</p>
+                    <p><strong>• CPU :</strong> x86-64-v2-AES</p>
+                    <p><strong>• ide2 :</strong> Images_ISO:iso/debian-13.3.0-amd64-netinst.iso,media=cdrom</p>
+                    <p><strong>• Memory :</strong> 16368</p>
+                    <p><strong>• Name :</strong> ZABBIX-SANDBOX</p>
+                    <p><strong>• net0 :</strong> virtio,bridge=Trunk,tag=1,firewall=1 (Pont sur Trunk avec vlan correspondant)</p>
+                    <p><strong>• Nodename :</strong> S36RESPVE01</p>
+                    <p><strong>• scsi0 :</strong> DATA1:150,iothread=on (Disque dur précédent 150Go)</p>
+                    <p><strong>• vmid :</strong> 101 (ID de la deuxième machine virtuelle créée sur Proxmox)</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Installation Debian -->
+            <div class="section-card">
+                <h2>
+                    <i class="fab fa-debian"></i>
+                    Installation graphique de Debian 13.3.0
+                </h2>
+
+                <p>
+                    Démarrage de la VM. J'arrive donc sous un menu d'installation pour Debian et je lance l'installation graphique.
+                </p>
+
+                <div class="image-container">
+                    <img src="1770301318520_image.png" alt="Menu installation Debian">
+                    <p class="image-caption">Menu de démarrage de l'installation Debian - Sélection de "Graphical install"</p>
+                </div>
+
+                <h3><i class="fas fa-language"></i> Langue et localisation</h3>
+
+                <div class="split-layout">
+                    <div class="split-item">
+                        <img src="1770301318520_image.png" alt="Choix langue">
+                        <p class="image-caption">Le choix de la langue est donc le français</p>
+                    </div>
+                    <div class="split-item">
+                        <img src="1770301318520_image.png" alt="Choix IP">
+                        <p class="image-caption">Choix d'une adresse IP disponible dans le vlan attribué</p>
+                    </div>
+                </div>
+
+                <p>
+                    Choix d'une adresse IP disponible dans le vlan attribué (masque de sous réseau : 255.255.252.0 /22) puis de la passerelle par défaut correspondante à ce réseau.
+                </p>
+
+                <h3><i class="fas fa-server"></i> Configuration DNS et hostname</h3>
+
+                <div class="split-layout">
+                    <div class="split-item">
+                        <img src="1770301326985_image.png" alt="Configuration DNS">
+                        <p class="image-caption">Choix du DNS</p>
+                    </div>
+                    <div class="split-item">
+                        <img src="1770301326985_image.png" alt="Configuration hostname">
+                        <p class="image-caption">Choix du nom de la machine (identique au nom choisi lors de la création)</p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>Indication du domaine de l'AD de la SNCF.</strong>
+                </p>
+
+                <h3><i class="fas fa-key"></i> Mot de passe administrateur</h3>
+
+                <div class="image-container">
+                    <img src="1770301326985_image.png" alt="Mot de passe root">
+                    <p class="image-caption">Indication du mot de passe voulu</p>
+                </div>
+
+                <h3><i class="fas fa-user-shield"></i> Création du compte utilisateur</h3>
+
+                <div class="image-container">
+                    <img src="1770301326985_image.png" alt="Création utilisateur">
+                    <p class="image-caption">Création du compte utilisateur nommé "administrateur" (qui sera également son identifiant)</p>
+                </div>
+            </div>
+
+            <!-- Section 5: Partitionnement -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-hdd"></i>
+                    Partitionnement du disque
+                </h2>
+
+                <h3><i class="fas fa-sliders-h"></i> Configuration du partitionnement</h3>
+
+                <div class="image-container">
+                    <img src="1770301326985_image.png" alt="Partitionnement disque">
+                    <p class="image-caption">Choix d'utiliser un disque entier et sélection du disque de 150Gio créé plus tôt</p>
+                </div>
+
+                <p>
+                    J'indique donc que je termine donc le partitionnement et que j'applique les changements, puis j'indique qu'il faut bien appliquer les changements sur les disques concernés.
+                </p>
+
+                <div class="info-box">
+                    <p>
+                        <strong><i class="fas fa-info-circle"></i> Schéma de partitionnement :</strong><br>
+                        <strong>Tout dans une seule partition (recommandé pour les débutants)</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 6: Configuration finale -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-download"></i>
+                    Configuration des paquets et logiciels
+                </h2>
+
+                <h3><i class="fas fa-server"></i> Miroir Debian</h3>
+
+                <div class="split-layout">
+                    <div class="split-item">
+                        <img src="1770301335064_image.png" alt="Analyse supports">
+                        <p class="image-caption">On ne souhaite pas analyser d'autres supports d'installation</p>
+                    </div>
+                    <div class="split-item">
+                        <img src="1770301335064_image.png" alt="Configuration miroir">
+                        <p class="image-caption">Configuration de l'outil de gestion des paquets</p>
+                    </div>
+                </div>
+
+                <p>
+                    J'indique que l'on veut configurer l'outil de gestion des paquets saisir manuellement le miroir car nous allons rentrer les informations manuellement et non des hôtes miroir propre à un pays.
+                </p>
+
+                <div class="info-box">
+                    <p>
+                        <strong><i class="fas fa-link"></i> Configuration du miroir :</strong><br>
+                        J'indique donc le nom d'hôte du port miroir de l'archive Debian ainsi que son répertoire. Pour cela je dois me rendre directement sur le site repos.it.sncf.fr (nom hôte du miroir), l'arrive sur une page avec des dossiers, je parcoure le chemin suivant : 
+                        <strong>/os/debian/mirror/deb.debian.org/debian/</strong> et c'est le chemin qui correspond au répertoire miroir.
+                    </p>
+                </div>
+
+                <h3><i class="fas fa-poll"></i> Participation aux statistiques</h3>
+
+                <div class="image-container">
+                    <img src="1770301335064_image.png" alt="Statistiques paquets">
+                    <p class="image-caption">On ne souhaite pas que la machine partage les paquets que l'on utilise pour une étude de statistiques</p>
+                </div>
+
+                <h3><i class="fas fa-box-open"></i> Sélection des logiciels</h3>
+
+                <div class="image-container">
+                    <img src="1770301335064_image.png" alt="Sélection logiciels">
+                    <p class="image-caption">Les logiciels qui seront installés sont le serveur SSH et les utilitaires usuels du système</p>
+                </div>
+
+                <p>
+                    <strong>Installation du programme de démarrage appelé GRUB</strong>. Ce programme permet de démarrer la machine virtuelle directement sur l'OS Debian qui lui a été installé. Dans le cas où GRUB n'est pas installé, la machine virtuelle n'est pas capable de démarrer sur un OS et va donc seulement redémarrer depuis le début de l'installation Debian.
+                </p>
+
+                <div class="image-container">
+                    <img src="1770301335064_image.png" alt="Installation GRUB">
+                    <p class="image-caption">Choix du disque dur principal (150Go) pour l'installation du programme GRUB</p>
+                </div>
+
+                <h3><i class="fas fa-check-circle"></i> Installation terminée</h3>
+
+                <div class="image-container">
+                    <img src="1770301335064_image.png" alt="Installation terminée">
+                    <p class="image-caption">L'installation graphique de Debian 13.3.0 est terminée, redémarrage de la machine virtuelle</p>
+                </div>
+            </div>
+
+            <!-- PDF Download Section -->
+            <div class="section-card" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(6, 182, 212, 0.1)); border-color: var(--primary-blue);">
+                <h2>
+                    <i class="fas fa-file-pdf"></i>
+                    Télécharger le document complet
+                </h2>
+                <p>
+                    Vous pouvez télécharger l'intégralité de cette partie au format PDF pour consultation hors ligne ou impression.
+                </p>
+                <a href="vm-debian.pdf" download class="nav-btn" style="display: inline-flex; margin-top: 1rem;">
+                    <i class="fas fa-download"></i>
+                    <span>Télécharger le PDF</span>
+                </a>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="mission2-sncf.html" class="nav-btn secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour à la mission</span>
+                </a>
+                <a href="partie3-2-mission2.html" class="nav-btn">
+                    <span>Partie 3.2 : Configuration Zabbix</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Image zoom on click
+        document.querySelectorAll('.image-container img, .split-item img').forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', function() {
+                window.open(this.src, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
