@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 1 - Création VM | AP1 Odoo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-cyan: #06b6d4;
+            --deep-cyan: #0891b2;
+            --electric-teal: #14b8a6;
+            --sky-blue: #38bdf8;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(20, 184, 166, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            animation: cyanPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes cyanPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--electric-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover { transform: scale(1.05); }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-gray { color: #64748b !important; }
+        nav a:hover { color: var(--primary-cyan); }
+        nav a:hover .icon-gray { color: var(--primary-cyan) !important; }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            list-style: none;
+        }
+
+        nav ul li.has-submenu {
+            position: relative;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .submenu li a:hover {
+            background: rgba(6, 182, 212, 0.15);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-cyan);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--electric-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--electric-teal);
+        }
+
+        /* Section */
+        .section {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            margin: 2rem 0;
+        }
+
+        .section h2 {
+            color: var(--primary-cyan);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section h3 {
+            color: var(--electric-teal);
+            font-size: 1.6rem;
+            margin: 2.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section h4 {
+            color: var(--sky-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        /* Info Boxes */
+        .warning-box, .info-box, .success-box {
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: #fbbf24;
+        }
+
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: var(--primary-cyan);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--electric-teal);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #a8dadc;
+        }
+
+        .code-block .comment {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+        }
+
+        table th, table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        table th {
+            color: white;
+            font-weight: 600;
+        }
+
+        table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        code {
+            background: rgba(6, 182, 212, 0.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--sky-blue);
+        }
+
+        /* Image Placeholder */
+        .image-placeholder {
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px dashed rgba(6, 182, 212, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-placeholder img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem 0;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(6, 182, 212, 0.5);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(6, 182, 212, 0.3);
+            }
+
+            nav ul.active { right: 0; }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2rem;
+                flex-direction: column;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-server"></i> Partie 1 : Création VM Ubuntu Server</h1>
+            <div class="breadcrumb">
+                <a href="ap.html">Ateliers Pro</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="ap1.html">AP1 - Odoo</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Partie 1</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section style="padding: 2rem 0;">
+        <div class="container">
+            <div class="section">
+                <h2><i class="fas fa-server"></i> Partie 1 : Création et configuration de la VM Ubuntu Server</h2>
+                
+                <h3><i class="fas fa-plus-circle"></i> Étape 1 : Création de la machine virtuelle</h3>
+                
+                <div class="image-placeholder">
+                    <img src="vmware.png" alt="ImageVMware">
+                    <p class="image-caption">Création de la machine virtuelle</p>
+                </div>
+
+                <p>
+                    J'ai commencé par créer une nouvelle machine virtuelle dans <strong>VirtualBox</strong> à partir du modèle 
+                    <code>model_US22</code> (modèle Ubuntu Server 22.04 fourni par le lycée).
+                </p>
+
+                <h4><i class="fas fa-cog"></i> Configuration de la VM</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Paramètre</th>
+                                <th>Valeur</th>
+                                <th>Justification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Nom de la VM</strong></td>
+                                <td><code>AP21_CHRISTOUX_US22</code></td>
+                                <td>Nomenclature imposée (AP21 + Nom + US22)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emplacement</strong></td>
+                                <td><code>SIO1_2425/AP21/</code></td>
+                                <td>Dossier organisé par année et TP</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAM</strong></td>
+                                <td>2048 MB (2 Go)</td>
+                                <td>Minimum recommandé pour Odoo + PostgreSQL</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Processeurs</strong></td>
+                                <td>2 cœurs</td>
+                                <td>Performance suffisante pour les tests</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Réseau</strong></td>
+                                <td>Accès par pont</td>
+                                <td>Permet l'accès depuis mon PC hôte</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3><i class="fas fa-download"></i> Étape 2 : Installation Ubuntu Server 22.04</h3>
+                
+                <p>
+                    J'ai démarré la VM sur le modèle Ubuntu Server fournie par nos professeurs.
+                </p>
+                <div class="image-placeholder">
+                    <img src="ubuntu.png" alt="Ubuntu Server">
+                    <p class="image-caption">Interface Linux de la VM US22</p>
+                </div>
+
+                <h3><i class="fas fa-network-wired"></i> Étape 3 : Configuration IP statique avec Netplan</h3>
+
+                <div class="warning-box">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Important :</strong><br>
+                    Ubuntu Server 22 utilise <strong>Netplan</strong> pour la configuration réseau (et non plus <code>/etc/network/interfaces</code>). 
+                    La configuration se fait dans des fichiers YAML.
+                </div>
+
+                <p>
+                    Une fois Ubuntu installé, j'ai configuré l'adresse IP statique attribuée : <code><strong>100.115.29.182/23</strong></code>
+                </p>
+
+                <h4><i class="fas fa-edit"></i> Édition du fichier Netplan</h4>
+                
+                <div class="code-block">
+<span class="comment"># 1. Éditer le fichier de configuration réseau</span><br>
+sudo nano /etc/netplan/00-installer-config.yaml
+                </div>
+
+                <div class="code-block">
+<span class="comment"># Contenu du fichier YAML</span><br>
+network:<br>
+&nbsp;&nbsp;ethernets:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ens160:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses: [100.115.29.182/23]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- to: default<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;via: 100.115.29.254<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nameservers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses: [100.115.29.254, 100.115.28.41, 8.8.8.8]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp4: false<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp6: false<br>
+&nbsp;&nbsp;version: 2
+                </div>
+
+                <div class="info-box">
+                    <strong><i class="fas fa-info-circle"></i> Explication de la configuration :</strong><br>
+                    <ul style="margin-top: 0.5rem; padding-left: 2rem;">
+                        <li><code>ens160</code> : nom de l'interface réseau (peut varier)</li>
+                        <li><code>dhcp4(6): false</code> : désactive DHCP (on veut du statique)</li>
+                        <li><code>addresses: [100.115.29.182/23]</code> : adresse IP + masque (/23 = 255.255.254.0)</li>
+                        <li><code>via: 100.115.29.254</code> : passerelle par défaut</li>
+                        <li><code>addresses: [...]</code> : serveurs DNS du lycée et de Google</li>
+                    </ul>
+                </div>
+
+                <div class="image-placeholder">
+                    <img src="Netplan.png" alt="netplanyaml">
+                    <p class="image-caption">Configuration de l'adresse IP sur la VM US22</p>
+                </div>
+
+                <h4><i class="fas fa-check-circle"></i> Application de la configuration</h4>
+
+                <div class="code-block">
+<span class="comment"># 2. Appliquer la configuration réseau</span><br>
+sudo netplan apply<br>
+<br>
+<span class="comment"># 3. Tester la connexion</span><br>
+ping 8.8.8.8
+                </div>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Résultat :</strong><br>
+                    L'adresse IP <code>100.115.29.182</code> est bien configurée et la VM peut accéder à Internet !
+                </div>
+
+                <h3><i class="fas fa-sync-alt"></i> Étape 4 : Mise à jour du système</h3>
+
+                <p>
+                    Avant d'installer Odoo, j'ai mis à jour tous les paquets du système :
+                </p>
+
+                <div class="code-block">
+<span class="comment"># Mise à jour de la liste des paquets</span><br>
+sudo apt update<br>
+<br>
+<span class="comment"># Mise à jour des paquets installés</span><br>
+sudo apt upgrade
+                </div>
+
+                <h3><i class="fas fa-box-open"></i> Étape 5 : Installation d'Odoo 16</h3>
+
+                <p>
+                    J'ai suivi la procédure officielle d'installation d'Odoo 16 sur Ubuntu Server.
+                </p>
+
+                <h4><i class="fas fa-cube"></i> Installation des dépendances</h4>
+
+                <div class="code-block">
+<span class="comment"># Installation de PostgreSQL (base de données)</span><br>
+sudo apt install postgresql postgresql-client -y<br>
+<br>
+<span class="comment"># Installation de Python 3 et pip</span><br>
+sudo apt install python3 python3-pip python3-dev python3-venv -y<br>
+<br>
+<span class="comment"># Installation des bibliothèques système nécessaires</span><br>
+sudo apt install libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev \<br>
+&nbsp;&nbsp;&nbsp;&nbsp;libtiff5-dev libjpeg8-dev libopenjp2-7-dev zlib1g-dev \<br>
+&nbsp;&nbsp;&nbsp;&nbsp;libfreetype6-dev liblcms2-dev libwebp-dev -y<br>
+<br>
+<span class="comment"># Installation de wkhtmltopdf (pour générer des PDF)</span><br>
+sudo apt install wkhtmltopdf -y
+                </div>
+
+                <h4><i class="fas fa-user-plus"></i> Création de l'utilisateur Odoo</h4>
+
+                <div class="code-block">
+<span class="comment"># Créer un utilisateur système pour Odoo</span><br>
+sudo adduser --system --home=/opt/odoo --group odoo
+                </div>
+
+                <h4><i class="fas fa-database"></i> Configuration de PostgreSQL</h4>
+
+                <div class="code-block">
+<span class="comment"># Créer un utilisateur PostgreSQL pour Odoo</span><br>
+sudo su - postgres -c "createuser -s odoo"
+                </div>
+
+                <h4><i class="fas fa-download"></i> Téléchargement d'Odoo 16</h4>
+
+                <div class="code-block">
+<span class="comment"># Se placer dans /opt</span><br>
+cd /opt<br>
+<br>
+<span class="comment"># Cloner le dépôt Odoo 16</span><br>
+sudo git clone https://www.github.com/odoo/odoo --depth 1 --branch 16.0 /opt/odoo16<br>
+<br>
+<span class="comment"># Donner les droits à l'utilisateur odoo</span><br>
+sudo chown -R odoo:odoo /opt/odoo16
+                </div>
+
+                <h4><i class="fas fa-code"></i> Installation des dépendances Python</h4>
+
+                <div class="code-block">
+<span class="comment"># Installer les requirements Python</span><br>
+sudo pip3 install -r /opt/odoo16/requirements.txt
+                </div>
+
+                <h4><i class="fas fa-file-alt"></i> Création du fichier de configuration</h4>
+
+                <div class="code-block">
+<span class="comment"># Créer le fichier de configuration Odoo</span><br>
+sudo nano /etc/odoo16.conf
+                </div>
+
+                <div class="code-block">
+<span class="comment"># Contenu du fichier de configuration</span><br>
+[options]<br>
+admin_passwd = stssio<br>
+db_host = localhost<br>
+db_port = 5432<br>
+db_user = odoo<br>
+db_password = False<br>
+addons_path = /opt/odoo16/addons<br>
+logfile = /var/log/odoo16/odoo.log
+                </div>
+
+                <h4><i class="fas fa-rocket"></i> Démarrage d'Odoo</h4>
+
+                <div class="code-block">
+<span class="comment"># Créer le dossier de logs</span><br>
+sudo mkdir /var/log/odoo16<br>
+sudo chown odoo:odoo /var/log/odoo16<br>
+<br>
+<span class="comment"># Démarrer Odoo manuellement pour test</span><br>
+sudo su - odoo -s /bin/bash -c "/opt/odoo16/odoo-bin -c /etc/odoo16.conf"
+                </div>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Odoo démarré !</strong><br>
+                    Odoo est maintenant accessible sur <code>http://100.115.29.182:8069</code>
+                </div>
+
+                <h3><i class="fas fa-globe"></i> Étape 6 : Accès à Odoo depuis le navigateur</h3>
+
+                <p>
+                    J'ai ouvert mon navigateur et accédé à l'adresse : <code>http://100.115.29.182:8069</code>
+                </p>
+
+                <h4><i class="fas fa-sliders-h"></i> Configuration initiale</h4>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Paramètre</th>
+                                <th>Valeur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Nom de la base</strong></td>
+                                <td>ap21_christoux</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>admin@stssio.fr</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mot de passe</strong></td>
+                                <td>stssio</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Numéro de téléphone</strong></td>
+                                <td>06 32 91 93 17</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Langue</strong></td>
+                                <td>Français</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pays</strong></td>
+                                <td>France</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Données de démo</strong></td>
+                                <td>Non (désactivées)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3><i class="fas fa-shopping-cart"></i> Étape 7 : Installation de l'application Vente</h3>
+
+                <p>
+                    Une fois connecté, j'ai installé l'application <strong>Vente</strong> (Sales) :
+                </p>
+
+                <ol style="padding-left: 2rem; color: var(--text-gray);">
+                    <li style="margin-bottom: 0.5rem;">Clic sur <strong>Apps</strong> dans le menu principal</li>
+                    <li style="margin-bottom: 0.5rem;">Recherche de <strong>"Vente"</strong> ou <strong>"Sales"</strong></li>
+                    <li style="margin-bottom: 0.5rem;">Clic sur <strong>Installer</strong></li>
+                    <li>Attente de l'installation (quelques secondes)</li>
+                </ol>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Module Vente installé !</strong><br>
+                    L'application Vente permet de gérer les clients, devis, commandes et factures.
+                </div>
+
+                <h3><i class="fas fa-user-plus"></i> Étape 8 : Test de création manuelle d'un client</h3>
+
+                <p>
+                    J'ai testé la création d'un client particulier pour repérer les champs disponibles :
+                </p>
+
+                <ol style="padding-left: 2rem; color: var(--text-gray);">
+                    <li style="margin-bottom: 0.5rem;">Menu <strong>Vente → Clients</strong></li>
+                    <li style="margin-bottom: 0.5rem;">Clic sur <strong>Créer</strong></li>
+                    <li>Observation des champs proposés par défaut</li>
+                </ol>
+
+                <h4><i class="fas fa-search"></i> Champs repérés dans Odoo</h4>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Champ Odoo</th>
+                                <th>Type</th>
+                                <th>Obligatoire ?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Nom</strong></td>
+                                <td>Texte (nom complet)</td>
+                                <td>✅ Oui</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Est une entreprise</strong></td>
+                                <td>Case à cocher</td>
+                                <td>Non</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rue</strong></td>
+                                <td>Texte</td>
+                                <td>Non</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Code postal</strong></td>
+                                <td>Texte</td>
+                                <td>Non</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ville</strong></td>
+                                <td>Texte</td>
+                                <td>Non</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>Email</td>
+                                <td>Non</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Téléphone</strong></td>
+                                <td>Texte</td>
+                                <td>Non</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile</strong></td>
+                                <td>Texte</td>
+                                <td>Non</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Problème détecté :</strong><br>
+                    Par défaut, Odoo n'a qu'un seul champ <strong>"Nom"</strong> qui contient le nom complet. 
+                    Il n'y a pas de séparation <strong>Nom / Prénom</strong> !<br><br>
+                    → Ce problème sera résolu dans la Partie 2 avec l'installation d'un addon.
+                </div>
+
+                <h3><i class="fas fa-file-csv"></i> Étape 9 : Test d'import du fichier CSV exemple</h3>
+
+                <p>
+                    J'ai testé l'import du fichier CSV exemple fourni (<code>clients_particuliers_exemple.csv</code>) :
+                </p>
+
+                <div class="code-block" style="border-left-color: var(--primary-cyan);">
+<span class="comment"># Structure du fichier CSV exemple</span><br>
+Titre;Nom;Prénom;Email;Téléphone;Mobile;Code postal;Ville;Rue;Est une entreprise<br>
+Madame;Perrin;Guillemette;guillemette.perrin@email.fr;0101234567;0701234567;45100;Orléans;10 Rue de la Marine;FAUX
+                </div>
+
+                <h4><i class="fas fa-tasks"></i> Procédure d'import</h4>
+
+                <ol style="padding-left: 2rem; color: var(--text-gray);">
+                    <li style="margin-bottom: 0.5rem;">Menu <strong>Vente → Clients</strong></li>
+                    <li style="margin-bottom: 0.5rem;">Clic sur <strong>Favoris → Importer</strong></li>
+                    <li style="margin-bottom: 0.5rem;">Sélection du fichier CSV</li>
+                    <li style="margin-bottom: 0.5rem;">Mapping des colonnes CSV vers les champs Odoo</li>
+                    <li>Test de l'import</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong><i class="fas fa-times-circle"></i> Problème constaté :</strong><br>
+                    Les colonnes <code>Nom</code> et <code>Prénom</code> du CSV ne peuvent pas être mappées correctement 
+                    car Odoo n'a qu'un seul champ "Nom" (nom complet).<br><br>
+                    <strong>Conséquence :</strong> Impossible d'importer les données avec Nom et Prénom séparés sans addon !
+                </div>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-double"></i> Partie 1 terminée !</strong><br>
+                    La VM Ubuntu Server est configurée, Odoo 16 est installé et fonctionnel, et j'ai identifié le problème 
+                    de séparation Nom/Prénom qui sera résolu en Partie 2.
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="ap1.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour à l'index
+                </a>
+                <a href="partie2-installodoo.html" class="nav-btn">
+                    Partie 2 : Installation Addon
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-gray);">&copy; 2026 <a href="index.html" style="color: var(--primary-cyan); text-decoration: none;">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
