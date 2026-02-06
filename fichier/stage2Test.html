@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 2 - SNCF Réseau | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --wine-red: #9f1239;
+            --deep-wine: #7f1d1d;
+            --soft-rose: #be123c;
+            --muted-red: #881337;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #94a3b8;
+            --accent: #9f1239;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(159, 18, 57, 0.025) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(190, 18, 60, 0.025) 0%, transparent 50%),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(159, 18, 57, 0.008) 100px,
+                    rgba(159, 18, 57, 0.008) 101px
+                );
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(159, 18, 57, 0.3), transparent);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #9f1239, #be123c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(159, 18, 57, 0.3));
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li { position: relative; }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a i {
+            color: #64748b;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a:hover i {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            min-width: 200px;
+            padding: 0.75rem;
+            border-radius: 16px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(148, 163, 184, 0.08);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li { padding: 0; margin: 0; }
+
+        .submenu li a {
+            display: block;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s;
+            border-radius: 10px;
+        }
+
+        .submenu li a::after { display: none; }
+
+        .submenu li a:hover {
+            background: rgba(159, 18, 57, 0.1);
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px; height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .page-hero {
+            padding: 160px 0 80px;
+            text-align: center;
+            background: 
+                linear-gradient(135deg, rgba(159, 18, 57, 0.015), rgba(190, 18, 60, 0.015)),
+                radial-gradient(circle at 50% 0%, rgba(159, 18, 57, 0.03), transparent 70%);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%;
+            height: 200%;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(159, 18, 57, 0.04), transparent);
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .page-hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #9f1239, #be123c, #9f1239);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideDown 0.6s ease-out, gradientShift 5s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1.5px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-hero h1 i {
+            color: var(--wine-red);
+            margin-right: 1rem;
+            filter: drop-shadow(0 4px 12px rgba(159, 18, 57, 0.3));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            animation: slideDown 0.6s ease-out 0.2s backwards;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero .period {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            font-family: 'JetBrains Mono', monospace;
+            animation: slideDown 0.6s ease-out 0.4s backwards;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(159, 18, 57, 0.05);
+            border-radius: 50px;
+            border: 1px solid rgba(159, 18, 57, 0.1);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Image */
+        .company-image {
+            width: 100%;
+            max-width: 900px;
+            margin: 4rem auto;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(148, 163, 184, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(148, 163, 184, 0.08);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .company-image::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.15), transparent 50%, rgba(190, 18, 60, 0.1));
+            opacity: 0;
+            transition: opacity 0.6s;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .company-image::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.6s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .company-image:hover::before {
+            opacity: 1;
+        }
+
+        .company-image:hover::after {
+            opacity: 1;
+            transform: translate(-25%, -25%);
+        }
+
+        .company-image:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 
+                0 30px 80px rgba(159, 18, 57, 0.15),
+                0 0 0 1px rgba(159, 18, 57, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .company-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .company-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Section Title */
+        .main-section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            background: linear-gradient(135deg, #9f1239, #be123c, #9f1239);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4rem;
+            position: relative;
+            font-weight: 600;
+            letter-spacing: -0.8px;
+            animation: gradientShift 5s ease-in-out infinite;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(159, 18, 57, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #9f1239, #be123c, transparent);
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(159, 18, 57, 0.3);
+        }
+
+        .section-title i {
+            color: var(--wine-red);
+            margin-right: 1rem;
+            filter: drop-shadow(0 2px 8px rgba(159, 18, 57, 0.2));
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 3rem;
+            border: 1px solid rgba(148, 163, 184, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, #9f1239, #be123c, transparent);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(159, 18, 57, 0.04) 0%, transparent 50%);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+            top: -50%;
+            left: -50%;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: var(--bg-card-hover);
+            border-color: rgba(159, 18, 57, 0.2);
+            box-shadow: 
+                0 25px 60px rgba(159, 18, 57, 0.08),
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.08), rgba(190, 18, 60, 0.08));
+            border: 1px solid rgba(159, 18, 57, 0.15);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.3), rgba(190, 18, 60, 0.3));
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: -1;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.15) rotate(-10deg);
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.15), rgba(190, 18, 60, 0.15));
+            border-color: rgba(159, 18, 57, 0.3);
+            box-shadow: 0 10px 25px rgba(159, 18, 57, 0.2);
+        }
+
+        .card:hover .card-icon::before {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .card h3 {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            line-height: 1.9;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.08), rgba(190, 18, 60, 0.08));
+            border: 1px solid rgba(159, 18, 57, 0.2);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .card-link::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .card-link:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .card-link::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s;
+        }
+
+        .card-link:hover::after {
+            left: 100%;
+        }
+
+        .card-link:hover {
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.15), rgba(190, 18, 60, 0.15));
+            border-color: var(--accent);
+            transform: translateX(8px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(159, 18, 57, 0.2);
+        }
+
+        .card-link i,
+        .card-link span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CRA Section */
+        .cra-section {
+            background: 
+                linear-gradient(135deg, rgba(159, 18, 57, 0.01), rgba(190, 18, 60, 0.01)),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(159, 18, 57, 0.01) 100px,
+                    rgba(159, 18, 57, 0.01) 101px
+                );
+            padding: 6rem 0;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cra-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(159, 18, 57, 0.02) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(190, 18, 60, 0.02) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .cra-intro {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.9;
+        }
+
+        .cra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .cra-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.25rem;
+            border: 1px solid rgba(148, 163, 184, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .cra-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, #9f1239, #be123c);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .cra-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(159, 18, 57, 0.05), transparent);
+            transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cra-card:hover::before {
+            opacity: 1;
+        }
+
+        .cra-card:hover::after {
+            left: 100%;
+        }
+
+        .cra-card:hover {
+            transform: translateX(10px) scale(1.02);
+            background: var(--bg-card-hover);
+            border-color: rgba(159, 18, 57, 0.2);
+            box-shadow: 
+                0 15px 40px rgba(159, 18, 57, 0.1),
+                0 5px 15px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        }
+
+        .cra-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.08), rgba(190, 18, 60, 0.08));
+            border: 1px solid rgba(159, 18, 57, 0.15);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            flex-shrink: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .cra-number::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.3), rgba(190, 18, 60, 0.3));
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: -1;
+        }
+
+        .cra-card:hover .cra-number {
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.15), rgba(190, 18, 60, 0.15));
+            border-color: var(--accent);
+            transform: scale(1.12) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(159, 18, 57, 0.2);
+        }
+
+        .cra-card:hover .cra-number::before {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        .cra-info h4 {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+
+        .cra-info p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(148, 163, 184, 0.08);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 5rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(159, 18, 57, 0.3), transparent);
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .menu-toggle { display: flex; }
+            
+            nav ul {
+                display: none;
+                position: fixed;
+                top: 80px; right: 0;
+                width: 100%;
+                max-width: 320px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+                border-left: 1px solid rgba(148, 163, 184, 0.1);
+                animation: slideInMobile 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav ul.active { display: flex; }
+            
+            nav ul li {
+                margin-bottom: 0;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+                width: 100%;
+            }
+            
+            nav ul li:last-child { border-bottom: none; }
+            
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            nav ul li.has-submenu > a i.fa-chevron-down { margin-left: auto; }
+            nav ul li.has-submenu.open > a i.fa-chevron-down { transform: rotate(180deg); }
+            
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(159, 18, 57, 0.05);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid rgba(159, 18, 57, 0.2);
+                margin-left: 1rem;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav ul li.has-submenu.open .submenu {
+                display: block;
+                max-height: 500px;
+            }
+            
+            .submenu li { border: none; }
+            .submenu li a {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
+            }
+
+            .page-hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+
+        @keyframes slideInMobile {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase"></i> Stages <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open"></i> Autres <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-train"></i> Stage 2 - SNCF Réseau</h1>
+            <p class="subtitle">Technicien Systèmes et Réseaux - ESTI Atlantique</p>
+            <p class="period">Du 12 janvier au 20 février 2026</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="company-image">
+            <a href="https://www.sncf-reseau.com/fr" target="_blank">
+                <img src="sncfreseau.jpg" alt="SNCF Réseau">
+            </a>
+        </div>
+    </div>
+
+    <section class="main-section">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-folder-open"></i> Documents du stage</h2>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Contexte SNCF</h3>
+                    <p>Présentation de SNCF Réseau, son organisation, ses missions et le contexte du stage au sein de l'ESTI Atlantique.</p>
+                    <a href="contextesncf.html" class="card-link">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Consulter</span>
+                    </a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Missions réalisées</h3>
+                    <p>Description des principales missions effectuées lors du stage : infrastructure réseau, systèmes et support technique.</p>
+                    <a href="missions-sncf.html" class="card-link">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Consulter</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cra-section">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Comptes Rendus d'Activité</h2>
+            <p class="cra-intro">
+                Ci-dessous, sont fournis les comptes rendus d'activité hebdomadaires correspondant aux semaines de stage effectuées.
+            </p>
+            
+            <div class="cra-grid">
+                <a href="cra-sncf-semaine1.html" class="cra-card">
+                    <div class="cra-number">1</div>
+                    <div class="cra-info">
+                        <h4>CRA Semaine 1</h4>
+                        <p>12/01 au 16/01/2026</p>
+                    </div>
+                </a>
+
+                <a href="cra-sncf-semaine2.html" class="cra-card">
+                    <div class="cra-number">2</div>
+                    <div class="cra-info">
+                        <h4>CRA Semaine 2</h4>
+                        <p>19/01 au 23/01/2026</p>
+                    </div>
+                </a>
+
+                <a href="cra-sncf-semaine3.html" class="cra-card">
+                    <div class="cra-number">3</div>
+                    <div class="cra-info">
+                        <h4>CRA Semaine 3</h4>
+                        <p>26/01 au 30/01/2026</p>
+                    </div>
+                </a>
+
+                <a href="cra-sncf-semaine4.html" class="cra-card">
+                    <div class="cra-number">4</div>
+                    <div class="cra-info">
+                        <h4>CRA Semaine 4</h4>
+                        <p>02/02 au 06/02/2026</p>
+                    </div>
+                </a>
+
+                <a href="cra-sncf-semaine5.html" class="cra-card">
+                    <div class="cra-number">5</div>
+                    <div class="cra-info">
+                        <h4>CRA Semaine 5</h4>
+                        <p>09/02 au 13/02/2026</p>
+                    </div>
+                </a>
+
+                <a href="cra-sncf-semaine6.html" class="cra-card">
+                    <div class="cra-number">6</div>
+                    <div class="cra-info">
+                        <h4>CRA Semaine 6</h4>
+                        <p>16/02 au 20/02/2026</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2026 Kaëlig CHRISTOUX. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
