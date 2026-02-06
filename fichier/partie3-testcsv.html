@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 3 - Tests CSV | AP1 Odoo</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-cyan: #06b6d4;
+            --deep-cyan: #0891b2;
+            --electric-teal: #14b8a6;
+            --sky-blue: #38bdf8;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(20, 184, 166, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            animation: cyanPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes cyanPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--electric-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover { transform: scale(1.05); }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-gray { color: #64748b !important; }
+        nav a:hover { color: var(--primary-cyan); }
+        nav a:hover .icon-gray { color: var(--primary-cyan) !important; }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            list-style: none;
+        }
+
+        nav ul li.has-submenu {
+            position: relative;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .submenu li a:hover {
+            background: rgba(6, 182, 212, 0.15);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-cyan);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--electric-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--electric-teal);
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            margin: 2rem 0;
+        }
+
+        .section h2 {
+            color: var(--primary-cyan);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section h3 {
+            color: var(--electric-teal);
+            font-size: 1.6rem;
+            margin: 2.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section h4 {
+            color: var(--sky-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .warning-box, .info-box, .success-box {
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: #fbbf24;
+        }
+
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: var(--primary-cyan);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--electric-teal);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #a8dadc;
+        }
+
+        .code-block .comment {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+        }
+
+        table th, table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        table th {
+            color: white;
+            font-weight: 600;
+        }
+
+        table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        code {
+            background: rgba(6, 182, 212, 0.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--sky-blue);
+        }
+
+        .image-placeholder {
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px dashed rgba(6, 182, 212, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        .step-list {
+            list-style: none;
+            padding-left: 0;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            padding: 1.2rem 0 1.2rem 4rem;
+            position: relative;
+            border-left: 3px solid rgba(6, 182, 212, 0.3);
+            margin-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-list li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: -2rem;
+            top: 1rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .card {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem 0;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(6, 182, 212, 0.5);
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(6, 182, 212, 0.3);
+            }
+
+            nav ul.active { right: 0; }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2rem;
+                flex-direction: column;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-flask"></i> Partie 3 : Tests CSV Python</h1>
+            <div class="breadcrumb">
+                <a href="ap.html">Ateliers Pro</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="ap1.html">AP1 - Odoo</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Partie 3</span>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 2rem 0;">
+        <div class="container">
+            <div class="section">
+                <h2><i class="fas fa-flask"></i> Partie 3 : Tests d'import des fichiers CSV Python</h2>
+
+                <h3><i class="fas fa-code"></i> Contexte : Scripts Python du binôme développeur</h3>
+
+                <p>
+                    Mon binôme (option Développement) a créé des scripts Python pour générer automatiquement des 
+                    données clients au format CSV compatible avec Odoo.
+                </p>
+
+                <h4><i class="fas fa-file-code"></i> Vue d'ensemble des scripts développés</h4>
+
+                <div class="card">
+                    <h4>Fichiers Python créés (Mission 1 - Développement)</h4>
+                    <ul>
+                        <li><code>GenerateurDonneesPerso.py</code> : Classe principale de génération</li>
+                        <li><code>genere_clients_particuliers_odoo_csv.py</code> : Script particuliers</li>
+                        <li><code>genere_clients_societes_odoo_csv.py</code> : Script sociétés</li>
+                        <li><code>genere_clients_odoo_csv.py</code> : Script unifié</li>
+                    </ul>
+                </div>
+
+                <h4><i class="fas fa-cog"></i> Classe GenerateurDonneesPerso</h4>
+
+                <p>
+                    Cette classe Python utilise des fichiers de données (dictionnaires) pour générer aléatoirement :
+                </p>
+
+                <div class="code-block">
+<span class="comment"># Méthodes de génération disponibles</span><br>
+gen_nom_famille()           <span class="comment"># Nom de famille aléatoire</span><br>
+gen_prenom(est_feminin)     <span class="comment"># Prénom M ou F</span><br>
+gen_adresse_rue()           <span class="comment"># Adresse de rue complète</span><br>
+gen_commune()               <span class="comment"># Ville + code postal</span><br>
+gen_tel_fixe(nb_chiffres)   <span class="comment"># Téléphone fixe (01-05)</span><br>
+gen_tel_mobile(nb_chiffres) <span class="comment"># Téléphone mobile (06-07)</span><br>
+gen_raison_sociale()        <span class="comment"># Nom d'entreprise</span><br>
+gen_siret()                 <span class="comment"># Numéro SIRET (14 chiffres)</span><br>
+gen_numtva(siret)           <span class="comment"># Numéro TVA intra (FR + ...)</span>
+                </div>
+
+                <h4><i class="fas fa-folder-open"></i> Fichiers de données utilisés</h4>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Dictionnaires texte</h4>
+                        <ul>
+                            <li><code>dicoNomsFamille.txt</code></li>
+                            <li><code>dicoPrenomsFille.txt</code></li>
+                            <li><code>dicoPrenomsGarcon.txt</code></li>
+                            <li><code>dicoAdressesRue.txt</code></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Données JSON</h4>
+                        <ul>
+                            <li><code>dicoCommunes.json</code></li>
+                            <li>Structure : nom + codes postaux</li>
+                            <li>Format JSON pour parsing facile</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-user"></i> Test 1 : Import clients particuliers</h3>
+
+                <p>
+                    Mon binôme a généré un fichier CSV de <strong>50 clients particuliers</strong> avec son script Python.
+                </p>
+
+                <h4><i class="fas fa-list"></i> Structure du fichier généré</h4>
+
+                <div class="code-block">
+Titre;Nom;Prénom;Email;Téléphone;Mobile;Code postal;Ville;Rue;Est une entreprise<br>
+Monsieur;Martin;Lucas;lucas.martin@email.fr;0145678901;0687654321;75001;Paris;42 Rue des Lilas;FAUX<br>
+Madame;Bernard;Emma;emma.bernard@email.fr;0298765432;0612345678;29000;Brest;15 Boulevard Albert 1er;FAUX<br>
+Monsieur;Dubois;Théo;theo.dubois@email.fr;0456789012;0698765432;69001;Lyon;127 Rue du Général de Gaulle;FAUX
+                </div>
+
+                <h4><i class="fas fa-download"></i> Procédure d'import</h4>
+
+                <ol class="step-list">
+                    <li>
+                        <strong>Réception du fichier</strong><br>
+                        Mon binôme m'a envoyé <code>clients_particuliers_50.csv</code> par email
+                    </li>
+                    <li>
+                        <strong>Upload dans Odoo</strong><br>
+                        Menu <strong>Vente → Clients → Favoris → Importer</strong>
+                    </li>
+                    <li>
+                        <strong>Vérification du mapping</strong><br>
+                        Toutes les colonnes correspondent grâce à l'addon Partner firstname <i class="fas fa-check" style="color: #10b981;"></i>
+                    </li>
+                    <li>
+                        <strong>Lancement de l'import</strong><br>
+                        Import des 50 lignes en quelques secondes
+                    </li>
+                </ol>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Import réussi !</strong><br>
+                    50 clients particuliers importés sans aucune erreur.<br>
+                    Tous les champs sont correctement remplis : Titre, Prénom, Nom, Email, Téléphones, Adresse complète.
+                </div>
+
+                <div class="image-placeholder">
+                    <div class="icon"><i class="fas fa-image"></i></div>
+                    <p><strong>Image suggérée :</strong> Screenshot liste contacts importés</p>
+                    <p class="image-caption">Source : Capture d'écran Odoo avec les 50 clients</p>
+                </div>
+
+                <h3><i class="fas fa-building"></i> Test 2 : Import clients sociétés</h3>
+
+                <p>
+                    Mon binôme a également généré un fichier CSV de <strong>30 clients sociétés</strong> avec numéros SIRET et TVA.
+                </p>
+
+                <h4><i class="fas fa-building"></i> Champs spécifiques aux sociétés</h4>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Champ</th>
+                                <th>Description</th>
+                                <th>Exemple</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Raison sociale</strong></td>
+                                <td>Nom de l'entreprise</td>
+                                <td>TechSolutions SARL</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SIRET</strong></td>
+                                <td>14 chiffres (SIREN + NIC)</td>
+                                <td>82345678900012</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TVA Intracommunautaire</strong></td>
+                                <td>FR + clé (2) + SIREN (9)</td>
+                                <td>FR54 823456789</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>Email professionnel</td>
+                                <td>contact@techsolutions.fr</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Téléphone</strong></td>
+                                <td>Standard entreprise</td>
+                                <td>0145678901</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Est une entreprise</strong></td>
+                                <td>VRAI (société)</td>
+                                <td>VRAI</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box">
+                    <strong><i class="fas fa-lightbulb"></i> Rappel SIRET / TVA Intracommunautaire :</strong><br><br>
+                    
+                    <strong>SIRET</strong> (14 chiffres) = SIREN (9) + NIC (5)<br>
+                    → Identifie chaque établissement d'une entreprise<br><br>
+                    
+                    <strong>TVA Intra</strong> = FR + Clé (2) + SIREN (9)<br>
+                    → Numéro de TVA pour échanges UE<br><br>
+                    
+                    <strong>Exemple :</strong><br>
+                    SIRET : <code>267 128 411 00070</code><br>
+                    → TVA : <code>FR54 267 128 411</code>
+                </div>
+
+                <h4><i class="fas fa-download"></i> Import des sociétés</h4>
+
+                <ol style="padding-left: 2rem; color: var(--text-gray);">
+                    <li style="margin-bottom: 0.5rem;">Fichier reçu : <code>clients_societes_30.csv</code></li>
+                    <li style="margin-bottom: 0.5rem;">Import via Odoo (même procédure)</li>
+                    <li style="margin-bottom: 0.5rem;">Mapping des colonnes spécifiques (SIRET, TVA)</li>
+                    <li>Validation : 30 sociétés importées <i class="fas fa-check" style="color: #10b981;"></i></li>
+                </ol>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Import sociétés réussi !</strong><br>
+                    30 clients sociétés importés sans erreur.<br>
+                    Les numéros SIRET et TVA intracommunautaires sont cohérents et valides.
+                </div>
+
+                <h3><i class="fas fa-check-double"></i> Vérifications et contrôles qualité</h3>
+
+                <p>
+                    Après les imports, j'ai effectué plusieurs vérifications pour garantir la qualité des données :
+                </p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4><i class="fas fa-check-circle"></i> Points contrôlés</h4>
+                        <ul>
+                            <li>Séparation Prénom/Nom correcte</li>
+                            <li>Emails valides (format @)</li>
+                            <li>Téléphones cohérents (01-05 / 06-07)</li>
+                            <li>Adresses complètes et réalistes</li>
+                            <li>Codes postaux valides (5 chiffres)</li>
+                            <li>Cohérence SIRET ↔ TVA Intra</li>
+                            <li>Type client (Particulier/Société)</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4><i class="fas fa-chart-bar"></i> Statistiques finales</h4>
+                        <ul>
+                            <li><strong>50</strong> clients particuliers</li>
+                            <li><strong>30</strong> clients sociétés</li>
+                            <li><strong>80</strong> contacts au total</li>
+                            <li><strong>0</strong> erreur d'import</li>
+                            <li><strong>100%</strong> champs remplis</li>
+                            <li><strong>100%</strong> données cohérentes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4><i class="fas fa-search"></i> Exemples de vérifications manuelles</h4>
+
+                <p>
+                    J'ai ouvert quelques fiches au hasard pour vérifier :
+                </p>
+
+                <ul style="padding-left: 2rem; color: var(--text-gray);">
+                    <li style="margin-bottom: 0.5rem;"><strong>Client particulier :</strong> Prénom + Nom bien séparés, email cohérent avec le nom</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Client société :</strong> SIRET 14 chiffres, TVA avec FR + 11 chiffres, cohérence des 9 premiers chiffres</li>
+                    <li><strong>Adresses :</strong> Rue + Code postal + Ville correctement remplis</li>
+                </ul>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-double"></i> Validation complète !</strong><br>
+                    Les fichiers CSV générés par les scripts Python de mon binôme sont de très bonne qualité. 
+                    L'import dans Odoo s'est déroulé sans aucun problème grâce à l'addon Partner firstname.
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="partie2-installodoo.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Partie 2 : Installation Addon
+                </a>
+                <a href="partie4-retour.html" class="nav-btn">
+                    Partie 4 : Retour d'expérience
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-gray);">&copy; 2026 <a href="index.html" style="color: var(--primary-cyan); text-decoration: none;">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>

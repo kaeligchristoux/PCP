@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 2 - Installation Addon | AP1 Odoo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-cyan: #06b6d4;
+            --deep-cyan: #0891b2;
+            --electric-teal: #14b8a6;
+            --sky-blue: #38bdf8;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(20, 184, 166, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            animation: cyanPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes cyanPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--electric-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover { transform: scale(1.05); }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-gray { color: #64748b !important; }
+        nav a:hover { color: var(--primary-cyan); }
+        nav a:hover .icon-gray { color: var(--primary-cyan) !important; }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            list-style: none;
+        }
+
+        nav ul li.has-submenu {
+            position: relative;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .submenu li a:hover {
+            background: rgba(6, 182, 212, 0.15);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-cyan);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--electric-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--electric-teal);
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            margin: 2rem 0;
+        }
+
+        .section h2 {
+            color: var(--primary-cyan);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section h3 {
+            color: var(--electric-teal);
+            font-size: 1.6rem;
+            margin: 2.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section h4 {
+            color: var(--sky-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .warning-box, .info-box, .success-box {
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: #fbbf24;
+        }
+
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: var(--primary-cyan);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--electric-teal);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #a8dadc;
+        }
+
+        .code-block .comment {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+        }
+
+        table th, table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        table th {
+            color: white;
+            font-weight: 600;
+        }
+
+        table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        code {
+            background: rgba(6, 182, 212, 0.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--sky-blue);
+        }
+
+        .image-placeholder {
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px dashed rgba(6, 182, 212, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-placeholder img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        .step-list {
+            list-style: none;
+            padding-left: 0;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            padding: 1.2rem 0 1.2rem 4rem;
+            position: relative;
+            border-left: 3px solid rgba(6, 182, 212, 0.3);
+            margin-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-list li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: -2rem;
+            top: 1rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .card {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem 0;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--deep-cyan));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(6, 182, 212, 0.5);
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(6, 182, 212, 0.3);
+            }
+
+            nav ul.active { right: 0; }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2rem;
+                flex-direction: column;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-plug"></i> Partie 2 : Installation Addon Odoo</h1>
+            <div class="breadcrumb">
+                <a href="ap.html">Ateliers Pro</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="ap1.html">AP1 - Odoo</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Partie 2</span>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 2rem 0;">
+        <div class="container">
+            <div class="section">
+                <h2><i class="fas fa-plug"></i> Partie 2 : Installation et sélection d'un addon Odoo</h2>
+
+                <p>
+                    Pour résoudre le problème de séparation Nom/Prénom, j'ai dû analyser et installer un addon Odoo.
+                </p>
+
+                <h3><i class="fas fa-balance-scale"></i> Analyse comparative des addons disponibles</h3>
+
+                <p>
+                    Le TP proposait 5 addons à évaluer. J'ai analysé chacun pour choisir le plus adapté.
+                </p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Addon</th>
+                                <th>Version Odoo</th>
+                                <th>Fonctionnalité</th>
+                                <th>Adapté ?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Contacts full name<br>(kw_signup_full_name)</td>
+                                <td>16.0 <i class="fas fa-check-circle" style="color: #10b981;"></i></td>
+                                <td>Gestion nom complet lors de l'inscription utilisateur</td>
+                                <td><i class="fas fa-times-circle" style="color: #ef4444;"></i> Non (hors contexte)</td>
+                            </tr>
+                            <tr>
+                                <td>Partner Name Hide Parent</td>
+                                <td>15.0 <i class="fas fa-times-circle" style="color: #ef4444;"></i></td>
+                                <td>Cache le nom du contact parent dans l'affichage</td>
+                                <td><i class="fas fa-times-circle" style="color: #ef4444;"></i> Non (version incompatible)</td>
+                            </tr>
+                            <tr style="background: rgba(16, 185, 129, 0.1);">
+                                <td><strong>Partner first name and last name<br>(partner_firstname)</strong></td>
+                                <td><strong>16.0 <i class="fas fa-check-circle" style="color: #10b981;"></i></strong></td>
+                                <td><strong>Sépare le champ Nom en Prénom + Nom de famille</strong></td>
+                                <td><strong><i class="fas fa-check-circle" style="color: #10b981;"></i> OUI - Parfait !</strong></td>
+                            </tr>
+                            <tr>
+                                <td>TGL Partner Advance Search</td>
+                                <td>12.0 <i class="fas fa-times-circle" style="color: #ef4444;"></i></td>
+                                <td>Recherche avancée de contacts</td>
+                                <td><i class="fas fa-times-circle" style="color: #ef4444;"></i> Non (version obsolète)</td>
+                            </tr>
+                            <tr>
+                                <td>Contacts full name<br>(kw_partner_full_name)</td>
+                                <td>16.0 <i class="fas fa-check-circle" style="color: #10b981;"></i></td>
+                                <td>Gestion automatique du nom complet</td>
+                                <td><i class="fas fa-exclamation-triangle" style="color: #fbbf24;"></i> Partiellement (pas de séparation)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Addon choisi : Partner firstname (partner_firstname)</strong><br><br>
+                    <strong>Justification du choix :</strong><br>
+                    <ul style="margin-top: 0.75rem; padding-left: 2rem;">
+                        <li><strong>Compatible Odoo 16.0</strong> : fonctionne avec notre version</li>
+                        <li><strong>Sépare Prénom / Nom</strong> : ajoute 2 champs distincts</li>
+                        <li><strong>Génération automatique du nom complet</strong> : concatène Prénom + Nom</li>
+                        <li><strong>Addon simple et léger</strong> : pas de dépendances complexes</li>
+                        <li><strong>Bien documenté</strong> : documentation claire sur Odoo Apps</li>
+                        <li><strong>Activement maintenu</strong> : dernière mise à jour récente</li>
+                        <li><strong>Très bien noté</strong> : excellentes évaluations utilisateurs</li>
+                    </ul>
+                </div>
+
+                <div class="image-placeholder">
+                    <div class="icon"><i class="fas fa-image"></i></div>
+                    <p><strong>Image suggérée :</strong> Screenshot page addon Partner firstname sur Odoo Apps</p>
+                    <p class="image-caption">Source : <a href="https://apps.odoo.com/apps/modules/16.0/partner_firstname" target="_blank" style="color: var(--primary-cyan);">Partner firstname sur Odoo Apps</a></p>
+                </div>
+
+                <h3><i class="fas fa-folder"></i> Le dossier /opt sous Linux</h3>
+
+                <div class="info-box">
+                    <strong><i class="fas fa-folder"></i> Qu'est-ce que le dossier /opt ?</strong><br><br>
+                    
+                    Le dossier <code>/opt</code> (pour "optional") est un répertoire standard du système de fichiers Linux 
+                    défini par le FHS (Filesystem Hierarchy Standard).<br><br>
+                    
+                    <strong><i class="fas fa-clipboard-list"></i> Rôle et utilisation :</strong><br>
+                    <ul style="margin-top: 0.75rem; padding-left: 2rem;">
+                        <li><strong>Logiciels optionnels</strong> : applications non fournies par les dépôts officiels</li>
+                        <li><strong>Applications tierces</strong> : logiciels propriétaires ou personnalisés</li>
+                        <li><strong>Packages autonomes</strong> : applications qui s'installent en un seul bloc</li>
+                        <li><strong>Séparation système/applications</strong> : évite de mélanger avec <code>/usr</code></li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;">
+                        <strong><i class="fas fa-cog"></i> Structure typique :</strong><br>
+                        Chaque application a son propre sous-dossier : <code>/opt/nom_application/</code><br>
+                        Exemple : <code>/opt/odoo/</code>, <code>/opt/google/chrome/</code>, etc.
+                    </p>
+                    
+                    <p style="margin-top: 1rem;">
+                        <strong>Dans notre cas :</strong><br>
+                        Les addons personnalisés Odoo seront installés dans <code>/opt/odoo/addons/</code> pour les 
+                        distinguer des addons officiels dans <code>/usr/lib/python3/dist-packages/odoo/addons/</code>
+                    </p>
+                </div>
+
+                <p style="margin-top: 1.5rem;">
+                    <strong><i class="fas fa-book"></i> Référence :</strong><br>
+                    Linux Foundation - Filesystem Hierarchy Standard v3.0<br>
+                    <a href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html" target="_blank" style="color: var(--primary-cyan);">
+                        https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html
+                    </a>
+                </p>
+
+                <h3><i class="fas fa-download"></i> Installation de l'addon Partner firstname</h3>
+
+                <p>
+                    J'ai installé l'addon manuellement en suivant la procédure Odoo.
+                </p>
+
+                <h4><i class="fas fa-tasks"></i> Méthode d'installation manuelle</h4>
+
+                <ol class="step-list">
+                    <li>
+                        <strong>Téléchargement de l'addon</strong><br>
+                        Téléchargement du module depuis Odoo Apps (fichier ZIP)
+                    </li>
+                    <li>
+                        <strong>Transfert sur le serveur</strong>
+                        <div class="code-block">
+<span class="comment"># Transfert du fichier ZIP depuis mon PC vers la VM</span><br>
+scp partner_firstname.zip user@100.115.29.182:~/
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Création du dossier addons personnalisés</strong>
+                        <div class="code-block">
+<span class="comment"># Connexion SSH à la VM</span><br>
+ssh user@100.115.29.182<br>
+<br>
+<span class="comment"># Création du dossier /opt/odoo/addons</span><br>
+sudo mkdir -p /opt/odoo/addons<br>
+<br>
+<span class="comment"># Attribution des droits à l'utilisateur odoo</span><br>
+sudo chown -R odoo:odoo /opt/odoo
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Extraction et copie de l'addon</strong>
+                        <div class="code-block">
+<span class="comment"># Extraction du ZIP</span><br>
+unzip partner_firstname.zip -d ~/<br>
+<br>
+<span class="comment"># Copie vers /opt/odoo/addons/</span><br>
+sudo cp -r ~/partner_firstname /opt/odoo/addons/<br>
+<br>
+<span class="comment"># Vérification</span><br>
+ls -la /opt/odoo/addons/
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Configuration du chemin des addons</strong>
+                        <div class="code-block">
+<span class="comment"># Édition du fichier de configuration Odoo</span><br>
+sudo nano /etc/odoo/odoo.conf<br>
+<br>
+<span class="comment"># Ajout/modification de la ligne addons_path</span><br>
+addons_path = /usr/lib/python3/dist-packages/odoo/addons,/opt/odoo/addons
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Redémarrage d'Odoo</strong>
+                        <div class="code-block">
+<span class="comment"># Redémarrage du service pour prendre en compte le nouvel addon</span><br>
+sudo systemctl restart odoo<br>
+<br>
+<span class="comment"># Vérification du statut</span><br>
+sudo systemctl status odoo
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Activation du mode développeur dans Odoo</strong><br>
+                        Dans l'interface web : <strong>Paramètres → Activer le mode développeur</strong>
+                    </li>
+                    <li>
+                        <strong>Mise à jour de la liste des applications</strong><br>
+                        <strong>Apps → Menu ⋮ → Mettre à jour la liste des applications</strong>
+                    </li>
+                    <li>
+                        <strong>Recherche et installation de l'addon</strong><br>
+                        Recherche "<strong>Partner firstname</strong>" → Clic sur <strong>Installer</strong>
+                    </li>
+                </ol>
+
+                <div class="image-placeholder">
+                    <div class="icon"><i class="fas fa-image"></i></div>
+                    <p><strong>Image suggérée :</strong> Screenshot terminal avec installation addon</p>
+                    <p class="image-caption">Source : Capture terminal Linux avec commandes ci-dessus</p>
+                </div>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Addon installé avec succès !</strong><br>
+                    L'addon Partner firstname est maintenant actif dans Odoo.
+                </div>
+
+                <h3><i class="fas fa-check-double"></i> Vérification du bon fonctionnement</h3>
+
+                <p>
+                    Après installation, j'ai vérifié que les champs Prénom et Nom apparaissent bien.
+                </p>
+
+                <h4><i class="fas fa-check-circle"></i> Nouveaux champs dans les fiches contacts</h4>
+
+                <div class="card">
+                    <h4><i class="fas fa-edit"></i> Champs ajoutés par l'addon</h4>
+                    <ul>
+                        <li><strong>Prénom</strong> : nouveau champ pour le prénom uniquement</li>
+                        <li><strong>Nom de famille</strong> : nouveau champ pour le nom uniquement</li>
+                        <li><strong>Nom</strong> (calculé) : généré automatiquement = Prénom + Nom</li>
+                    </ul>
+                </div>
+
+                <div class="image-placeholder">
+                    <div class="icon"><i class="fas fa-image"></i></div>
+                    <p><strong>Image suggérée :</strong> Screenshot fiche contact avec Prénom/Nom séparés</p>
+                    <p class="image-caption">Source : Capture d'écran Odoo montrant les 2 champs</p>
+                </div>
+
+                <h4><i class="fas fa-flask"></i> Test d'import du CSV exemple</h4>
+
+                <p>
+                    J'ai re-testé l'import du fichier <code>clients_particuliers_exemple.csv</code> :
+                </p>
+
+                <ol style="padding-left: 2rem; color: var(--text-gray);">
+                    <li style="margin-bottom: 0.5rem;">Menu <strong>Vente → Clients → Favoris → Importer</strong></li>
+                    <li style="margin-bottom: 0.5rem;">Sélection du fichier CSV</li>
+                    <li style="margin-bottom: 0.5rem;">Mapping des colonnes :
+                        <ul style="margin-top: 0.5rem; padding-left: 2rem;">
+                            <li>CSV "Prénom" → Odoo "Prénom" <i class="fas fa-check" style="color: #10b981;"></i></li>
+                            <li>CSV "Nom" → Odoo "Nom de famille" <i class="fas fa-check" style="color: #10b981;"></i></li>
+                            <li>CSV "Email" → Odoo "Email" <i class="fas fa-check" style="color: #10b981;"></i></li>
+                            <li>etc.</li>
+                        </ul>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">Validation de l'import</li>
+                    <li>Les 10 clients ont été importés correctement ! <i class="fas fa-party-horn"></i></li>
+                </ol>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-circle"></i> Problème résolu !</strong><br>
+                    L'addon Partner firstname permet maintenant d'importer les fichiers CSV avec colonnes Prénom et Nom séparées.
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="partie1-creationvm.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Partie 1 : Création VM
+                </a>
+                <a href="partie3-testcsv.html" class="nav-btn">
+                    Partie 3 : Tests CSV
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-gray);">&copy; 2026 <a href="index.html" style="color: var(--primary-cyan); text-decoration: none;">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
