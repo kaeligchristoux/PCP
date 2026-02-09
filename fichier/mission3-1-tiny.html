@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annexe 1 - Dépannage Tiny PC | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --deep-green: #059669;
+            --accent-emerald: #34d399;
+            --dark-green: #047857;
+            --lime-green: #84cc16;
+            --sncf-red: #ed1c24;
+            --tech-blue: #0ea5e9;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Background animé VERT */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 35%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 65%, rgba(52, 211, 153, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 45% 75%, rgba(132, 204, 22, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: greenPulse 12s ease-in-out infinite;
+        }
+
+        @keyframes greenPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: var(--rail-gray) !important;
+        }
+
+        nav a:hover {
+            color: var(--primary-green);
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-green) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submenu li a {
+            display: flex;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-gray);
+            transition: all 0.2s ease;
+        }
+
+        .submenu li a:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary-green);
+            padding-left: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald), var(--lime-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 0.6s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-green);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-emerald);
+        }
+
+        /* Sections */
+        .section {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin: 2.5rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .section h3 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 i {
+            color: var(--accent-emerald);
+        }
+
+        .section h4 {
+            color: var(--accent-emerald);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--primary-green);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.15);
+            border-left: 4px solid var(--accent-emerald);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        /* Problem/Solution Cards */
+        .problem-solution {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .problem-card, .solution-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 2px solid;
+        }
+
+        .problem-card {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .problem-card h5 {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .solution-card {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--primary-green);
+        }
+
+        .solution-card h5 {
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Step List */
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            padding: 1rem 0 1rem 3.5rem;
+            position: relative;
+            border-left: 2px solid rgba(16, 185, 129, 0.3);
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -1.5rem;
+            top: 0.8rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Code Block */
+        code {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-emerald);
+            font-size: 0.9rem;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 4rem 0 2rem;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .nav-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(16, 185, 129, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .problem-solution {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-desktop"></i> Annexe 1 : Dépannage Tiny PC</h1>
+            <p class="subtitle">Résolution de problèmes de ventilation et d'affichage - Lenovo P330 Tiny</p>
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="stage2.html">Stage 2 - SNCF</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="mission3-sncf.html">Mission 3</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Annexe 1</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            <!-- Contexte -->
+            <div class="section">
+                <h3><i class="fas fa-info-circle"></i> Contexte de l'intervention</h3>
+                <div class="info-box">
+                    <strong>Situation :</strong><br>
+                    Une utilisatrice du Centre de Gestion Réseau SNCF rencontrait des problèmes avec son poste de travail 
+                    <strong>Lenovo ThinkCentre P330 Tiny</strong>. Elle signalait une <strong>ventilation excessive et bruyante</strong> 
+                    au démarrage du PC et à certains moments aléatoires durant la journée, ainsi que l'apparition de 
+                    <strong>traits de couleurs</strong> sur son écran de manière intermittente.
+                </div>
+
+                <p style="margin-top: 1.5rem;">
+                    Ces dysfonctionnements impactaient son confort de travail et risquaient d'affecter sa productivité. 
+                    La présence de traits colorés à l'écran pouvait également indiquer un problème plus sérieux 
+                    nécessitant une intervention rapide pour éviter une panne complète du poste.
+                </p>
+
+                <h4><i class="fas fa-desktop"></i> Caractéristiques du matériel</h4>
+                <ul style="padding-left: 2rem; margin-top: 1rem;">
+                    <li><strong>Modèle :</strong> Lenovo ThinkCentre P330 Tiny</li>
+                    <li><strong>Format :</strong> Tiny Desktop (1L ultra-compact)</li>
+                    <li><strong>Utilisateur :</strong> Poste de travail bureau - utilisatrice CGR SNCF</li>
+                    <li><strong>Problèmes signalés :</strong> Ventilation excessive + Artefacts d'affichage</li>
+                </ul>
+            </div>
+
+            <!-- Diagnostic -->
+            <div class="section">
+                <h3><i class="fas fa-search"></i> Diagnostic et analyse</h3>
+
+                <div class="problem-solution">
+                    <div class="problem-card">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Symptômes identifiés</h5>
+                        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Ventilateurs bruyants</strong> dès le démarrage du PC</li>
+                            <li><strong>Ventilation excessive</strong> à des moments aléatoires</li>
+                            <li><strong>Traits de couleurs</strong> sur l'écran (artefacts visuels)</li>
+                            <li><strong>Affichage intermittent</strong> des anomalies graphiques</li>
+                            <li>Probable accumulation de poussière</li>
+                            <li>Configuration BIOS sous-optimale</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-card">
+                        <h5><i class="fas fa-check-circle"></i> Actions correctives</h5>
+                        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Dépoussiérage complet</strong> à la souffleuse</li>
+                            <li><strong>Nettoyage ventilateurs</strong> et grilles d'aération</li>
+                            <li><strong>Mise à jour BIOS</strong> depuis le site Lenovo</li>
+                            <li><strong>Reconfiguration ventilation</strong> dans le BIOS</li>
+                            <li>Passage en mode "Better Thermal Performance"</li>
+                            <li>Tests de validation post-intervention</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Hypothèses diagnostiques :</strong><br>
+                    La ventilation excessive était probablement causée par une <strong>accumulation de poussière</strong> 
+                    dans les ventilateurs et le dissipateur thermique, forçant le système à augmenter la vitesse 
+                    de rotation pour compenser. Les artefacts d'affichage pouvaient être liés à une surchauffe 
+                    ou à un pilote BIOS obsolète gérant mal la carte graphique intégrée.
+                </div>
+            </div>
+
+            <!-- Étapes d'intervention -->
+            <div class="section">
+                <h3><i class="fas fa-clipboard-list"></i> Étapes d'intervention détaillées</h3>
+
+                <ol class="step-list">
+                    <li>
+                        <strong>Analyse initiale et prise en charge du poste</strong><br>
+                        Discussion avec l'utilisatrice pour comprendre précisément les symptômes : 
+                        fréquence des ventilateurs bruyants, moments d'apparition des traits colorés à l'écran, 
+                        impact sur son travail. Prise en charge du Lenovo P330 Tiny et transport vers l'atelier 
+                        technique pour intervention.
+                    </li>
+                    <li>
+                        <strong>Inspection visuelle et démontage</strong><br>
+                        Inspection visuelle du boîtier : grilles d'aération visiblement obstruées par la poussière. 
+                        Démontage du capot latéral du P330 Tiny (système de fixation par clips Lenovo). 
+                        Constatation : <strong>accumulation importante de poussière</strong> dans les ventilateurs 
+                        et sur le dissipateur thermique du processeur.
+                    </li>
+                </ol>
+
+                <div class="media-gallery" style="margin: 2rem 0;">
+                    <div class="media-item">
+                        <img src="avant.jpeg" alt="PC Lenovo P330 avant dépoussiérage" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+                        <p class="media-caption" style="text-align: center; margin-top: 1rem; color: var(--text-gray); font-style: italic;">
+                            <i class="fas fa-image"></i> Photo 1 : État du PC avant intervention - Accumulation visible de poussière
+                        </p>
+                    </div>
+                </div>
+
+                <ol class="step-list" style="counter-reset: step-counter 2;">
+                    <li>
+                        <strong>Dépoussiérage complet du système</strong><br>
+                        Utilisation de la <strong>souffleuse professionnelle</strong> pour éliminer toute la poussière 
+                        accumulée. Nettoyage méticuleux des ventilateurs (CPU et système), du dissipateur thermique, 
+                        des grilles d'aération et de tous les composants internes. Attention particulière portée aux 
+                        zones difficiles d'accès entre les ailettes du dissipateur.
+                    </li>
+                </ol>
+
+                <div class="media-gallery" style="margin: 2rem 0;">
+                    <div class="media-item">
+                        <video controls style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+                            <source src="depouss.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
+                        <p class="media-caption" style="text-align: center; margin-top: 1rem; color: var(--text-gray); font-style: italic;">
+                            <i class="fas fa-video"></i> Vidéo : Dépoussiérage en cours avec souffleuse professionnelle
+                        </p>
+                    </div>
+                </div>
+
+                <div class="media-gallery" style="margin: 2rem 0;">
+                    <div class="media-item">
+                        <img src="apres.jpeg" alt="PC Lenovo P330 après dépoussiérage" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+                        <p class="media-caption" style="text-align: center; margin-top: 1rem; color: var(--text-gray); font-style: italic;">
+                            <i class="fas fa-image"></i> Photo 2 : État du PC après dépoussiérage complet - Composants propres
+                        </p>
+                    </div>
+                </div>
+
+                <ol class="step-list" style="counter-reset: step-counter 3;">
+                    <li>
+                        <strong>Téléchargement et préparation de la mise à jour BIOS</strong><br>
+                        Connexion au site officiel <strong>Lenovo Support</strong> (support.lenovo.com). 
+                        Recherche du modèle exact : ThinkCentre P330 Tiny. Identification de la dernière version 
+                        du BIOS disponible. Téléchargement de l'exécutable de mise à jour BIOS 
+                        (<code>.exe</code> bootable). Vérification de l'intégrité du fichier téléchargé.
+                    </li>
+                </ol>
+
+                <div class="media-gallery" style="margin: 2rem 0;">
+                    <div class="media-item">
+                        <img src="exebios.jpeg" alt="Exécutable de mise à jour BIOS Lenovo" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+                        <p class="media-caption" style="text-align: center; margin-top: 1rem; color: var(--text-gray); font-style: italic;">
+                            <i class="fas fa-image"></i> Photo 3 : Lancement de l'exécutable de mise à jour du BIOS
+                        </p>
+                    </div>
+                </div>
+
+                <ol class="step-list" style="counter-reset: step-counter 4;">
+                    <li>
+                        <strong>Exécution de la mise à jour BIOS</strong><br>
+                        Lancement de l'exécutable de mise à jour BIOS depuis Windows. Lecture et validation 
+                        des conditions préalables : PC branché sur secteur, batterie chargée (si applicable). 
+                        Démarrage du processus de mise à jour. <strong>Attention :</strong> ne pas interrompre 
+                        l'alimentation ni éteindre le PC durant cette phase critique. Redémarrage automatique 
+                        du système une fois la mise à jour terminée.
+                    </li>
+                </ol>
+
+                <div class="media-gallery" style="margin: 2rem 0;">
+                    <div class="media-item">
+                        <img src="majbios.jpeg" alt="Mise à jour du BIOS en cours" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+                        <p class="media-caption" style="text-align: center; margin-top: 1rem; color: var(--text-gray); font-style: italic;">
+                            <i class="fas fa-image"></i> Photo 4 : Processus de mise à jour du BIOS en cours
+                        </p>
+                    </div>
+                </div>
+
+                <ol class="step-list" style="counter-reset: step-counter 5;">
+                    <li>
+                        <strong>Configuration optimale du BIOS</strong><br>
+                        Accès au BIOS au redémarrage (touche <code>F1</code> ou <code>F2</code> selon Lenovo). 
+                        Navigation dans les paramètres thermiques et de ventilation. 
+                        <strong>Modification clé :</strong> passage du mode <code>"Better Acoustic Performance"</code> 
+                        (silencieux mais moins efficace) au mode <code>"Better Thermal Performance"</code> 
+                        (refroidissement optimal). Cette configuration permet aux ventilateurs de tourner 
+                        à la vitesse nécessaire pour refroidir correctement les composants, évitant ainsi 
+                        les surchauffes et les accélérations brutales.
+                    </li>
+                </ol>
+
+                <div class="media-gallery" style="margin: 2rem 0;">
+                    <div class="media-item">
+                        <img src="biosperf.jpeg" alt="Configuration BIOS Better Thermal Performance" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+                        <p class="media-caption" style="text-align: center; margin-top: 1rem; color: var(--text-gray); font-style: italic;">
+                            <i class="fas fa-image"></i> Photo 5 : Configuration BIOS - Passage en "Better Thermal Performance"
+                        </p>
+                    </div>
+                </div>
+
+                <ol class="step-list" style="counter-reset: step-counter 6;">
+                    <li>
+                        <strong>Tests de validation et restitution</strong><br>
+                        Sauvegarde de la configuration BIOS et redémarrage. Tests de validation : 
+                        surveillance du comportement des ventilateurs au démarrage (plus de bruit excessif), 
+                        vérification de l'affichage (disparition des traits colorés), tests de charge pour 
+                        s'assurer que la ventilation se régule correctement. Remontage du capot du PC. 
+                        Restitution du poste à l'utilisatrice avec explications des actions réalisées.
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Explications techniques -->
+            <div class="section">
+                <h3><i class="fas fa-graduation-cap"></i> Explications techniques</h3>
+
+                <h4><i class="fas fa-wind"></i> Problème de ventilation</h4>
+                <p>
+                    L'accumulation de poussière dans les ventilateurs et le dissipateur thermique réduit 
+                    considérablement l'efficacité du refroidissement. Le système compense en augmentant 
+                    la vitesse de rotation des ventilateurs, ce qui génère du bruit et n'est pas optimal 
+                    pour la durée de vie des composants.
+                </p>
+
+                <h4 style="margin-top: 1.5rem;"><i class="fas fa-cog"></i> Configuration "Better Acoustic Performance"</h4>
+                <p>
+                    Le mode <strong>"Better Acoustic Performance"</strong> privilégie le silence en limitant 
+                    la vitesse maximale des ventilateurs. Cependant, sur un PC encrassé, cette limitation 
+                    empêche le système de se refroidir correctement, provoquant des surchauffes et des 
+                    accélérations soudaines des ventilateurs lorsque les seuils de température critique 
+                    sont atteints.
+                </p>
+
+                <h4 style="margin-top: 1.5rem;"><i class="fas fa-thermometer-half"></i> Configuration "Better Thermal Performance"</h4>
+                <p>
+                    Le mode <strong>"Better Thermal Performance"</strong> autorise les ventilateurs à tourner 
+                    à la vitesse optimale pour maintenir des températures saines. Après le nettoyage, 
+                    ce mode permet une ventilation efficace sans bruit excessif, car les ventilateurs 
+                    propres nécessitent moins de vitesse pour refroidir le système.
+                </p>
+
+                <h4 style="margin-top: 1.5rem;"><i class="fas fa-tv"></i> Artefacts d'affichage</h4>
+                <p>
+                    Les traits de couleurs (artefacts visuels) peuvent être causés par plusieurs facteurs :
+                </p>
+                <ul style="padding-left: 2rem; margin-top: 0.5rem;">
+                    <li><strong>Surchauffe du GPU intégré</strong> due à la poussière</li>
+                    <li><strong>Pilotes BIOS obsolètes</strong> gérant mal la carte graphique</li>
+                    <li><strong>Tensions instables</strong> causées par une régulation thermique défaillante</li>
+                </ul>
+                <p style="margin-top: 0.5rem;">
+                    La mise à jour du BIOS corrige souvent ces problèmes en améliorant la gestion 
+                    de l'alimentation et des fréquences du GPU.
+                </p>
+            </div>
+
+            <!-- Résultats -->
+            <div class="section">
+                <h3><i class="fas fa-check-circle"></i> Résultats et retour utilisateur</h3>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-double"></i> Intervention réussie :</strong><br><br>
+                    
+                    <strong>Ventilation :</strong><br>
+                    <ul style="padding-left: 2rem; margin-top: 0.5rem;">
+                        <li>✅ Disparition du bruit excessif au démarrage</li>
+                        <li>✅ Ventilation régulée et silencieuse en utilisation normale</li>
+                        <li>✅ Pas d'accélérations brutales aléatoires</li>
+                    </ul>
+                    
+                    <strong style="display: block; margin-top: 1rem;">Affichage :</strong><br>
+                    <ul style="padding-left: 2rem; margin-top: 0.5rem;">
+                        <li>✅ Disparition complète des traits colorés</li>
+                        <li>✅ Affichage stable et net</li>
+                        <li>✅ Aucun artefact visuel constaté</li>
+                    </ul>
+
+                    <strong style="display: block; margin-top: 1rem;">Retour utilisateur :</strong><br>
+                    L'utilisatrice a confirmé que son poste fonctionne désormais <strong>normalement</strong>, 
+                    sans bruit ni problème d'affichage. Elle a apprécié les explications fournies et 
+                    l'amélioration notable du confort de travail.
+                </div>
+            </div>
+
+            <!-- Outils utilisés -->
+            <div class="section">
+                <h3><i class="fas fa-toolbox"></i> Matériel et ressources utilisés</h3>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 1.5rem;">
+                    <div class="info-box">
+                        <h4 style="margin-top: 0; color: var(--primary-green);">
+                            <i class="fas fa-tools"></i> Matériel
+                        </h4>
+                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+                            <li>Souffleuse professionnelle</li>
+                            <li>Tournevis (démontage capot)</li>
+                            <li>Clé USB (fichier BIOS)</li>
+                            <li>Bracelet antistatique</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4 style="margin-top: 0; color: var(--primary-green);">
+                            <i class="fas fa-globe"></i> Ressources en ligne
+                        </h4>
+                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+                            <li><strong>Site Lenovo Support</strong><br>
+                                <a href="https://support.lenovo.com" target="_blank" style="color: var(--accent-emerald); text-decoration: none;">support.lenovo.com</a>
+                            </li>
+                            <li>Documentation ThinkCentre P330 Tiny</li>
+                            <li>Dernière version BIOS disponible</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compétences BTS SIO -->
+            <div class="section">
+                <h3><i class="fas fa-trophy"></i> Compétences BTS SIO mobilisées</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2rem;">
+                    <div class="info-box">
+                        <h4 style="margin-top: 0; color: var(--primary-green);">
+                            <i class="fas fa-cogs"></i> Compétences référentiel
+                        </h4>
+                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+                            <li><strong>B1.2.1</strong> - Recenser et identifier les ressources numériques</li>
+                            <li><strong>B1.2.3</strong> - Vérifier les comptes rendus d'intervention</li>
+                            <li><strong>B2.1.1</strong> - Élaborer et présenter un dossier de choix de solution technique</li>
+                            <li><strong>B2.2.1</strong> - Gérer des sauvegardes</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4 style="margin-top: 0; color: var(--primary-green);">
+                            <i class="fas fa-clipboard-check"></i> Compétences terrain
+                        </h4>
+                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+                            <li>Diagnostic matériel</li>
+                            <li>Maintenance préventive</li>
+                            <li>Mise à jour firmware/BIOS</li>
+                            <li>Communication utilisateur</li>
+                            <li>Documentation technique</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="nav-buttons">
+                <a href="mission3-sncf.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour Mission 3</span>
+                </a>
+                <a href="mission3-2-switch.html" class="nav-btn">
+                    <span>Annexe 2 : Switch</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Description des compétences -->
+            <div class="section" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05)); border: 1px solid rgba(16, 185, 129, 0.2);">
+                <h3 style="border-bottom: none; padding-bottom: 0;"><i class="fas fa-book"></i> Description des compétences du référentiel SIO</h3>
+                
+                <div style="margin-top: 2rem;">
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B1.2.1 - Recenser et identifier les ressources numériques
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Capacité à identifier le matériel (Lenovo P330 Tiny), ses caractéristiques techniques, 
+                            et à recenser les ressources nécessaires à l'intervention (documentation Lenovo, 
+                            fichiers BIOS, outils de nettoyage).
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B1.2.3 - Vérifier les comptes rendus d'intervention
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Rédaction et vérification de la documentation de l'intervention, validation des actions 
+                            réalisées (dépoussiérage, mise à jour BIOS, configuration), et traçabilité des opérations 
+                            effectuées pour le suivi du parc informatique.
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B2.1.1 - Élaborer et présenter un dossier de choix de solution technique
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Analyse du problème (ventilation excessive + artefacts d'affichage), proposition de solutions 
+                            techniques adaptées (nettoyage physique, mise à jour BIOS, reconfiguration), et justification 
+                            des choix effectués en fonction du diagnostic établi.
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B2.2.1 - Gérer des sauvegardes
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Importance de la sauvegarde de la configuration BIOS avant modification. Bien que non 
+                            explicitement réalisée ici, cette compétence est mobilisée dans la préparation de 
+                            l'intervention (vérification de la possibilité de revenir en arrière en cas de problème 
+                            avec la nouvelle version du BIOS).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-gray);">
+                &copy; 2026 <a href="index.html" style="color: var(--primary-green); text-decoration: none;">Kaëlig CHRISTOUX</a>. 
+                Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        // Submenu mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Click outside to close menu
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
