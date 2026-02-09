@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Référentiel BTS SIO SISR | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #10b981;
+            --accent: #8b5cf6;
+            --bg-dark: #0a0a0b;
+            --bg-card: #141416;
+            --text: #fafafa;
+            --text-muted: #a1a1aa;
+            --text-subtle: #71717a;
+            
+            /* Bloc colors */
+            --bloc1-color: #06b6d4; /* Cyan turquoise */
+            --bloc2-color: #a855f7; /* Purple mauve */
+            --bloc3-color: #f97316; /* Orange red */
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html { 
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: 
+                radial-gradient(ellipse at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+                radial-gradient(ellipse at 50% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 55%),
+                var(--bg-dark);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 11, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid #27272a;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 2rem; 
+            align-items: center; 
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        nav a i {
+            font-size: 0.9rem;
+            color: var(--text-subtle);
+        }
+
+        nav ul li.has-submenu {
+            position: relative;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            border: 1px solid #27272a;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+        }
+
+        .submenu li a {
+            padding: 0.7rem 1rem;
+            display: flex;
+            width: 100%;
+        }
+
+        .submenu li a:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 140px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #10b981, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Bloc Section */
+        .bloc-section {
+            margin: 4rem 0;
+        }
+
+        .bloc-header {
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border-left: 6px solid;
+        }
+
+        .bloc-header.bloc1 {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.05));
+            border-color: var(--bloc1-color);
+        }
+
+        .bloc-header.bloc2 {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05));
+            border-color: var(--bloc2-color);
+        }
+
+        .bloc-header.bloc3 {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(249, 115, 22, 0.05));
+            border-color: var(--bloc3-color);
+        }
+
+        .bloc-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .bloc-header.bloc1 h2 {
+            color: var(--bloc1-color);
+        }
+
+        .bloc-header.bloc2 h2 {
+            color: var(--bloc2-color);
+        }
+
+        .bloc-header.bloc3 h2 {
+            color: var(--bloc3-color);
+        }
+
+        .bloc-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Competence Categories */
+        .competence-category {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #27272a;
+            transition: all 0.3s ease;
+        }
+
+        .competence-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .competence-category.bloc1:hover {
+            border-color: var(--bloc1-color);
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.2);
+        }
+
+        .competence-category.bloc2:hover {
+            border-color: var(--bloc2-color);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2);
+        }
+
+        .competence-category.bloc3:hover {
+            border-color: var(--bloc3-color);
+            box-shadow: 0 15px 40px rgba(249, 115, 22, 0.2);
+        }
+
+        .competence-category h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .competence-category.bloc1 h3 {
+            color: var(--bloc1-color);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .competence-category.bloc2 h3 {
+            color: var(--bloc2-color);
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .competence-category.bloc3 h3 {
+            color: var(--bloc3-color);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .competence-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #27272a;
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .competence-item:last-child {
+            border-bottom: none;
+        }
+
+        .competence-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .bloc1 .competence-code {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--bloc1-color);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .bloc2 .competence-code {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--bloc2-color);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .bloc3 .competence-code {
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--bloc3-color);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .competence-text {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 11, 0.9);
+            border-top: 1px solid #27272a;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        footer p {
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(10, 10, 11, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid #27272a;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .competence-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .bloc-header {
+                padding: 1.5rem;
+            }
+
+            .competence-category {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-briefcase"></i> Stages <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-folder-open"></i> Autres <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt"></i> CV</a></li>
+                <li><a href="referentielsio.html"><i class="fas fa-book"></i> Référentiel</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1><i class="fas fa-book"></i> Référentiel BTS SIO SISR</h1>
+            <p>Compétences du référentiel présentées dans ce portfolio</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            
+            <!-- BLOC 1 - Cyan Turquoise -->
+            <div class="bloc-section">
+                <div class="bloc-header bloc1">
+                    <h2>Bloc 1 - Support et mise à disposition des services informatiques</h2>
+                    <p>Compétences liées à la gestion du patrimoine informatique, au support utilisateur et au développement de la présence en ligne</p>
+                </div>
+
+                <!-- B1.1 -->
+                <div class="competence-category bloc1">
+                    <h3><i class="fas fa-server"></i> B1.1 Gérer le patrimoine informatique</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.1.1</div>
+                        <div class="competence-text">Recenser et identifier les ressources numériques</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.1.2</div>
+                        <div class="competence-text">Mettre en place et vérifier les niveaux d'habilitation associés à un service</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.1.3</div>
+                        <div class="competence-text">Exploiter des référentiels, normes et standards adoptés par le prestataire informatique</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.1.4</div>
+                        <div class="competence-text">Gérer des sauvegardes</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.1.5</div>
+                        <div class="competence-text">Vérifier les conditions de la continuité d'un service informatique</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.1.6</div>
+                        <div class="competence-text">Vérifier le respect des règles d'utilisation des ressources numériques</div>
+                    </div>
+                </div>
+
+                <!-- B1.2 -->
+                <div class="competence-category bloc1">
+                    <h3><i class="fas fa-headset"></i> B1.2 Répondre aux incidents et aux demandes d'assistance et d'évolution</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.2.1</div>
+                        <div class="competence-text">Traiter des demandes concernant les services réseau et système, applicatifs</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.2.2</div>
+                        <div class="competence-text">Traiter des demandes concernant les applications</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.2.3</div>
+                        <div class="competence-text">Collecter, suivre et orienter des demandes</div>
+                    </div>
+                </div>
+
+                <!-- B1.3 -->
+                <div class="competence-category bloc1">
+                    <h3><i class="fas fa-globe"></i> B1.3 Développer la présence en ligne de l'organisation</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.3.1</div>
+                        <div class="competence-text">Participer à l'évolution d'un site Web exploitant les données de l'organisation</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.3.2</div>
+                        <div class="competence-text">Référencer les services en ligne de l'organisation et mesurer leur visibilité</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.3.3</div>
+                        <div class="competence-text">Participer à la valorisation de l'image de l'organisation sur les médias numériques en tenant compte du cadre juridique et des enjeux économiques</div>
+                    </div>
+                </div>
+
+                <!-- B1.4 -->
+                <div class="competence-category bloc1">
+                    <h3><i class="fas fa-project-diagram"></i> B1.4 Travailler en mode projet</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.4.1</div>
+                        <div class="competence-text">Analyser les objectifs et les modalités d'organisation d'un projet</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.4.2</div>
+                        <div class="competence-text">Évaluer les indicateurs de suivi d'un projet et analyser les écarts</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.4.3</div>
+                        <div class="competence-text">Planifier les activités</div>
+                    </div>
+                </div>
+
+                <!-- B1.5 -->
+                <div class="competence-category bloc1">
+                    <h3><i class="fas fa-users"></i> B1.5 Mettre à disposition des utilisateurs un service informatique</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.5.1</div>
+                        <div class="competence-text">Déployer un service</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.5.2</div>
+                        <div class="competence-text">Réaliser les tests d'intégration et d'acceptation d'un service</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.5.3</div>
+                        <div class="competence-text">Accompagner les utilisateurs dans la mise en place d'un service</div>
+                    </div>
+                </div>
+
+                <!-- B1.6 -->
+                <div class="competence-category bloc1">
+                    <h3><i class="fas fa-user-graduate"></i> B1.6 Organiser son développement professionnel</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.6.1</div>
+                        <div class="competence-text">Gérer son identité professionnelle</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.6.2</div>
+                        <div class="competence-text">Développer son projet professionnel</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.6.3</div>
+                        <div class="competence-text">Mettre en œuvre des outils et stratégies de veille informationnelle</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B1.6.4</div>
+                        <div class="competence-text">Mettre en place son environnement d'apprentissage personnel</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC 2 - Purple Mauve -->
+            <div class="bloc-section">
+                <div class="bloc-header bloc2">
+                    <h2>Bloc 2 - Administration des systèmes et des réseaux</h2>
+                    <p>Compétences spécifiques SISR : conception, installation, exploitation et supervision des infrastructures réseau</p>
+                </div>
+
+                <!-- B2.1 -->
+                <div class="competence-category bloc2">
+                    <h3><i class="fas fa-network-wired"></i> B2.1 Concevoir une solution d'infrastructure réseau</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.1.1</div>
+                        <div class="competence-text">Analyser un besoin exprimé et son contexte juridique</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.1.2</div>
+                        <div class="competence-text">Étudier l'impact d'une évolution d'un élément d'infrastructure sur le système informatique</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.1.3</div>
+                        <div class="competence-text">Maquetter et prototyper une solution d'infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.1.4</div>
+                        <div class="competence-text">Choisir les éléments nécessaires pour assurer la qualité et la disponibilité d'un service</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.1.5</div>
+                        <div class="competence-text">Élaborer un dossier de choix d'une solution d'infrastructure et rédiger les spécifications techniques</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.1.6</div>
+                        <div class="competence-text">Déterminer et préparer les tests nécessaires à la validation de la solution d'infrastructure retenue</div>
+                    </div>
+                </div>
+
+                <!-- B2.2 -->
+                <div class="competence-category bloc2">
+                    <h3><i class="fas fa-cogs"></i> B2.2 Installer, tester et déployer une solution d'infrastructure réseau</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.2.1</div>
+                        <div class="competence-text">Installer et configurer des éléments d'infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.2.2</div>
+                        <div class="competence-text">Rédiger ou mettre à jour la documentation technique et utilisateur d'une solution d'infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.2.3</div>
+                        <div class="competence-text">Tester l'intégration et l'acceptation d'une solution d'infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.2.4</div>
+                        <div class="competence-text">Déployer une solution d'infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.2.5</div>
+                        <div class="competence-text">Installer et configurer des éléments nécessaires pour assurer la continuité des services</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.2.6</div>
+                        <div class="competence-text">Installer et configurer des éléments nécessaires pour assurer la qualité de service</div>
+                    </div>
+                </div>
+
+                <!-- B2.3 -->
+                <div class="competence-category bloc2">
+                    <h3><i class="fas fa-tools"></i> B2.3 Exploiter, dépanner et superviser une solution d'infrastructure réseau</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.3.1</div>
+                        <div class="competence-text">Administrer sur site et à distance des éléments d'une infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.3.2</div>
+                        <div class="competence-text">Automatiser des tâches d'administration</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.3.3</div>
+                        <div class="competence-text">Gérer des indicateurs et des fichiers d'activité des éléments d'une infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.3.4</div>
+                        <div class="competence-text">Identifier, qualifier, évaluer et réagir face à un incident ou à un problème</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B2.3.5</div>
+                        <div class="competence-text">Évaluer, maintenir et améliorer la qualité d'un service</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC 3 - Orange Red -->
+            <div class="bloc-section">
+                <div class="bloc-header bloc3">
+                    <h2>Bloc 3 - Cybersécurité des services informatiques</h2>
+                    <p>Compétences liées à la protection des données, la sécurisation des infrastructures et la gestion des risques cyber</p>
+                </div>
+
+                <!-- B3.1 -->
+                <div class="competence-category bloc3">
+                    <h3><i class="fas fa-user-shield"></i> B3.1 Protéger les données à caractère personnel</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.1.1</div>
+                        <div class="competence-text">Recenser les traitements sur les données à caractère personnel au sein de l'organisation</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.1.2</div>
+                        <div class="competence-text">Identifier les risques liés à la collecte, au traitement, au stockage et à la diffusion des données à caractère personnel</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.1.3</div>
+                        <div class="competence-text">Appliquer la réglementation en matière de collecte, de traitement et de conservation des données à caractère personnel</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.1.4</div>
+                        <div class="competence-text">Sensibiliser les utilisateurs à la protection des données à caractère personnel</div>
+                    </div>
+                </div>
+
+                <!-- B3.2 -->
+                <div class="competence-category bloc3">
+                    <h3><i class="fas fa-fingerprint"></i> B3.2 Préserver l'identité numérique de l'organisation</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.2.1</div>
+                        <div class="competence-text">Protéger l'identité numérique d'une organisation</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.2.2</div>
+                        <div class="competence-text">Déployer les moyens appropriés de preuve électronique</div>
+                    </div>
+                </div>
+
+                <!-- B3.3 -->
+                <div class="competence-category bloc3">
+                    <h3><i class="fas fa-lock"></i> B3.3 Sécuriser les équipements et les usages des utilisateurs</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.3.1</div>
+                        <div class="competence-text">Informer les utilisateurs sur les risques associés à l'utilisation d'une ressource numérique et promouvoir les bons usages à adopter</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.3.2</div>
+                        <div class="competence-text">Identifier les menaces et mettre en œuvre les défenses appropriées</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.3.3</div>
+                        <div class="competence-text">Gérer les accès et les privilèges appropriés</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.3.4</div>
+                        <div class="competence-text">Vérifier l'efficacité de la protection</div>
+                    </div>
+                </div>
+
+                <!-- B3.4 -->
+                <div class="competence-category bloc3">
+                    <h3><i class="fas fa-shield-alt"></i> B3.4 Garantir la disponibilité, l'intégrité et la confidentialité</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.4.1</div>
+                        <div class="competence-text">Caractériser les risques liés à l'utilisation malveillante d'un service informatique</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.4.2</div>
+                        <div class="competence-text">Recenser les conséquences d'une perte de disponibilité, d'intégrité ou de confidentialité</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.4.3</div>
+                        <div class="competence-text">Identifier les obligations légales qui s'imposent en matière d'archivage et de protection des données de l'organisation</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.4.4</div>
+                        <div class="competence-text">Organiser la collecte et la conservation des preuves numériques</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.4.5</div>
+                        <div class="competence-text">Appliquer les procédures garantissant le respect des obligations légales</div>
+                    </div>
+                </div>
+
+                <!-- B3.5A -->
+                <div class="competence-category bloc3">
+                    <h3><i class="fas fa-server"></i> B3.5A Assurer la cybersécurité d'une infrastructure réseau</h3>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.5A.1</div>
+                        <div class="competence-text">Participer à la vérification des éléments contribuant à la sûreté d'une infrastructure informatique</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.5A.2</div>
+                        <div class="competence-text">Prendre en compte la sécurité dans un projet de mise en œuvre d'une solution d'infrastructure</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.5A.3</div>
+                        <div class="competence-text">Mettre en œuvre et vérifier la conformité d'une infrastructure à un référentiel, une norme ou un standard de sécurité</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.5A.4</div>
+                        <div class="competence-text">Prévenir les attaques</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.5A.5</div>
+                        <div class="competence-text">Détecter les actions malveillantes</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-code">B3.5A.6</div>
+                        <div class="competence-text">Analyser les incidents de sécurité, proposer et mettre en œuvre des contre-mesures</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        // Submenu mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Click outside to close menu
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
