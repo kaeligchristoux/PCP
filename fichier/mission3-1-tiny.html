@@ -431,6 +431,41 @@
             font-size: 0.9rem;
         }
 
+        /* Media Gallery - Responsive sizing */
+        .media-gallery {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .media-item {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .media-item img,
+        .media-item video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: block;
+        }
+
+        .media-caption {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .media-caption i {
+            color: var(--primary-green);
+            margin-right: 0.5rem;
+        }
+
         /* Navigation Buttons */
         .nav-buttons {
             display: flex;
@@ -842,16 +877,16 @@
                     
                     <strong>Ventilation :</strong><br>
                     <ul style="padding-left: 2rem; margin-top: 0.5rem;">
-                        <li>✅ Disparition du bruit excessif au démarrage</li>
-                        <li>✅ Ventilation régulée et silencieuse en utilisation normale</li>
-                        <li>✅ Pas d'accélérations brutales aléatoires</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> Disparition du bruit excessif au démarrage</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> Ventilation régulée et silencieuse en utilisation normale</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> Pas d'accélérations brutales aléatoires</li>
                     </ul>
                     
                     <strong style="display: block; margin-top: 1rem;">Affichage :</strong><br>
                     <ul style="padding-left: 2rem; margin-top: 0.5rem;">
-                        <li>✅ Disparition complète des traits colorés</li>
-                        <li>✅ Affichage stable et net</li>
-                        <li>✅ Aucun artefact visuel constaté</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> Disparition complète des traits colorés</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> Affichage stable et net</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> Aucun artefact visuel constaté</li>
                     </ul>
 
                     <strong style="display: block; margin-top: 1rem;">Retour utilisateur :</strong><br>
