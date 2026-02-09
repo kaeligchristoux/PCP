@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annexe 4 - Configuration Firewall | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --deep-green: #059669;
+            --accent-emerald: #34d399;
+            --dark-green: #047857;
+            --lime-green: #84cc16;
+            --sncf-red: #ed1c24;
+            --tech-blue: #0ea5e9;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Background animé VERT */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 35%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 65%, rgba(52, 211, 153, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 45% 75%, rgba(132, 204, 22, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: greenPulse 12s ease-in-out infinite;
+        }
+
+        @keyframes greenPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: var(--rail-gray) !important;
+        }
+
+        nav a:hover {
+            color: var(--primary-green);
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-green) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submenu li a {
+            display: flex;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-gray);
+            transition: all 0.2s ease;
+        }
+
+        .submenu li a:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary-green);
+            padding-left: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald), var(--lime-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 0.6s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-green);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-emerald);
+        }
+
+        /* Sections */
+        .section {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin: 2.5rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .section h3 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 i {
+            color: var(--accent-emerald);
+        }
+
+        .section h4 {
+            color: var(--accent-emerald);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--primary-green);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.15);
+            border-left: 4px solid var(--accent-emerald);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        /* Rule Cards */
+        .rules-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .rule-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(52, 211, 153, 0.05));
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 4px solid var(--primary-green);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .rule-card:hover::before {
+            left: 100%;
+        }
+
+        .rule-card:hover {
+            transform: translateX(10px);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.1));
+            box-shadow: -5px 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .rule-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rule-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .rule-title {
+            color: var(--primary-green);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .rule-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 10px;
+        }
+
+        .rule-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .rule-detail-label {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rule-detail-value {
+            font-size: 1.1rem;
+            color: var(--accent-emerald);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .rule-description {
+            color: var(--text-light);
+            line-height: 1.9;
+            margin-top: 1rem;
+        }
+
+        /* Media Gallery */
+        .media-gallery {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .media-item {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .media-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: block;
+        }
+
+        .media-caption {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .media-caption i {
+            color: var(--primary-green);
+            margin-right: 0.5rem;
+        }
+
+        /* Code Block */
+        code {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-emerald);
+            font-size: 0.9rem;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 4rem 0 2rem;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .nav-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(16, 185, 129, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .rule-details {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> Annexe 4 : Configuration Firewall</h1>
+            <p class="subtitle">Sécurisation d'un serveur de sauvegarde avec IPTables</p>
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="stage2.html">Stage 2 - SNCF</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="mission3-sncf.html">Mission 3</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Annexe 4</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            <!-- Contexte -->
+            <div class="section">
+                <h3><i class="fas fa-info-circle"></i> Contexte de l'intervention</h3>
+                <div class="info-box">
+                    <strong>Situation :</strong><br>
+                    Dans le cadre de la sécurisation de l'infrastructure SNCF, j'ai été chargé de configurer 
+                    les <strong>règles de pare-feu IPTables</strong> sur un serveur de sauvegarde critique. 
+                    L'objectif était de <strong>filtrer le trafic réseau entrant</strong> pour n'autoriser que 
+                    les connexions légitimes et essentielles, tout en bloquant les accès non autorisés.
+                </div>
+
+                <p style="margin-top: 1.5rem;">
+                    Ce serveur de sauvegarde stocke des <strong>données critiques de l'infrastructure réseau</strong> 
+                    et nécessite une protection renforcée. La configuration du pare-feu permet de contrôler 
+                    finement les flux réseau et de prévenir les intrusions ou accès malveillants.
+                </p>
+
+                <h4><i class="fas fa-server"></i> Environnement technique</h4>
+                <ul style="padding-left: 2rem; margin-top: 1rem;">
+                    <li><strong>Système :</strong> Linux avec IPTables (pare-feu netfilter)</li>
+                    <li><strong>Interfaces réseau :</strong> eno1 (réseau principal), eno4 (liaison sauvegarde), lo (loopback)</li>
+                    <li><strong>Services à protéger :</strong> SSH (port 22), Webmin (port 10000)</li>
+                    <li><strong>Type de règles :</strong> Filtrage de paquets entrants (INPUT chain)</li>
+                </ul>
+            </div>
+
+            <!-- Configuration des règles -->
+            <div class="section">
+                <h3><i class="fas fa-shield-alt"></i> Règles de pare-feu configurées</h3>
+                
+                <p style="margin-bottom: 2rem;">
+                    J'ai mis en place <strong>6 règles de filtrage</strong> pour sécuriser le serveur de sauvegarde. 
+                    Chaque règle a été soigneusement définie pour autoriser uniquement le trafic nécessaire 
+                    au bon fonctionnement du serveur tout en bloquant les connexions non désirées.
+                </p>
+
+                <div class="rules-grid">
+                    <!-- Règle 1 -->
+                    <div class="rule-card">
+                        <div class="rule-header">
+                            <div class="rule-number">1</div>
+                            <h4 class="rule-title">Liaison sauvegarde (eno4)</h4>
+                        </div>
+                        
+                        <div class="rule-details">
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Interface</span>
+                                <span class="rule-detail-value">eno4</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Action</span>
+                                <span class="rule-detail-value">ACCEPT</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Protocole</span>
+                                <span class="rule-detail-value">TCP (all)</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Direction</span>
+                                <span class="rule-detail-value">INPUT</span>
+                            </div>
+                        </div>
+
+                        <p class="rule-description">
+                            Cette règle autorise <strong>tous les flux entrants</strong> sur l'interface <code>eno4</code>, 
+                            qui est la <strong>liaison dédiée aux sauvegardes</strong>. Cette interface est connectée 
+                            à un réseau privé sécurisé utilisé exclusivement pour les transferts de données de sauvegarde. 
+                            L'acceptation totale du trafic sur cette interface permet aux serveurs de sauvegarde de 
+                            communiquer librement sans restriction, car ils sont déjà sur un réseau de confiance isolé.
+                        </p>
+
+                        <div class="media-gallery" style="margin-top: 1.5rem;">
+                            <div class="media-item">
+                                <img src="regle1.png" alt="Configuration règle 1 - Interface eno4">
+                                <p class="media-caption">
+                                    <i class="fas fa-image"></i> Configuration de la règle 1 : Accepter tous les flux sur eno4
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Règle 2 -->
+                    <div class="rule-card">
+                        <div class="rule-header">
+                            <div class="rule-number">2</div>
+                            <h4 class="rule-title">Interface loopback (lo)</h4>
+                        </div>
+                        
+                        <div class="rule-details">
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Interface</span>
+                                <span class="rule-detail-value">lo</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Action</span>
+                                <span class="rule-detail-value">ACCEPT</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Protocole</span>
+                                <span class="rule-detail-value">TCP (all)</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Direction</span>
+                                <span class="rule-detail-value">INPUT</span>
+                            </div>
+                        </div>
+
+                        <p class="rule-description">
+                            Cette règle autorise <strong>tous les flux sur l'interface loopback</strong> (<code>lo</code>), 
+                            qui correspond à l'adresse locale <code>127.0.0.1</code>. L'interface loopback permet au serveur 
+                            de <strong>communiquer avec lui-même</strong>, ce qui est essentiel pour de nombreux services 
+                            et processus locaux (bases de données, caches, services de supervision, etc.). Sans cette règle, 
+                            les applications locales ne pourraient pas fonctionner correctement.
+                        </p>
+
+                        <div class="media-gallery" style="margin-top: 1.5rem;">
+                            <div class="media-item">
+                                <img src="regle2.png" alt="Configuration règle 2 - Interface loopback">
+                                <p class="media-caption">
+                                    <i class="fas fa-image"></i> Configuration de la règle 2 : Accepter tous les flux sur loopback
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Règle 3 -->
+                    <div class="rule-card">
+                        <div class="rule-header">
+                            <div class="rule-number">3</div>
+                            <h4 class="rule-title">Connexions établies et relatives</h4>
+                        </div>
+                        
+                        <div class="rule-details">
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Interface</span>
+                                <span class="rule-detail-value">eno1</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Action</span>
+                                <span class="rule-detail-value">ACCEPT</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">État connexion</span>
+                                <span class="rule-detail-value">ESTABLISHED,RELATED</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Direction</span>
+                                <span class="rule-detail-value">INPUT</span>
+                            </div>
+                        </div>
+
+                        <p class="rule-description">
+                            Cette règle est <strong>essentielle pour le bon fonctionnement du pare-feu</strong>. Elle autorise 
+                            les paquets entrants qui appartiennent à des <strong>connexions déjà établies</strong> (ESTABLISHED) 
+                            ou qui sont <strong>relatifs à une connexion existante</strong> (RELATED). Concrètement, cela permet 
+                            au serveur de <strong>recevoir les réponses</strong> aux requêtes qu'il a lui-même initiées. 
+                            Sans cette règle, le serveur pourrait envoyer des requêtes mais ne recevrait jamais les réponses, 
+                            rendant toute communication sortante impossible. Le stateful filtering permet de suivre l'état 
+                            des connexions réseau.
+                        </p>
+
+                        <div class="media-gallery" style="margin-top: 1.5rem;">
+                            <div class="media-item">
+                                <img src="regle3.png" alt="Configuration règle 3 - Connexions établies">
+                                <p class="media-caption">
+                                    <i class="fas fa-image"></i> Configuration de la règle 3 : Accepter les connexions établies et relatives
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Règle 4 -->
+                    <div class="rule-card">
+                        <div class="rule-header">
+                            <div class="rule-number">4</div>
+                            <h4 class="rule-title">Accès Webmin (port 10000)</h4>
+                        </div>
+                        
+                        <div class="rule-details">
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Interface</span>
+                                <span class="rule-detail-value">eno1</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Action</span>
+                                <span class="rule-detail-value">ACCEPT</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Protocole</span>
+                                <span class="rule-detail-value">TCP</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Port destination</span>
+                                <span class="rule-detail-value">10000</span>
+                            </div>
+                        </div>
+
+                        <p class="rule-description">
+                            Cette règle autorise les <strong>connexions entrantes sur le port TCP 10000</strong> via l'interface 
+                            <code>eno1</code>. Ce port est utilisé par <strong>Webmin</strong>, une interface d'administration 
+                            web pour la gestion du serveur Linux. Webmin permet aux administrateurs de configurer le système, 
+                            gérer les utilisateurs, surveiller les services et effectuer diverses tâches d'administration 
+                            via un navigateur web. L'accès à ce port est restreint à l'interface principale <code>eno1</code> 
+                            pour des raisons de sécurité.
+                        </p>
+
+                        <div class="media-gallery" style="margin-top: 1.5rem;">
+                            <div class="media-item">
+                                <img src="regle4.png" alt="Configuration règle 4 - Port Webmin">
+                                <p class="media-caption">
+                                    <i class="fas fa-image"></i> Configuration de la règle 4 : Accepter le flux entrant pour Webmin (port 10000)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Règle 5 -->
+                    <div class="rule-card">
+                        <div class="rule-header">
+                            <div class="rule-number">5</div>
+                            <h4 class="rule-title">Connexions SSH (port 22)</h4>
+                        </div>
+                        
+                        <div class="rule-details">
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Interface</span>
+                                <span class="rule-detail-value">eno1</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Action</span>
+                                <span class="rule-detail-value">ACCEPT</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Protocole</span>
+                                <span class="rule-detail-value">TCP</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Port destination</span>
+                                <span class="rule-detail-value">22</span>
+                            </div>
+                        </div>
+
+                        <p class="rule-description">
+                            Cette règle autorise les <strong>connexions SSH entrantes sur le port TCP 22</strong>. 
+                            SSH (Secure Shell) est le protocole <strong>d'administration à distance sécurisé</strong> 
+                            par excellence. Il permet aux administrateurs de se connecter au serveur en ligne de commande 
+                            de manière chiffrée, d'exécuter des commandes, de transférer des fichiers et de gérer le système 
+                            à distance. Sans cette règle, l'accès SSH au serveur serait impossible, empêchant toute 
+                            administration distante. La sécurisation de SSH peut être renforcée par l'utilisation de 
+                            clés SSH plutôt que des mots de passe.
+                        </p>
+
+                        <div class="media-gallery" style="margin-top: 1.5rem;">
+                            <div class="media-item">
+                                <img src="regle5.png" alt="Configuration règle 5 - Port SSH">
+                                <p class="media-caption">
+                                    <i class="fas fa-image"></i> Configuration de la règle 5 : Accepter les connexions SSH (port 22)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Règle 6 -->
+                    <div class="rule-card">
+                        <div class="rule-header">
+                            <div class="rule-number">6</div>
+                            <h4 class="rule-title">Réponses ICMP (ping)</h4>
+                        </div>
+                        
+                        <div class="rule-details">
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Interface</span>
+                                <span class="rule-detail-value">eno1</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Action</span>
+                                <span class="rule-detail-value">ACCEPT</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Protocole</span>
+                                <span class="rule-detail-value">ICMP</span>
+                            </div>
+                            <div class="rule-detail-item">
+                                <span class="rule-detail-label">Direction</span>
+                                <span class="rule-detail-value">INPUT</span>
+                            </div>
+                        </div>
+
+                        <p class="rule-description">
+                            Cette règle autorise les <strong>paquets ICMP</strong> (Internet Control Message Protocol) 
+                            entrants sur l'interface <code>eno1</code>. ICMP est principalement utilisé pour les 
+                            <strong>diagnostics réseau</strong>, notamment avec la commande <code>ping</code>. 
+                            Autoriser ICMP permet aux administrateurs de <strong>tester la connectivité réseau</strong> 
+                            et de vérifier que le serveur est joignable. ICMP est également utilisé pour les messages 
+                            d'erreur réseau (destination unreachable, time exceeded, etc.) qui sont importants pour 
+                            le bon fonctionnement du routage réseau.
+                        </p>
+
+                        <div class="media-gallery" style="margin-top: 1.5rem;">
+                            <div class="media-item">
+                                <img src="regle6.png" alt="Configuration règle 6 - Protocole ICMP">
+                                <p class="media-caption">
+                                    <i class="fas fa-image"></i> Configuration de la règle 6 : Accepter les réponses de ping (ICMP)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue d'ensemble -->
+            <div class="section">
+                <h3><i class="fas fa-list"></i> Vue d'ensemble des règles</h3>
+                
+                <p style="margin-bottom: 2rem;">
+                    Voici la <strong>vue globale de toutes les règles configurées</strong> dans l'interface de gestion 
+                    du pare-feu IPTables. On peut constater que toutes les règles sont appliquées sur la chaîne 
+                    <strong>INPUT</strong> (paquets entrants) et que la politique par défaut est configurée sur 
+                    <strong>Jeter</strong> (DROP), ce qui signifie que tout trafic non explicitement autorisé 
+                    sera bloqué.
+                </p>
+
+                <div class="info-box">
+                    <strong><i class="fas fa-shield-alt"></i> Politique de sécurité :</strong><br>
+                    Le principe appliqué ici est celui du <strong>"deny by default"</strong> (refuser par défaut). 
+                    Cela signifie que seul le trafic explicitement autorisé par les 6 règles ci-dessus est accepté, 
+                    tout le reste est automatiquement bloqué. Cette approche est considérée comme la plus sûre 
+                    en matière de sécurité réseau.
+                </div>
+
+                <div class="media-gallery" style="margin-top: 2rem;">
+                    <div class="media-item">
+                        <img src="affichage.png" alt="Vue d'ensemble des règles de pare-feu">
+                        <p class="media-caption">
+                            <i class="fas fa-image"></i> Affichage global : les 6 règles de filtrage configurées dans IPTables
+                        </p>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 2rem;"><i class="fas fa-check-circle"></i> Points clés de la configuration</h4>
+                <ul style="padding-left: 2rem; margin-top: 1rem;">
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                        <strong>Politique par défaut : Jeter</strong> - Tout trafic non autorisé est bloqué</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                        <strong>6 règles d'acceptation</strong> - Trafic autorisé strictement défini</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                        <strong>Interfaces distinctes</strong> - eno1 (principal), eno4 (sauvegarde), lo (local)</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                        <strong>Ports essentiels ouverts</strong> - SSH (22), Webmin (10000)</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                        <strong>Stateful filtering</strong> - Suivi des connexions établies (ESTABLISHED, RELATED)</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                        <strong>Diagnostics réseau</strong> - ICMP autorisé pour ping et messages d'erreur</li>
+                </ul>
+            </div>
+
+            <!-- Résultat -->
+            <div class="section">
+                <h3><i class="fas fa-chart-line"></i> Résultat et sécurisation</h3>
+
+                <div class="success-box">
+                    <strong><i class="fas fa-check-double"></i> Configuration réussie :</strong><br><br>
+                    
+                    <strong>Sécurité renforcée :</strong><br>
+                    <ul style="padding-left: 2rem; margin-top: 0.5rem;">
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Serveur de sauvegarde protégé contre les accès non autorisés</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Seuls les services essentiels sont accessibles</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Politique de sécurité "deny by default" appliquée</li>
+                    </ul>
+                    
+                    <strong style="display: block; margin-top: 1rem;">Fonctionnalités préservées :</strong><br>
+                    <ul style="padding-left: 2rem; margin-top: 0.5rem;">
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Administration SSH opérationnelle</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Interface Webmin accessible</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Liaison sauvegarde fonctionnelle</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary-green); margin-right: 0.5rem;"></i> 
+                            Diagnostics réseau (ping) disponibles</li>
+                    </ul>
+
+                    <strong style="display: block; margin-top: 1rem;">Impact sur l'infrastructure :</strong><br>
+                    La configuration du pare-feu assure que seul le <strong>trafic légitime</strong> peut accéder 
+                    au serveur de sauvegarde, tout en maintenant les fonctionnalités nécessaires à l'administration 
+                    et aux opérations de sauvegarde. Les données critiques sont désormais <strong>mieux protégées</strong> 
+                    contre les tentatives d'intrusion.
+                </div>
+            </div>
+
+            <!-- Compétences BTS SIO -->
+            <div class="section">
+                <h3><i class="fas fa-trophy"></i> Compétences BTS SIO mobilisées</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2rem;">
+                    <div class="info-box">
+                        <h4 style="margin-top: 0; color: var(--primary-green);">
+                            <i class="fas fa-cogs"></i> Compétences référentiel
+                        </h4>
+                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+                            <li><strong>B2.1.2</strong> - Concevoir l'architecture d'un réseau informatique</li>
+                            <li><strong>B2.2.2</strong> - Gérer la sécurité du système d'information</li>
+                            <li><strong>B2.3.1</strong> - Installer et configurer un élément d'infrastructure</li>
+                            <li><strong>B1.2.3</strong> - Vérifier les comptes rendus d'intervention</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4 style="margin-top: 0; color: var(--primary-green);">
+                            <i class="fas fa-clipboard-check"></i> Compétences terrain
+                        </h4>
+                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+                            <li>Configuration pare-feu IPTables</li>
+                            <li>Filtrage réseau (stateful)</li>
+                            <li>Sécurisation serveur Linux</li>
+                            <li>Politiques de sécurité</li>
+                            <li>Documentation technique</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="nav-buttons">
+                <a href="mission3-sncf.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour Mission 3</span>
+                </a>
+                <a href="mission3-1-tiny.html" class="nav-btn">
+                    <span>Annexe 1 : Tiny PC</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Description des compétences -->
+            <div class="section" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05)); border: 1px solid rgba(16, 185, 129, 0.2);">
+                <h3 style="border-bottom: none; padding-bottom: 0;"><i class="fas fa-book"></i> Description des compétences du référentiel SIO</h3>
+                
+                <div style="margin-top: 2rem;">
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B2.1.2 - Concevoir l'architecture d'un réseau informatique
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Capacité à comprendre et à concevoir la topologie réseau, incluant la définition des zones 
+                            de sécurité, le choix des interfaces réseau (eno1, eno4, lo) et la planification du filtrage 
+                            des flux entre ces différentes zones pour assurer la sécurité et les performances.
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B2.2.2 - Gérer la sécurité du système d'information
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Mise en œuvre de politiques de sécurité réseau via la configuration du pare-feu IPTables. 
+                            Application du principe de "moindre privilège" en n'autorisant que le trafic strictement 
+                            nécessaire. Gestion des règles de filtrage pour protéger les données critiques du serveur 
+                            de sauvegarde contre les accès non autorisés.
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B2.3.1 - Installer et configurer un élément d'infrastructure
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Configuration technique du pare-feu IPTables sur un serveur Linux de production. 
+                            Paramétrage des règles de filtrage, des interfaces réseau, des ports et protocoles autorisés. 
+                            Application et test de la configuration pour s'assurer de son bon fonctionnement sans 
+                            perturber les services essentiels (SSH, Webmin, sauvegardes).
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 10px;">
+                        <h4 style="color: var(--primary-green); margin-top: 0; margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> B1.2.3 - Vérifier les comptes rendus d'intervention
+                        </h4>
+                        <p style="color: var(--text-gray); margin: 0;">
+                            Documentation complète de la configuration du pare-feu avec captures d'écran de chaque règle, 
+                            explications détaillées du rôle de chaque règle, et vérification du bon fonctionnement 
+                            de la configuration. Traçabilité des actions effectuées pour faciliter les audits de sécurité 
+                            et la maintenance future.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-gray);">
+                &copy; 2026 <a href="index.html" style="color: var(--primary-green); text-decoration: none;">Kaëlig CHRISTOUX</a>. 
+                Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        // Submenu mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Click outside to close menu
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
