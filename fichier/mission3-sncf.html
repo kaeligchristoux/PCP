@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 3 - Missions Annexes | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --deep-green: #059669;
+            --accent-emerald: #34d399;
+            --dark-green: #047857;
+            --lime-green: #84cc16;
+            --sncf-red: #ed1c24;
+            --tech-blue: #0ea5e9;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Background animé VERT */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 35%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 65%, rgba(52, 211, 153, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 45% 75%, rgba(132, 204, 22, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: greenPulse 12s ease-in-out infinite;
+        }
+
+        @keyframes greenPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation ULTRA-STYLÉE ET RESPONSIVE */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: var(--rail-gray) !important;
+        }
+
+        nav a:hover {
+            color: var(--primary-green);
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-green) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submenu li a {
+            display: flex;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-gray);
+            transition: all 0.2s ease;
+        }
+
+        .submenu li a:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary-green);
+            padding-left: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald), var(--lime-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 0.6s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-green);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-emerald);
+        }
+
+        /* Mission Intro */
+        .mission-intro {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.15));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary-green);
+            margin: 3rem 0;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mission-intro h2 {
+            color: var(--primary-green);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mission-intro h2 i {
+            color: var(--accent-emerald);
+        }
+
+        /* Sections */
+        .section {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin: 2.5rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .section h3 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 i {
+            color: var(--accent-emerald);
+        }
+
+        .section h4 {
+            color: var(--accent-emerald);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Mission Cards */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .mission-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(52, 211, 153, 0.05));
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .mission-card-link:hover .mission-card::before {
+            left: 100%;
+        }
+
+        .mission-card-link:hover .mission-card {
+            transform: translateY(-10px) scale(1.02);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.1));
+            box-shadow: 
+                0 20px 50px rgba(16, 185, 129, 0.4),
+                0 0 30px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary-green);
+        }
+
+        .mission-card.coming-soon-card {
+            opacity: 0.7;
+            border-style: dashed;
+        }
+
+        .mission-card-link:hover .mission-card.coming-soon-card {
+            opacity: 0.85;
+        }
+
+        .mission-card h4 {
+            color: var(--primary-green);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .mission-card h4 i {
+            font-size: 1.2rem;
+            color: var(--accent-emerald);
+        }
+
+        .card-description {
+            color: var(--text-gray);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.4rem 0.9rem;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-emerald);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tag i {
+            font-size: 0.75rem;
+        }
+
+        .card-footer {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            margin-top: auto;
+        }
+
+        .read-more {
+            color: var(--primary-green);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mission-card-link:hover .read-more {
+            gap: 0.8rem;
+            color: var(--accent-emerald);
+        }
+
+        .read-more.disabled {
+            color: var(--text-gray);
+            cursor: not-allowed;
+        }
+
+        .read-more i {
+            transition: transform 0.3s ease;
+        }
+
+        .mission-card-link:hover .read-more i {
+            transform: translateX(5px);
+        }
+
+        .mission-card .status-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge.completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            border: 1px solid var(--primary-green);
+        }
+
+        .status-badge.coming-soon {
+            background: rgba(132, 204, 22, 0.15);
+            color: var(--lime-green);
+            border: 1px solid var(--lime-green);
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--primary-green);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.15);
+            border-left: 4px solid var(--accent-emerald);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        /* Problem/Solution Cards */
+        .problem-solution {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .problem-card, .solution-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 2px solid;
+        }
+
+        .problem-card {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .problem-card h5 {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .solution-card {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--primary-green);
+        }
+
+        .solution-card h5 {
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Step List */
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            padding: 1rem 0 1rem 3.5rem;
+            position: relative;
+            border-left: 2px solid rgba(16, 185, 129, 0.3);
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -1.5rem;
+            top: 0.8rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Image Container */
+        .image-container {
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 15px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Code Block */
+        code {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-emerald);
+            font-size: 0.9rem;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 4rem 0 2rem;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .nav-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(16, 185, 129, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-solution {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-tasks"></i> Mission 3 : Missions Annexes</h1>
+            <p class="subtitle">Interventions techniques et support durant le stage SNCF</p>
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="stage2.html">Stage 2 - SNCF</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Mission 3</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            <!-- Mission Intro -->
+            <div class="mission-intro">
+                <h2><i class="fas fa-wrench"></i> Présentation</h2>
+                <p>
+                    Durant mon stage au <strong>Centre de Gestion Réseau de la SNCF</strong>, j'ai eu l'opportunité 
+                    de participer à diverses interventions techniques en complément des missions principales. 
+                    Ces missions annexes m'ont permis de développer mes compétences en <strong>dépannage matériel</strong>, 
+                    <strong>diagnostic système</strong> et <strong>support technique</strong>.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Cette page regroupe l'ensemble de ces interventions qui, bien que plus courtes, 
+                    ont été essentielles à mon apprentissage pratique et à ma compréhension 
+                    des infrastructures critiques de la SNCF.
+                </p>
+            </div>
+
+            <!-- Mission Cards Grid -->
+            <div class="mission-grid">
+                <!-- Mission 3.1: Tiny PC -->
+                <a href="mission3-1-tiny.html" class="mission-card-link">
+                    <div class="mission-card">
+                        <span class="status-badge completed"><i class="fas fa-check-circle"></i> Terminée</span>
+                        <h4><i class="fas fa-desktop"></i> Annexe 1 : Dépannage Tiny PC</h4>
+                        <p class="card-description">
+                            Intervention sur un poste de supervision Tiny PC (HP EliteDesk 800 G3) présentant 
+                            des problèmes de <strong>surchauffe</strong> et d'<strong>affichage intermittent</strong>.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag"><i class="fas fa-thermometer-half"></i> Ventilation</span>
+                            <span class="tag"><i class="fas fa-tv"></i> Affichage</span>
+                            <span class="tag"><i class="fas fa-wrench"></i> Maintenance</span>
+                        </div>
+                        <div class="card-footer">
+                            <span class="read-more">Voir les détails <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Mission 3.2: À venir -->
+                <a href="mission3-2-switch.html" class="mission-card-link">
+                    <div class="mission-card coming-soon-card">
+                        <span class="status-badge coming-soon"><i class="fas fa-clock"></i> À venir</span>
+                        <h4><i class="fas fa-network-wired"></i> Annexe 2 : Configuration Switch</h4>
+                        <p class="card-description">
+                            Intégration d'un nouveau switch dans l'infrastructure réseau, configuration des 
+                            <strong>VLANs</strong> et <strong>trunk ports</strong>, intégration monitoring Zabbix.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag"><i class="fas fa-project-diagram"></i> VLAN</span>
+                            <span class="tag"><i class="fas fa-ethernet"></i> Trunk</span>
+                            <span class="tag"><i class="fas fa-chart-line"></i> Monitoring</span>
+                        </div>
+                        <div class="card-footer">
+                            <span class="read-more disabled">Bientôt disponible</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Mission 3.3: À venir -->
+                <a href="mission3-3-migration.html" class="mission-card-link">
+                    <div class="mission-card coming-soon-card">
+                        <span class="status-badge coming-soon"><i class="fas fa-clock"></i> À venir</span>
+                        <h4><i class="fas fa-server"></i> Annexe 3 : Migration Serveur</h4>
+                        <p class="card-description">
+                            Migration d'un serveur de fichiers vers nouveau matériel, incluant 
+                            <strong>sauvegarde complète</strong>, vérification intégrité et <strong>restauration</strong>.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag"><i class="fas fa-database"></i> Backup</span>
+                            <span class="tag"><i class="fas fa-exchange-alt"></i> Migration</span>
+                            <span class="tag"><i class="fas fa-check-double"></i> Vérification</span>
+                        </div>
+                        <div class="card-footer">
+                            <span class="read-more disabled">Bientôt disponible</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Mission 3.4: À venir -->
+                <a href="mission3-4-firewall.html" class="mission-card-link">
+                    <div class="mission-card coming-soon-card">
+                        <span class="status-badge coming-soon"><i class="fas fa-clock"></i> À venir</span>
+                        <h4><i class="fas fa-shield-alt"></i> Annexe 4 : Sécurisation Firewall</h4>
+                        <p class="card-description">
+                            Renforcement de la sécurité réseau par mise à jour des <strong>règles de pare-feu</strong>, 
+                            audit des accès et nouvelles <strong>politiques de sécurité</strong>.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag"><i class="fas fa-lock"></i> Firewall</span>
+                            <span class="tag"><i class="fas fa-user-shield"></i> Audit</span>
+                            <span class="tag"><i class="fas fa-clipboard-list"></i> Politiques</span>
+                        </div>
+                        <div class="card-footer">
+                            <span class="read-more disabled">Bientôt disponible</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="nav-buttons">
+                <a href="mission2-sncf.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Mission 2 - Proxmox & Zabbix</span>
+                </a>
+                <a href="stage2.html" class="nav-btn">
+                    <span>Retour Stage 2</span>
+                    <i class="fas fa-home"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-gray);">
+                &copy; 2026 <a href="index.html" style="color: var(--primary-green); text-decoration: none;">Kaëlig CHRISTOUX</a>. 
+                Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        // Submenu mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Click outside to close menu
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.getElementById('navMenu')?.classList.remove('active');
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
