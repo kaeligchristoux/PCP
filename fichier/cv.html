@@ -20,6 +20,7 @@
             --text-light: #f1f5f9;
             --text-gray: #cbd5e1;
             --rail-gray: #64748b;
+            --tech-green: #10b981;
         }
 
         * {
@@ -402,27 +403,92 @@
         }
 
         /* Footer */
-        footer {
-            background: rgba(15, 23, 42, 0.9);
-            border-top: 2px solid rgba(16, 185, 129, 0.3);
-            padding: 2rem 0;
+        .site-footer {
+            background: #111113;
+            border-top: 1px solid #27272a;
+            padding: 1.75rem 0;
             margin-top: 4rem;
-            text-align: center;
         }
 
-        .copyright {
-            color: var(--text-gray);
-            font-size: 0.9rem;
+        .site-footer__inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .copyright a {
-            color: var(--primary-green);
+        .site-footer__copy {
+            color: #52525b;
+            font-size: 0.875rem;
+        }
+
+        .site-footer__copy a {
+            color: #a1a1aa;
             text-decoration: none;
-            transition: color 0.3s;
+            font-weight: 600;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
         }
 
-        .copyright a:hover {
-            color: var(--accent-cyan);
+        .site-footer__copy a:hover {
+            color: #fafafa;
+            border-color: #fafafa;
+        }
+
+        .site-footer__socials {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .site-footer__social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #3f3f46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .site-footer__social-btn:hover {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            transform: translateY(-3px);
+        }
+
+        .site-footer__mentions {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .site-footer__mentions:hover {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+
+        @media (max-width: 640px) {
+            .site-footer__inner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
         }
 
         /* Responsive */
@@ -677,11 +743,27 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="copyright">
-              
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <p class="site-footer__copy">
+                &copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>
+            </p>
+            <div class="site-footer__socials">
+                <a href="https://www.linkedin.com/in/christoux-ka%C3%ABlig-6a4620341/" target="_blank" rel="noopener" class="site-footer__social-btn" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/kaeligchristoux" target="_blank" rel="noopener" class="site-footer__social-btn" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:christouxkaelig@gmail.com" class="site-footer__social-btn" title="Envoyer un e-mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <a href="mentions-legales.html" class="site-footer__mentions">Mentions légales</a>
+        </div>
+    </footer>
+
+    <script>
         // Menu hamburger toggle
         function toggleMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
@@ -694,7 +776,6 @@
         const subMenuItems = document.querySelectorAll('.has-submenu');
         subMenuItems.forEach(item => {
             const link = item.querySelector('a');
-            
             link.addEventListener('click', (e) => {
                 if (window.innerWidth <= 968) {
                     e.preventDefault();
@@ -703,7 +784,14 @@
             });
         });
 
-        // Fermer le menu si on clique en dehors
+        // Fermer le menu au clic extérieur
         document.addEventListener('click', (e) => {
             if (!e.target.closest('nav')) {
-                document.q
+                document.getElementById('navMenu')?.classList.remove('active');
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
