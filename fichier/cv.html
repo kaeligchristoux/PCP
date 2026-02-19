@@ -15,11 +15,11 @@
             --deep-green: #059669;
             --primary-blue: #0ea5e9;
             --accent-cyan: #06b6d4;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
+            --bg-dark: #0a0e1a;
+            --bg-card: #111827;
             --text-light: #f1f5f9;
-            --text-gray: #cbd5e1;
-            --rail-gray: #64748b;
+            --text-gray: #9ca3af;
+            --rail-gray: #4b5563;
             --tech-green: #10b981;
         }
 
@@ -184,6 +184,28 @@
         .cv-header {
             padding: 140px 0 60px;
             text-align: center;
+            background: linear-gradient(135deg, #050810 0%, #0f1419 50%, #050810 100%);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cv-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 35%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 65%, rgba(14, 165, 233, 0.06) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .cv-header .container {
+            position: relative;
+            z-index: 1;
         }
 
         .cv-header h1 {
@@ -266,14 +288,15 @@
         }
 
         .cv-section {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            background: linear-gradient(135deg, rgba(10, 14, 20, 0.8), rgba(15, 20, 26, 0.7));
             padding: 2rem;
             border-radius: 20px;
-            border: 2px solid rgba(16, 185, 129, 0.2);
+            border: 2px solid rgba(16, 185, 129, 0.15);
             position: relative;
             overflow: hidden;
             transition: all 0.3s;
             margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .cv-section::before {
@@ -287,9 +310,9 @@
         }
 
         .cv-section:hover {
-            border-color: var(--primary-green);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.25), 0 0 30px rgba(16, 185, 129, 0.1);
         }
 
         .cv-section h2 {
@@ -597,11 +620,11 @@
             <p class="title">Étudiant en BTS SIO - Option SISR</p>
             <div class="info">
                 <div class="info-item"><i class="fas fa-map-marker-alt"></i> Domagné</div>
-                <div class="info-item"><i class="fas fa-envelope"></i> <a href="mailto:christouxkaelig@gmail.com">christouxkaelig@gmail.com</a></div>
+                <div class="info-item"><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#eb88839982989f849e93808a8e87828cab8c868a8287c5888486"><span class="__cf_email__" data-cfemail="402328322933342f35382b21252c292700272d21292c6e232f2d">[email&#160;protected]</span></a></div>
                 <div class="info-item"><i class="fas fa-phone"></i> 06 32 91 93 17</div>
                 <div class="info-item"><i class="fas fa-birthday-cake"></i> 19 ans</div>
             </div>
-            <a href="CV_Christoux-Kaelig.pdf" download class="download-btn"><i class="fas fa-download"></i> Télécharger le CV PDF</a>
+            <a href="CV-CHRISTOUX_Kaelig.pdf" download class="download-btn"><i class="fas fa-download"></i> Télécharger le CV PDF</a>
         </div>
     </section>
 
@@ -614,8 +637,11 @@
                     <!-- Projet Professionnel -->
                     <div class="cv-section">
                         <h2><i class="fas fa-bullseye"></i> Projet Professionnel</h2>
-                        <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary-blue);">
-                            Devenir Administrateur Systèmes et Réseaux
+                        <p style="line-height: 1.8; color: var(--text-gray);">
+                            Ayant pour but de devenir <strong style="color: var(--primary-blue);">administrateur réseau et systèmes</strong>, 
+                            je suis rigoureux, sérieux et entreprenant. Je suis à la recherche d'une entreprise dans le but de réaliser 
+                            une <strong style="color: var(--tech-green);">alternance</strong> afin d'approfondir mes connaissances, 
+                            ainsi qu'apporter un gain de temps et de charge à l'entreprise.
                         </p>
                     </div>
 
@@ -627,16 +653,12 @@
                             <span>Attentif</span>
                         </div>
                         <div class="softskill-item">
-                            <div class="softskill-icon"><i class="fas fa-check-circle"></i></div>
-                            <span>Sérieux</span>
-                        </div>
-                        <div class="softskill-item">
-                            <div class="softskill-icon"><i class="fas fa-hourglass-half"></i></div>
-                            <span>Patient</span>
-                        </div>
-                        <div class="softskill-item">
                             <div class="softskill-icon"><i class="fas fa-bullseye"></i></div>
                             <span>Rigoureux</span>
+                        </div>
+                        <div class="softskill-item">
+                            <div class="softskill-icon"><i class="fas fa-user-check"></i></div>
+                            <span>Autonome</span>
                         </div>
                     </div>
 
@@ -655,53 +677,50 @@
 
                     <!-- Centres d'intérêts -->
                     <div class="cv-section">
-                        <h2><i class="fas fa-table-tennis"></i> Centres d'intérêts</h2>
+                        <h2><i class="fas fa-heart"></i> Centres d'intérêts</h2>
                         <div style="margin-bottom: 0.75rem;">
                             <p><i class="fas fa-table-tennis"></i> <strong>Tennis</strong></p>
                         </div>
                         <div style="margin-bottom: 0.75rem;">
-                            <p><i class="fas fa-gamepad"></i> <strong>Jeux vidéo</strong></p>
+                            <p><i class="fas fa-gamepad"></i> <strong>Jeux vidéos</strong></p>
                         </div>
                         <div>
-                            <p><i class="fas fa-book"></i> <strong>Lecture</strong></p>
+                            <p><i class="fas fa-music"></i> <strong>Musique</strong></p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Content -->
                 <div class="cv-main">
-                    <!-- Formation -->
-                    <div class="cv-section">
-                        <h2><i class="fas fa-graduation-cap"></i> Formation</h2>
-                        <div class="formation-item">
-                            <h3>BTS Services Informatiques aux Organisations</h3>
-                            <p class="period">2024-2026 • Lycée Victor et Hélène Basch, Rennes</p>
-                            <p style="margin-top: 0.5rem;">Option SISR (Solutions d'Infrastructures, Systèmes et Réseaux)</p>
-                            <div class="stage-badge"><i class="fas fa-search"></i> En recherche de stage : 12/01/26 au 20/02/26 (6 semaines)</div>
-                        </div>
-                        <div class="formation-item">
-                            <h3>Baccalauréat Professionnel Systèmes Numériques</h3>
-                            <p class="period">2021-2024 • Lycée Charles Tillon, Rennes</p>
-                            <p style="margin-top: 0.5rem;">Option RISC • <strong style="color: var(--tech-green);">Mention Bien</strong></p>
-                        </div>
-                    </div>
-
                     <!-- Expériences -->
                     <div class="cv-section">
                         <h2><i class="fas fa-briefcase"></i> Expériences Professionnelles</h2>
+                        
                         <div class="experience-item">
-                            <h3>Stage professionnel + CDD - CARSAT Bretagne</h3>
-                            <p class="period">19/05/25 au 27/06/25 et 01/07/25 au 29/08/25</p>
-                            <p style="margin-top: 0.5rem; color: var(--text-gray);">Service informatique régional</p>
+                            <h3>Administrateur Système et Réseaux - SNCF Réseau</h3>
+                            <p class="period">12/01/26 au 20/02/26 • Gare de Rennes</p>
+                            <p style="margin-top: 0.5rem; color: var(--text-gray);">Stage BTS SIO SISR</p>
+                            <ul style="margin-top: 1rem;">
+                                <li>Mise en place d'un serveur <strong>Proxmox</strong>, et d'une machine virtuelle <strong>Zabbix</strong> dessus (outil qui sera utilisé pour de la supervision réseau principalement)</li>
+                                <li>Étude de remplacement de commutateurs en réalisant des schémas réseaux sur <strong>Visio</strong></li>
+                            </ul>
+                        </div>
+
+                        <div class="experience-item">
+                            <h3>Technicien Informatique - CARSAT Bretagne</h3>
+                            <p class="period">19/05/25 au 27/06/25 et 01/07/25 au 29/08/25 • Rennes</p>
+                            <p style="margin-top: 0.5rem; color: var(--text-gray);">Stage et CDD (job d'été)</p>
                             <ul style="margin-top: 1rem;">
                                 <li>Installation, maintenance et configuration des PC</li>
                                 <li>Résolution d'incidents et installation de matériels</li>
-                                <li>Support technique utilisateurs</li>
+                                <li>Renouvellement de postes auprès des utilisateurs</li>
                             </ul>
                         </div>
+
                         <div class="experience-item">
-                            <h3>Stage professionnel - AFOREM Rennes</h3>
-                            <p class="period">15/05/23 au 07/07/23 et 13/11/23 au 19/01/24</p>
+                            <h3>Technicien Informatique - CARSAT Bretagne</h3>
+                            <p class="period">19/05/25 au 27/06/25 et 01/07/25 au 29/08/25 • Rennes</p>
+                            <p style="margin-top: 0.5rem; color: var(--text-gray);">Stage et CDD (job d'été)</p>
                             <ul style="margin-top: 1rem;">
                                 <li>Masterisation de postes</li>
                                 <li>Gestion de l'inventaire</li>
@@ -710,31 +729,47 @@
                         </div>
                     </div>
 
+                    <!-- Formation -->
+                    <div class="cv-section">
+                        <h2><i class="fas fa-graduation-cap"></i> Formation</h2>
+                        <div class="formation-item">
+                            <h3>BTS Services Informatiques aux Organisations</h3>
+                            <p class="period">2024-2026 • Lycée Victor et Hélène Basch, Rennes</p>
+                            <p style="margin-top: 0.5rem;">Option SISR (Solutions d'Infrastructures, Systèmes et Réseaux)</p>
+                        </div>
+                        <div class="formation-item">
+                            <h3>Baccalauréat Professionnel Systèmes Numériques</h3>
+                            <p class="period">2021-2024 • Lycée Charles Tillon, Rennes</p>
+                            <p style="margin-top: 0.5rem;">Option RISC</p>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+
                     <!-- Compétences Techniques -->
                     <div class="cv-section">
-                        <h2><i class="fas fa-tools"></i> Compétences Techniques</h2>
+                        <h2><i class="fas fa-tools"></i> Compétences Techniques (Hardskills)</h2>
                         
-                        <h3 style="margin-top: 1.5rem;">Systèmes et Réseaux</h3>
+                        <h3 style="margin-top: 1.5rem;"><i class="fas fa-server"></i> Virtualisation</h3>
                         <ul style="margin-top: 0.75rem;">
-                            <li>Installation et configuration de systèmes d'exploitation Windows Server, Linux Server</li>
-                            <li>Virtualisation (VirtualBox), Docker</li>
-                            <li>Gestion des incidents (GLPI et OCS)</li>
-                            <li>Configuration commutateurs et routeurs Cisco</li>
-                            <li>Active Directory, stratégies de groupe</li>
-                            <li>PGI Odoo</li>
-                            <li>Mise en place d'un serveur Web et du DMZ</li>
+                            <li>Proxmox</li>
+                            <li>VMware</li>
+                            <li>Docker</li>
                         </ul>
 
-                        <h3 style="margin-top: 1.5rem;">Cybersécurité</h3>
+                        <h3 style="margin-top: 1.5rem;"><i class="fas fa-network-wired"></i> Infrastructure réseau</h3>
                         <ul style="margin-top: 0.75rem;">
-                            <li>Gestion des risques, contre-mesures, RGPD</li>
-                            <li>Bonnes pratiques, ACLs, Cisco</li>
-                            <li>Pare-feu Stormshield et Linux (IPTables)</li>
+                            <li>Pare-feu, équipements réseau</li>
+                            <li>Active Directory (AD)</li>
+                            <li>DNS, serveurs</li>
+                            <li>IPTables</li>
                         </ul>
 
-                        <h3 style="margin-top: 1.5rem;">Développement et Bases de données</h3>
+                        <h3 style="margin-top: 1.5rem;"><i class="fas fa-code"></i> Programmation & Scripting</h3>
                         <ul style="margin-top: 0.75rem;">
-                            <li>Notions de langage HTML, CSS, PHP, MySQL</li>
+                            <li>Notion de langage HTML, CSS</li>
+                            <li>MySQL</li>
+                            <li>Script PowerShell</li>
                         </ul>
                     </div>
                 </div>
@@ -755,7 +790,7 @@
                 <a href="https://github.com/kaeligchristoux" target="_blank" rel="noopener" class="site-footer__social-btn" title="GitHub">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="mailto:christouxkaelig@gmail.com" class="site-footer__social-btn" title="Envoyer un e-mail">
+                <a href="/cdn-cgi/l/email-protection#accfc4dec5dfd8c3d9d4c7cdc9c0c5cbeccbc1cdc5c082cfc3c1" class="site-footer__social-btn" title="Envoyer un e-mail">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
@@ -763,7 +798,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Menu hamburger toggle
         function toggleMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
@@ -786,12 +821,4 @@
 
         // Fermer le menu au clic extérieur
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav')) {
-                document.getElementById('navMenu')?.classList.remove('active');
-                document.querySelector('.menu-toggle')?.classList.remove('active');
-                subMenuItems.forEach(item => item.classList.remove('open'));
-            }
-        });
-    </script>
-</body>
-</html>
+            if (!e.target.closest('nav
