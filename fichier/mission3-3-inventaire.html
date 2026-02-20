@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annexe 3 - Inventorisation Matériels | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --deep-green: #059669;
+            --accent-emerald: #34d399;
+            --dark-green: #047857;
+            --lime-green: #84cc16;
+            --sncf-red: #ed1c24;
+            --tech-blue: #0ea5e9;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 35%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 65%, rgba(52, 211, 153, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 45% 75%, rgba(132, 204, 22, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: greenPulse 12s ease-in-out infinite;
+        }
+
+        @keyframes greenPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul li a i.fa-chevron-down {
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+            transition: transform 0.3s;
+        }
+
+        nav ul li.has-submenu:hover > a i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .icon-gray {
+            color: var(--rail-gray) !important;
+        }
+
+        nav a:hover {
+            color: var(--primary-green);
+        }
+
+        nav a:hover .icon-gray {
+            color: var(--primary-green) !important;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-gray);
+            transition: all 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary-green);
+            padding-left: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            padding: 140px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Competency Badge */
+        .competency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-emerald);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-green);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-emerald);
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 3rem 0 5rem;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-emerald));
+        }
+
+        .section-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-card h2 i {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+        }
+
+        .section-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--accent-emerald);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-card p {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .section-card ul {
+            margin-left: 2rem;
+            margin-top: 1rem;
+            color: var(--text-gray);
+        }
+
+        .section-card ul li {
+            margin-bottom: 0.7rem;
+            line-height: 1.8;
+        }
+
+        /* Image Container */
+        .image-container {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--primary-green);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box strong {
+            color: var(--primary-green);
+        }
+
+        /* Grid Layout for multiple images */
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .images-grid .grid-item:nth-child(5) {
+            grid-column: 1 / -1;
+            max-width: 50%;
+            margin: 0 auto;
+        }
+
+        .grid-item {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .grid-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        }
+
+        .grid-item .image-caption {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        /* PDF Download Box */
+        .pdf-download {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.1));
+            border: 2px solid rgba(16, 185, 129, 0.4);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .pdf-download::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .pdf-download:hover::before {
+            opacity: 1;
+        }
+
+        .pdf-download:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .pdf-download-icon {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .pdf-download h3 {
+            font-size: 1.5rem;
+            color: var(--accent-emerald);
+            margin-bottom: 0.5rem;
+        }
+
+        .pdf-download p {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Competency Section */
+        .competency-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .competency-section h2 {
+            font-size: 1.8rem;
+            color: var(--accent-emerald);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .competency-item {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 3px solid var(--primary-green);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+
+        .competency-item h4 {
+            color: var(--primary-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .competency-item p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .nav-btn.secondary {
+            background: rgba(16, 185, 129, 0.15);
+            border: 2px solid var(--primary-green);
+            color: var(--accent-emerald);
+        }
+
+        .nav-btn.secondary:hover {
+            background: rgba(16, 185, 129, 0.25);
+        }
+
+        /* Footer */
+        .site-footer {
+            background: #111113;
+            border-top: 1px solid #27272a;
+            padding: 1.75rem 0;
+            margin-top: 5rem;
+        }
+
+        .site-footer__inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .site-footer__copy {
+            color: #52525b;
+            font-size: 0.875rem;
+        }
+
+        .site-footer__copy a {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .site-footer__copy a:hover {
+            color: #fafafa;
+            border-color: #fafafa;
+        }
+
+        .site-footer__socials {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .site-footer__social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #3f3f46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .site-footer__social-btn:hover {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            transform: translateY(-3px);
+        }
+
+        .site-footer__mentions {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .site-footer__mentions:hover {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(16, 185, 129, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .images-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-clipboard-list"></i> Annexe 3 : Inventorisation de matériels</h1>
+            <p class="subtitle">
+                Réalisation d'un inventaire de matériels réseau à conserver en spare
+            </p>
+            
+            <div class="competency-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Compétences : B1.2.1 • B1.2.3 • B2.3.1</span>
+            </div>
+
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <span>›</span>
+                <a href="stage2.html">Stage 2</a>
+                <span>›</span>
+                <a href="mission3-sncf.html">Mission 3</a>
+                <span>›</span>
+                <span>Annexe 3</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            
+            <!-- Introduction -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-info-circle"></i>
+                    Contexte de l'intervention
+                </h2>
+                
+                <p>
+                    J'ai eu pour mission de réaliser un <strong>inventaire d'une dizaine de matériels</strong> que nous 
+                    sommes censé garder en <strong>spare</strong> en cas de besoin. Les modèles des matériels concernés 
+                    par cet inventaire étaient les suivants :
+                </p>
+
+                <ul>
+                    <li>S5735-L48T4S-A (48*10/100/1000BASE-T ports, 4*GE SFP ports)</li>
+                    <li>S5735-L24P4S-A (24*10/100/1000BASE-T ports, 4*GE SFP ports)</li>
+                    <li>S5735-S24T4X (24*10/100/1000BASE-T ports, 4*10GE SFP+ port)</li>
+                    <li>S5732-H24S6Q (20*GE SFP ports,4* 10GE SFP+ ports,6*40GE QSFP)</li>
+                    <li>S5735-L32ST4X-A (24*GE SFP ports, 8*10/100/1000BASE-T ports)</li>
+                    <li>S5731-H24T4XC (24ports*RJ45 IG, 4p*SFP+, 1*slot, sans alim)</li>
+                    <li>S5732-H48S6Q</li>
+                    <li>S6730-HL24X6C</li>
+                    <li>Modem ETIC</li>
+                    <li>AR651</li>
+                </ul>
+
+                <p style="margin-top: 1.5rem;">
+                    Je me suis donc rendu dans la salle où sont stockés tous les matériels informatiques 
+                    (commutateurs, modem, bornes, routeurs...).
+                </p>
+
+                <p>
+                    En cas de manque d'un ou de plusieurs de ces matériels, une demande sera créée afin 
+                    de les recommander car c'est une nécessité d'avoir ces matériels en spare.
+                </p>
+            </div>
+
+            <!-- Matériels identifiés -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-check-circle"></i>
+                    Matériels identifiés
+                </h2>
+
+                <p>
+                    Voici donc les matériels que j'ai pu identifier correspondants aux matériels référents à 
+                    ma mission d'inventorisation :
+                </p>
+
+                <div class="images-grid">
+                    <div class="grid-item">
+                        <img src="L48T4S-A.jpg" alt="Commutateur S5735-L48T4S-A">
+                        <p class="image-caption">S5735-L48T4S-A (48*10/100/1000BASE-T ports, 4*GE SFP ports)</p>
+                    </div>
+                    <div class="grid-item">
+                        <img src="L24P4S-A.jpg" alt="Commutateur S5735-L24P4S-A">
+                        <p class="image-caption">S5735-L24P4S-A (24*10/100/1000BASE-T ports, 4*GE SFP ports)</p>
+                    </div>
+                    <div class="grid-item">
+                        <img src="S24T4X.jpg" alt="Commutateur S5735-S24T4X">
+                        <p class="image-caption">S5735-S24T4X (24*10/100/1000BASE-T ports, 4*10GE SFP+ ports)</p>
+                    </div>
+                    <div class="grid-item">
+                        <img src="H24S6Q.jpg" alt="Commutateur S5732-H24S6Q">
+                        <p class="image-caption">S5732-H24S6Q (20*GE SFP ports,4* 10GE SFP+ ports,6*40GE QSFP)</p>
+                    </div>
+                    <div class="grid-item">
+                        <img src="AR651.jpg" alt="Carton AR651">
+                        <p class="image-caption">AR651</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matériels introuvables -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Matériels introuvables
+                </h2>
+
+                <p>
+                    Les matériels que je n'ai pas pu identifier sont les suivants :
+                </p>
+
+                <ul>
+                    <li>S5735-L32ST4X-A (24*GE SFP ports, 8*10/100/1000BASE-T ports)</li>
+                    <li>S5731-H24T4XC (24ports*RJ45 IG, 4p*SFP+, 1*slot, sans alim)</li>
+                    <li>S5732-H48S6Q</li>
+                    <li>S6730-HL24X6C</li>
+                    <li>Modem ETIC</li>
+                </ul>
+
+                <div class="info-box">
+                    <p>
+                        <strong>Il reste donc des matériels introuvables</strong>, qui sont listés ci-dessus. 
+                        Ces équipements devront être recommandés pour compléter le stock de spare.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mail envoyé -->
+            <div class="section-card">
+                <h2>
+                    <i class="fas fa-envelope"></i>
+                    Communication avec le tuteur
+                </h2>
+
+                <p>
+                    J'ai donc envoyé un mail à mon tuteur afin qu'il recommande les matériels introuvables.
+                </p>
+
+                <div class="info-box">
+                    <p>
+                        <strong>Objet :</strong> RE: Matériel de spare régional LAN
+                    </p>
+                    <p>
+                        Le mail récapitule les matériels recensés et ceux qu'il reste à commander, 
+                        avec la proposition de création d'un DEFILAN pour faciliter la recommande des équipements manquants.
+                    </p>
+                </div>
+
+                <div class="image-container">
+                    <img src="mail.jpg" alt="Mail envoyé au tuteur">
+                    <p class="image-caption">Mail envoyé au tuteur récapitulant l'inventaire effectué</p>
+                </div>
+            </div>
+
+            <!-- Téléchargement PDF -->
+            <div class="pdf-download">
+                <div class="pdf-download-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3>Document technique complet</h3>
+                <p>Téléchargez le compte-rendu détaillé de cette intervention au format PDF</p>
+                <a href="DT_Inventaire.pdf" class="pdf-btn" download>
+                    <i class="fas fa-download"></i>
+                    <span>Télécharger DT_Inventaire.pdf</span>
+                </a>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="mission3-sncf.html" class="nav-btn secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour Mission 3</span>
+                </a>
+                <a href="mission3-4-firewall.html" class="nav-btn">
+                    <span>Annexe 4 — Firewall</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Separator -->
+            <div style="height: 2px; background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent); margin: 4rem 0;"></div>
+
+            <!-- Compétences mobilisées -->
+            <div class="competency-section">
+                <h2>
+                    <i class="fas fa-award"></i>
+                    Compétences du référentiel BTS SIO mobilisées
+                </h2>
+
+                <div class="competency-item">
+                    <h4>B1.2.1 — Recenser et identifier les ressources numériques</h4>
+                    <p>
+                        Identification et recensement des matériels réseau (commutateurs, routeurs, modems) 
+                        présents dans le stock de spare. Capacité à reconnaître les différents modèles de 
+                        matériels Huawei et leurs caractéristiques techniques (nombre de ports, types de connexions, débits).
+                    </p>
+                </div>
+
+                <div class="competency-item">
+                    <h4>B1.2.3 — Vérifier les comptes rendus d'intervention</h4>
+                    <p>
+                        Rédaction d'un compte-rendu détaillé de l'inventaire effectué, avec la liste complète 
+                        des matériels recensés et manquants. Communication claire avec le tuteur via mail pour 
+                        signaler les équipements à recommander et proposer la création d'un DEFILAN.
+                    </p>
+                </div>
+
+                <div class="competency-item">
+                    <h4>B2.3.1 — Administrer sur site ou à distance des éléments d'une infrastructure</h4>
+                    <p>
+                        Gestion du stock de matériels de spare, organisation et localisation des équipements réseau 
+                        dans la salle de stockage. Contribution à la disponibilité des ressources en cas de panne 
+                        ou de besoin de remplacement urgent d'un équipement en production.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+    
+            <p class="site-footer__copy">
+                &copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>
+            </p>
+            
+            <div class="site-footer__socials">
+                <a href="https://www.linkedin.com/in/christoux-ka%C3%ABlig-6a4620341/"
+                   target="_blank" rel="noopener"
+                   class="site-footer__social-btn"
+                   title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/kaeligchristoux"
+                   target="_blank" rel="noopener"
+                   class="site-footer__social-btn"
+                   title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:adresse@email.com" class="site-footer__social-btn" title="Envoyer un e-mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            
+            <a href="mentions-legales.html" class="site-footer__mentions">
+                Mentions légales
+            </a>
+    
+        </div>
+    </footer>
+
+    <script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
