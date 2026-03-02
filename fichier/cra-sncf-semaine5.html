@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRA Semaine 5 - SNCF | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --sncf-red: #ed1c24;
+            --deep-red: #c41e1e;
+            --light-red: #ff4f57;
+            --primary-blue: #0ea5e9;
+            --tech-green: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 25% 40%, rgba(237, 28, 36, 0.10) 0%, transparent 50%),
+                radial-gradient(circle at 75% 60%, rgba(196, 30, 30, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(255, 79, 87, 0.05) 0%, transparent 60%);
+            z-index: -1;
+            animation: redPulse 12s ease-in-out infinite;
+        }
+
+        @keyframes redPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation - Responsive */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(237, 28, 36, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--sncf-red), var(--light-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        nav .logo:hover { transform: scale(1.05); }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-gray { color: var(--rail-gray) !important; }
+        nav a:hover { color: var(--sncf-red); }
+        nav a:hover .icon-gray { color: var(--sncf-red) !important; }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(237, 28, 36, 0.3);
+            border: 1px solid rgba(237, 28, 36, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu {
+            position: relative;
+        }
+
+        nav ul li.has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInSubmenu 0.3s ease;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .submenu li a:hover {
+            background: rgba(237, 28, 36, 0.15);
+            color: var(--sncf-red);
+            padding-left: 2rem;
+        }
+
+        @keyframes fadeInSubmenu {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--sncf-red);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 150px 0 60px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--sncf-red), var(--light-red), var(--deep-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .page-hero .week-date {
+            color: var(--text-gray);
+            font-size: 1.3rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 0.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .breadcrumb a {
+            color: var(--sncf-red);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--light-red);
+        }
+
+        /* Summary Box Ultra-Stylé */
+        .summary-box {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(237, 28, 36, 0.3);
+            margin: 3rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sncf-red), var(--light-red));
+        }
+
+        .summary-box h3 {
+            color: var(--sncf-red);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* Accordion Day Section */
+        .day-accordion {
+            margin-bottom: 1.5rem;
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(237, 28, 36, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--sncf-red), var(--deep-red));
+        }
+
+        .day-header:hover {
+            border-color: var(--sncf-red);
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(237, 28, 36, 0.3);
+        }
+
+        .day-header.active {
+            border-color: var(--sncf-red);
+            background: linear-gradient(135deg, rgba(237, 28, 36, 0.15), rgba(196, 30, 30, 0.1));
+        }
+
+        .day-header-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .day-number {
+            background: linear-gradient(135deg, var(--sncf-red), var(--deep-red));
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 4px 15px rgba(237, 28, 36, 0.4);
+        }
+
+        .day-info h3 {
+            color: var(--sncf-red);
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .day-info .date {
+            color: var(--text-gray);
+            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .day-toggle {
+            font-size: 1.5rem;
+            color: var(--sncf-red);
+            transition: transform 0.3s;
+        }
+
+        .day-header.active .day-toggle {
+            transform: rotate(180deg);
+        }
+
+        .day-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .day-content.active {
+            max-height: 3000px;
+        }
+
+        .day-content-inner {
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 0 0 15px 15px;
+            border: 2px solid rgba(237, 28, 36, 0.2);
+            border-top: none;
+        }
+
+        .time-slot {
+            margin-bottom: 2rem;
+        }
+
+        .time-slot h4 {
+            color: var(--light-red);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(237, 28, 36, 0.2);
+        }
+
+        .time-slot ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .time-slot li {
+            color: var(--text-gray);
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 2rem;
+            line-height: 1.8;
+        }
+
+        .time-slot li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--sncf-red);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(237, 28, 36, 0.2);
+        }
+
+        .competence-tag {
+            background: rgba(237, 28, 36, 0.12);
+            border: 1px solid rgba(237, 28, 36, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--light-red);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .competence-tag:hover {
+            background: rgba(237, 28, 36, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Learning Sections */
+        .learning-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .learning-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tech-green), #059669);
+        }
+
+        .learning-section h3 {
+            color: var(--tech-green);
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .learning-box {
+            background: rgba(16, 185, 129, 0.08);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--tech-green);
+            margin-bottom: 1.5rem;
+        }
+
+        .learning-box h4 {
+            color: var(--tech-green);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .learning-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .learning-box li {
+            color: var(--text-gray);
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 2rem;
+            line-height: 1.8;
+        }
+
+        .learning-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--tech-green);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .reflection-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            border-left: 4px solid var(--tech-green);
+        }
+
+        /* PDF Download Section */
+        .pdf-download {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .pdf-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(135deg, var(--sncf-red), var(--deep-red));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(237, 28, 36, 0.4);
+        }
+
+        .pdf-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(237, 28, 36, 0.6);
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .back-button:hover {
+            background: rgba(14, 165, 233, 0.2);
+            transform: translateX(-5px);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 2px solid rgba(237, 28, 36, 0.3);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .copyright {
+            color: var(--text-gray);
+        }
+
+        .copyright a {
+            color: var(--sncf-red);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .copyright a:hover {
+            color: var(--light-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(237, 28, 36, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active { right: 0; }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+
+            .day-header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+        .site-footer {
+            background: #111113;
+            border-top: 1px solid #27272a;
+            padding: 1.75rem 0;
+        }
+    
+        .site-footer__inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    
+        .site-footer__copy {
+            color: #52525b;
+            font-size: 0.875rem;
+        }
+    
+        .site-footer__copy a {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+    
+        .site-footer__copy a:hover {
+            color: #fafafa;
+            border-color: #fafafa;
+        }
+    
+        .site-footer__socials {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+    
+        .site-footer__social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #3f3f46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+        }
+    
+        .site-footer__social-btn:hover {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            transform: translateY(-3px);
+        }
+    
+        .site-footer__mentions {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+    
+        .site-footer__mentions:hover {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+    
+        @media (max-width: 640px) {
+            .site-footer__inner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-clipboard-list"></i> CRA Semaine 5</h1>
+            <p class="week-date">Du 09/02/2026 au 13/02/2026</p>
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <a href="stage2.html">Stage 2</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span>CRA Semaine 5</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            <!-- Summary Box -->
+            <div class="summary-box">
+                <h3><i class="fas fa-file-signature"></i> Résumé de la semaine</h3>
+                <p>
+                    Cette semaine a été centrée sur la consolidation de l'infrastructure mise en place et sur l'amélioration de la documentation technique. 
+                    J'ai poursuivi la <strong>mise en place du serveur de sauvegarde</strong> pour les machines virtuelles Proxmox, contribuant ainsi à 
+                    renforcer la continuité et la sécurisation des services.
+                    <br><br>
+                    Un temps important a également été consacré à la structuration de la documentation Proxmox (version V3), avec la création et la 
+                    finalisation d'un <strong>schéma réseau détaillé</strong>. Ce travail m'a permis d'améliorer la clarté et la maintenabilité de l'infrastructure.
+                    <br><br>
+                    Par ailleurs, j'ai réalisé un <strong>inventaire des commutateurs réseau</strong> afin de vérifier la disponibilité du matériel et 
+                    d'anticiper d'éventuelles commandes. Enfin, j'ai continué à avancer sur mon site web pour le PCP, ainsi que sur le <strong>MOOC RGPD</strong>, 
+                    renforçant mes compétences techniques et réglementaires.
+                </p>
+            </div>
+
+            <!-- Lundi 09/02 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="day-header-content">
+                        <div class="day-number">01</div>
+                        <div class="day-info">
+                            <h3>Lundi 09/02</h3>
+                            <p class="date">Serveur de Sauvegarde Proxmox</p>
+                        </div>
+                    </div>
+                    <div class="day-toggle"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="day-content">
+                    <div class="day-content-inner">
+                        <div class="time-slot">
+                            <h4><i class="fas fa-sun"></i> Matin</h4>
+                            <ul>
+                                <li>Mise en place d'un serveur de sauvegarde pour les machines virtuelles du serveur Proxmox - 4h</li>
+                            </ul>
+                        </div>
+                        <div class="time-slot">
+                            <h4><i class="fas fa-moon"></i> Après-midi</h4>
+                            <ul>
+                                <li>Mise en place d'un serveur de sauvegarde pour les machines virtuelles du serveur Proxmox - 3h</li>
+                            </ul>
+                        </div>
+                        <div class="competences">
+                            <span class="competence-tag">B1.1.5</span>
+                            <span class="competence-tag">B2.2.1</span>
+                            <span class="competence-tag">B2.2.5</span>
+                            <span class="competence-tag">B2.3.1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mardi 10/02 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="day-header-content">
+                        <div class="day-number">02</div>
+                        <div class="day-info">
+                            <h3>Mardi 10/02</h3>
+                            <p class="date">Journée au lycée</p>
+                        </div>
+                    </div>
+                    <div class="day-toggle"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="day-content">
+                    <div class="day-content-inner">
+                        <div class="time-slot">
+                            <h4><i class="fas fa-sun"></i> Matin</h4>
+                            <ul>
+                                <li>Journée au lycée</li>
+                            </ul>
+                        </div>
+                        <div class="time-slot">
+                            <h4><i class="fas fa-moon"></i> Après-midi</h4>
+                            <ul>
+                                <li>Journée au lycée</li>
+                            </ul>
+                        </div>
+                        <div class="competences">
+                            <span class="competence-tag">Journée au lycée</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mercredi 11/02 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="day-header-content">
+                        <div class="day-number">03</div>
+                        <div class="day-info">
+                            <h3>Mercredi 11/02</h3>
+                            <p class="date">Retour Tuteur & Documentation</p>
+                        </div>
+                    </div>
+                    <div class="day-toggle"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="day-content">
+                    <div class="day-content-inner">
+                        <div class="time-slot">
+                            <h4><i class="fas fa-sun"></i> Matin</h4>
+                            <ul>
+                                <li>Retour auprès de mon tuteur de stage sur ma journée passée au lycée en lui présentant mon tableau de synthèse ou encore les aspects que je devais améliorer sur mon site, j'aurais un temps vendredi pour travailler sur mon site web - 1h</li>
+                                <li>Lecture de documents réseaux présent sur le sharepoint de l'équipe - 3h</li>
+                            </ul>
+                        </div>
+                        <div class="time-slot">
+                            <h4><i class="fas fa-moon"></i> Après-midi</h4>
+                            <ul>
+                                <li>J'ai continué le MOOC nommé RGPD Express - 3h</li>
+                            </ul>
+                        </div>
+                        <div class="competences">
+                            <span class="competence-tag">B1.4.2</span>
+                            <span class="competence-tag">B1.6.2</span>
+                            <span class="competence-tag">B1.6.4</span>
+                            <span class="competence-tag">B3.1.3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jeudi 12/02 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="day-header-content">
+                        <div class="day-number">04</div>
+                        <div class="day-info">
+                            <h3>Jeudi 12/02</h3>
+                            <p class="date">Création Schéma Réseau</p>
+                        </div>
+                    </div>
+                    <div class="day-toggle"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="day-content">
+                    <div class="day-content-inner">
+                        <div class="time-slot">
+                            <h4><i class="fas fa-sun"></i> Matin</h4>
+                            <ul>
+                                <li>Création d'un schéma réseau pour ma document Proxmox (DT_ProxmoxV3) - 4h</li>
+                            </ul>
+                        </div>
+                        <div class="time-slot">
+                            <h4><i class="fas fa-moon"></i> Après-midi</h4>
+                            <ul>
+                                <li>Création d'un schéma réseau pour ma document Proxmox (DT_ProxmoxV3) - 3h</li>
+                            </ul>
+                        </div>
+                        <div class="competences">
+                            <span class="competence-tag">B1.4.1</span>
+                            <span class="competence-tag">B2.1.3</span>
+                            <span class="competence-tag">B2.1.5</span>
+                            <span class="competence-tag">B2.2.2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vendredi 13/02 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="day-header-content">
+                        <div class="day-number">05</div>
+                        <div class="day-info">
+                            <h3>Vendredi 13/02</h3>
+                            <p class="date">Inventaire, Schéma & Site Web</p>
+                        </div>
+                    </div>
+                    <div class="day-toggle"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="day-content">
+                    <div class="day-content-inner">
+                        <div class="time-slot">
+                            <h4><i class="fas fa-sun"></i> Matin</h4>
+                            <ul>
+                                <li>Inventorisation de switchs afin de vérifier si nous avions tous les switchs nécessaires en spare ou s'il fallait repasser une commande - 2h</li>
+                                <li>Finalisation du schéma réseau avec tous les petits ajustements, tous en détaillant le schéma réseau directement dans DT_ProxmoxV3) - 2h</li>
+                            </ul>
+                        </div>
+                        <div class="time-slot">
+                            <h4><i class="fas fa-moon"></i> Après-midi</h4>
+                            <ul>
+                                <li>Conception de mon site web (PCP) - 3h</li>
+                            </ul>
+                        </div>
+                        <div class="competences">
+                            <span class="competence-tag">B1.1.1</span>
+                            <span class="competence-tag">B1.3.1</span>
+                            <span class="competence-tag">B2.1.4</span>
+                            <span class="competence-tag">B2.2.2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF Download -->
+            <div class="pdf-download">
+                <a href="CHRISTOUX_Kaelig_CRA_Sem5.pdf" class="pdf-button" download>
+                    <i class="fas fa-file-pdf"></i>
+                    Télécharger le CRA en PDF
+                </a>
+            </div>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="stage2.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour au Stage 2
+                </a>
+            </div>
+
+                        <!-- Compétences Mobilisées -->
+            <div style="margin-top: 5rem;">
+                <h2 style="color: var(--sncf-red); font-size: 2.5rem; text-align: center; margin-bottom: 3rem; display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                    <i class="fas fa-certificate"></i>
+                    Compétences mobilisées durant cette semaine
+                </h2>
+
+                <!-- Bloc 1 : Support et mise à disposition -->
+                <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4)); padding: 3rem; border-radius: 20px; border: 2px solid rgba(14, 165, 233, 0.3); margin-bottom: 2rem; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #0ea5e9, #06b6d4);"></div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid rgba(14, 165, 233, 0.2);">
+                        <span style="background: linear-gradient(135deg, #0ea5e9, #06b6d4); padding: 0.75rem 1.5rem; border-radius: 12px; color: white; font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);">B1</span>
+                        <h3 style="color: #0ea5e9; font-size: 1.8rem; margin: 0; flex: 1;">Support et mise à disposition de services informatiques</h3>
+                    </div>
+                    
+                    <div style="display: grid; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #06b6d4; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #06b6d4;">B1.1 - Gérer le patrimoine informatique</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.1.1</strong> - Recenser et identifier les ressources numériques</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.1.5</strong> - Vérifier les conditions de la continuité d'un service informatique</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #06b6d4; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #06b6d4;">B1.3 - Développer la présence en ligne de l'organisation</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.3.1</strong> - Participer à l'évolution d'un site Web exploitant les données de l'organisation</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #06b6d4; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #06b6d4;">B1.4 - Travailler en mode projet</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.4.1</strong> - Analyser les objectifs et les modalités d'organisation d'un projet</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.4.2</strong> - Évaluer les indicateurs de suivi d'un projet et analyser les écarts</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #06b6d4; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #06b6d4;">B1.6 - Organiser son développement professionnel</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.6.2</strong> - Développer son projet professionnel</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(14, 165, 233, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #0ea5e9;">B1.6.4</strong> - Mettre en place son environnement d'apprentissage personnel</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloc 2 : Administration des systèmes et réseaux -->
+                <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4)); padding: 3rem; border-radius: 20px; border: 2px solid rgba(139, 92, 246, 0.3); margin-bottom: 2rem; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid rgba(139, 92, 246, 0.2);">
+                        <span style="background: linear-gradient(135deg, #8b5cf6, #a78bfa); padding: 0.75rem 1.5rem; border-radius: 12px; color: white; font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);">B2</span>
+                        <h3 style="color: #8b5cf6; font-size: 1.8rem; margin: 0; flex: 1;">Administration des systèmes et réseaux</h3>
+                    </div>
+                    
+                    <div style="display: grid; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #a78bfa; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #a78bfa;">B2.1 - Concevoir une solution d'infrastructure réseau</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.1.3</strong> - Maquetter et prototyper une solution d'infrastructure</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.1.4</strong> - Choisir les éléments nécessaires pour assurer la qualité et la disponibilité d'un service</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.1.5</strong> - Élaborer un dossier de choix d'une solution d'infrastructure et rédiger les spécifications techniques</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #a78bfa; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #a78bfa;">B2.2 - Installer, tester et déployer une solution d'infrastructure réseau</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.2.1</strong> - Installer et configurer des éléments d'infrastructure</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.2.2</strong> - Rédiger ou mettre à jour la documentation technique et utilisateur d'une solution d'infrastructure</div>
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.2.5</strong> - Installer et configurer des éléments nécessaires pour assurer la continuité des services</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #a78bfa; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #a78bfa;">B2.3 - Exploiter, dépanner et superviser une solution d'infrastructure réseau</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(139, 92, 246, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #8b5cf6;">B2.3.1</strong> - Administrer sur site et à distance des éléments d'une infrastructure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloc 3 : Cybersécurité -->
+                <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4)); padding: 3rem; border-radius: 20px; border: 2px solid rgba(16, 185, 129, 0.3); margin-bottom: 2rem; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid rgba(16, 185, 129, 0.2);">
+                        <span style="background: linear-gradient(135deg, #10b981, #34d399); padding: 0.75rem 1.5rem; border-radius: 12px; color: white; font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">B3</span>
+                        <h3 style="color: #10b981; font-size: 1.8rem; margin: 0; flex: 1;">Cybersécurité des services informatiques</h3>
+                    </div>
+                    
+                    <div style="display: grid; gap: 2rem;">
+                        <div>
+                            <h4 style="color: #34d399; margin-bottom: 1rem; font-size: 1.2rem; padding-left: 1rem; border-left: 3px solid #34d399;">B3.1 - Protéger les données à caractère personnel</h4>
+                            <div style="display: grid; gap: 0.5rem;">
+                                <div style="padding: 0.6rem 1rem; background: rgba(16, 185, 129, 0.05); border-radius: 6px; color: var(--text-gray);"><strong style="color: #10b981;">B3.1.3</strong> - Appliquer la réglementation en matière de collecte, de traitement et de conservation des données à caractère personnel</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+    
+            <p class="site-footer__copy">
+                &copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>
+            </p>
+            
+            <div class="site-footer__socials">
+                <a href="https://www.linkedin.com/in/christoux-ka%C3%ABlig-6a4620341/"
+                   target="_blank" rel="noopener"
+                   class="site-footer__social-btn"
+                   title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/kaeligchristoux"
+                   target="_blank" rel="noopener"
+                   class="site-footer__social-btn"
+                   title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="/cdn-cgi/l/email-protection#f5969d879c86819a808d9e9490999c92b59298949c99db969a98" class="site-footer__social-btn" title="Envoyer un e-mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            
+            <a href="mentions-legales.html" class="site-footer__mentions">
+                Mentions légales
+            </a>
+    
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Menu hamburger toggle
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        // Toggle sous-menus sur mobile
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Toggle accordion days
+        function toggleDay(header) {
+            const content = header.nextElementSibling;
+            const allHeaders = document.querySelectorAll('.day-header');
+            const allContents = document.querySelectorAll('.day-content');
+            
+            // Fermer tous les autres
+            allHeaders.forEach(h => {
+                if (h !== header) {
+                    h.classList.remove('active');
+                }
+            });
+            allContents.forEach(c => {
+                if (c !== content) {
+                    c.classList.remove('active');
+                }
+            });
+            
+            // Toggle celui cliqué
+            header.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+
+        // Ouvrir le premier jour par défaut
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstHeader = document.querySelector('.day-header');
+            if (firstHeader) {
+                firstHeader.classList.add('active');
+                const firstContent = firstHeader.nextElementSibling;
+                if (firstContent) {
+                    firstContent.classList.add('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
