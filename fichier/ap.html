@@ -51,7 +51,6 @@
             50% { opacity: 1; }
         }
 
-        /* Navigation - Responsive */
         nav {
             position: fixed; top: 0; width: 100%;
             background: rgba(15, 23, 42, 0.8);
@@ -70,80 +69,74 @@
             align-items: center;
         }
 
-        nav .logo {
+        .logo {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-blue), var(--electric-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary-blue);
             text-decoration: none;
-            transition: transform 0.3s;
+            letter-spacing: 1px;
         }
 
-        nav .logo:hover { transform: scale(1.05); }
-
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 2rem;
             align-items: center;
         }
 
-        nav a {
-            color: var(--text-gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        nav ul li {
+            position: relative;
         }
 
-        .icon-gray { color: #64748b !important; }
-        nav a:hover { color: var(--primary-blue); }
-        nav a:hover .icon-gray { color: var(--primary-blue) !important; }
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-blue);
+        }
+
+        .icon-gray {
+            color: var(--text-gray);
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover .icon-gray {
+            color: var(--primary-blue);
+        }
 
         .submenu {
-            display: none;
             position: absolute;
             top: 100%;
             left: 0;
             background: rgba(15, 23, 42, 0.98);
             backdrop-filter: blur(10px);
-            min-width: 200px;
-            padding: 0.5rem 0;
+            border: 1px solid rgba(14, 165, 233, 0.2);
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            z-index: 1000;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            display: none;
             list-style: none;
-        }
-
-        nav ul li.has-submenu {
-            position: relative;
-        }
-
-        nav ul li.has-submenu:hover .submenu {
-            display: block;
-            animation: fadeInSubmenu 0.3s ease;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 0.5rem;
         }
 
         .submenu li a {
+            padding: 0.75rem 1.25rem;
             display: block;
-            padding: 0.8rem 1.5rem;
         }
 
-        .submenu li a:hover {
-            background: rgba(14, 165, 233, 0.15);
-            color: var(--primary-blue);
-            padding-left: 2rem;
-        }
-
-        @keyframes fadeInSubmenu {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .has-submenu:hover .submenu {
+            display: flex;
         }
 
         .menu-toggle {
@@ -153,8 +146,6 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1001;
         }
 
         .menu-toggle span {
@@ -171,7 +162,6 @@
             padding: 0 2rem;
         }
 
-        /* Hero Section */
         .page-hero {
             padding: 150px 0 80px;
             text-align: center;
@@ -206,7 +196,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Intro Box Épuré */
         .intro-box {
             background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(10px);
@@ -244,7 +233,6 @@
             font-weight: 300;
         }
 
-        /* Section Title */
         .section-title {
             font-size: 2.5rem;
             margin-bottom: 4rem;
@@ -267,7 +255,6 @@
             background-clip: text;
         }
 
-        /* AP Grid ULTRA-STYLÉ */
         .ap-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -275,44 +262,36 @@
             margin: 4rem 0;
         }
 
-        .ap-grid .ap-card:nth-child(5) {
-            grid-column: 1 / -1;
-            max-width: 650px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        /* AP Card ULTRA-ÉPURÉ avec DÉGRADÉ SPECTACULAIRE */
         .ap-card {
             background: linear-gradient(135deg, 
-                rgba(14, 165, 233, 0.05) 0%, 
-                rgba(30, 41, 59, 0.4) 50%, 
-                rgba(99, 102, 241, 0.05) 100%
+                rgba(30, 41, 59, 0.6) 0%, 
+                rgba(30, 41, 59, 0.4) 100%
             );
             backdrop-filter: blur(10px);
-            border-radius: 30px;
-            overflow: hidden;
+            border-radius: 25px;
             border: 1px solid rgba(14, 165, 233, 0.2);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
             text-decoration: none;
+            color: inherit;
             display: block;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .ap-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             right: 0;
             height: 3px;
             background: linear-gradient(90deg, 
-                var(--sky-blue), 
-                var(--primary-blue), 
+                var(--primary-blue),
                 var(--electric-cyan),
                 var(--indigo)
             );
-            opacity: 0;
-            transition: opacity 0.5s;
+            opacity: 0.7;
+            transition: opacity 0.3s;
         }
 
         .ap-card:hover::before {
@@ -333,7 +312,6 @@
             );
         }
 
-        /* Coming Soon Style ÉPURÉ */
         .ap-card.coming-soon {
             background: linear-gradient(135deg, 
                 rgba(30, 41, 59, 0.3) 0%, 
@@ -360,7 +338,6 @@
             );
         }
 
-        /* AP Header ULTRA-MODERNE */
         .ap-header {
             background: linear-gradient(135deg, 
                 rgba(14, 165, 233, 0.15) 0%,
@@ -418,7 +395,6 @@
             gap: 0.5rem;
         }
 
-        /* AP Content MINIMALISTE */
         .ap-content {
             padding: 2.5rem;
         }
@@ -430,7 +406,6 @@
             font-weight: 300;
         }
 
-        /* AP Tags ÉPURÉS */
         .ap-tags {
             display: flex;
             flex-wrap: wrap;
@@ -453,22 +428,20 @@
 
         .ap-tag:hover {
             background: rgba(14, 165, 233, 0.2);
-            border-color: rgba(14, 165, 233, 0.4);
             transform: translateY(-2px);
         }
 
-        /* AP Button ULTRA-STYLÉ */
         .ap-button {
             display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1.2rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+            gap: 0.7rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--electric-cyan));
             color: white;
-            border-radius: 15px;
+            border-radius: 30px;
             font-weight: 600;
+            font-size: 0.95rem;
             transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -480,7 +453,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
 
@@ -488,22 +461,16 @@
             left: 100%;
         }
 
-        .ap-card:hover .ap-button {
-            transform: translateX(10px);
-            box-shadow: 0 12px 30px rgba(14, 165, 233, 0.5);
-        }
-
         .ap-card.coming-soon .ap-button {
-            background: rgba(14, 165, 233, 0.2);
-            cursor: not-allowed;
-            box-shadow: none;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            color: var(--text-gray);
         }
 
         .ap-card.coming-soon .ap-button::before {
             display: none;
         }
 
-        /* Coming Soon Badge ÉLÉGANT */
         .coming-soon-badge {
             display: inline-flex;
             align-items: center;
@@ -517,31 +484,6 @@
             color: var(--electric-cyan);
         }
 
-        /* Footer */
-        footer {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(14, 165, 233, 0.2);
-            padding: 2.5rem 0;
-            text-align: center;
-            margin-top: 6rem;
-        }
-
-        .copyright {
-            color: var(--text-gray);
-        }
-
-        .copyright a {
-            color: var(--primary-blue);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .copyright a:hover {
-            color: var(--electric-cyan);
-        }
-
-        /* Responsive */
         @media (max-width: 968px) {
             nav ul {
                 position: fixed;
@@ -586,10 +528,6 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-
-            .ap-grid .ap-card:nth-child(5) {
-                grid-column: 1;
-            }
         }
 
         @media (max-width: 640px) {
@@ -605,12 +543,13 @@
                 padding: 2rem;
             }
         }
+
         .site-footer {
             background: #111113;
             border-top: 1px solid #27272a;
             padding: 1.75rem 0;
         }
-    
+
         .site-footer__inner {
             max-width: 1200px;
             margin: 0 auto;
@@ -621,12 +560,12 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-    
+
         .site-footer__copy {
             color: #52525b;
             font-size: 0.875rem;
         }
-    
+
         .site-footer__copy a {
             color: #a1a1aa;
             text-decoration: none;
@@ -635,18 +574,18 @@
             padding-bottom: 1px;
             transition: color 0.2s, border-color 0.2s;
         }
-    
+
         .site-footer__copy a:hover {
             color: #fafafa;
             border-color: #fafafa;
         }
-    
+
         .site-footer__socials {
             display: flex;
             align-items: center;
             gap: 0.6rem;
         }
-    
+
         .site-footer__social-btn {
             width: 44px;
             height: 44px;
@@ -661,14 +600,14 @@
             font-size: 1.2rem;
             transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
         }
-    
+
         .site-footer__social-btn:hover {
             background: rgba(245, 158, 11, 0.12);
             border-color: rgba(245, 158, 11, 0.4);
             color: #fbbf24;
             transform: translateY(-3px);
         }
-    
+
         .site-footer__mentions {
             color: #a1a1aa;
             font-size: 0.875rem;
@@ -678,12 +617,12 @@
             padding-bottom: 1px;
             transition: color 0.2s, border-color 0.2s;
         }
-    
+
         .site-footer__mentions:hover {
             color: #fbbf24;
             border-color: #fbbf24;
         }
-    
+
         @media (max-width: 640px) {
             .site-footer__inner {
                 flex-direction: column;
@@ -691,7 +630,6 @@
                 text-align: center;
             }
         }
-
     </style>
 </head>
 <body>
@@ -758,7 +696,7 @@
             <!-- Section Title -->
             <h2 class="section-title"><i class="fas fa-folder-open"></i> Mes ateliers professionnels</h2>
 
-            <!-- AP Grid ULTRA-STYLÉ -->
+            <!-- AP Grid -->
             <div class="ap-grid">
                 <!-- AP 1 : Odoo -->
                 <a href="ap1.html" class="ap-card">
@@ -786,97 +724,35 @@
                     </div>
                 </a>
 
-                <!-- AP 2 : À venir -->
-                <div class="ap-card coming-soon">
+                <!-- AP 2 : Infrastructure réseau (B2) -->
+                <a href="ap2.html" class="ap-card">
                     <div class="ap-header">
                         <div class="ap-number">02</div>
-                        <span class="coming-soon-badge">
-                            <i class="fas fa-hourglass-half"></i>
-                            À venir
-                        </span>
-                        <h3><i class="fas fa-question-circle"></i> Atelier Professionnel #2</h3>
-                        <p class="year"><i class="fas fa-calendar-alt"></i> À définir</p>
+                        <h3><i class="fas fa-network-wired"></i> Déploiement d'une infrastructure réseau (B2)</h3>
+                        <p class="year"><i class="fas fa-calendar-alt"></i> 2ème année • 2025-2026</p>
                     </div>
                     <div class="ap-content">
-                        <p>Cet atelier sera documenté prochainement.</p>
+                        <p>
+                            Contrôleur de domaine (AD DS), serveur DNS : Labannu. Mise en place de GLPI/OCS, 
+                            inventaire et gestion d'incidents. Outil de supervision Zabbix. 
+                            Stormshield / Routeur Linux : Pare-feu, règles de filtrage et NAT. 
+                            Routeur et Commutateur Cisco. DMZ.
+                        </p>
                         <div class="ap-tags">
-                            <span class="ap-tag">À définir</span>
+                            <span class="ap-tag">AD DS</span>
+                            <span class="ap-tag">DNS</span>
+                            <span class="ap-tag">GLPI/OCS</span>
+                            <span class="ap-tag">Zabbix</span>
+                            <span class="ap-tag">Stormshield</span>
+                            <span class="ap-tag">Cisco</span>
+                            <span class="ap-tag">DMZ</span>
                         </div>
                         <span class="ap-button">
-                            Bientôt disponible
-                            <i class="fas fa-lock"></i>
+                            Voir l'atelier
+                            <i class="fas fa-arrow-right"></i>
                         </span>
                     </div>
-                </div>
-
-                <!-- AP 3 : À venir -->
-                <div class="ap-card coming-soon">
-                    <div class="ap-header">
-                        <div class="ap-number">03</div>
-                        <span class="coming-soon-badge">
-                            <i class="fas fa-hourglass-half"></i>
-                            À venir
-                        </span>
-                        <h3><i class="fas fa-question-circle"></i> Atelier Professionnel #3</h3>
-                        <p class="year"><i class="fas fa-calendar-alt"></i> À définir</p>
-                    </div>
-                    <div class="ap-content">
-                        <p>Cet atelier sera documenté prochainement.</p>
-                        <div class="ap-tags">
-                            <span class="ap-tag">À définir</span>
-                        </div>
-                        <span class="ap-button">
-                            Bientôt disponible
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- AP 4 : À venir -->
-                <div class="ap-card coming-soon">
-                    <div class="ap-header">
-                        <div class="ap-number">04</div>
-                        <span class="coming-soon-badge">
-                            <i class="fas fa-hourglass-half"></i>
-                            À venir
-                        </span>
-                        <h3><i class="fas fa-question-circle"></i> Atelier Professionnel #4</h3>
-                        <p class="year"><i class="fas fa-calendar-alt"></i> À définir</p>
-                    </div>
-                    <div class="ap-content">
-                        <p>Cet atelier sera documenté prochainement.</p>
-                        <div class="ap-tags">
-                            <span class="ap-tag">À définir</span>
-                        </div>
-                        <span class="ap-button">
-                            Bientôt disponible
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- AP 5 : À venir -->
-                <div class="ap-card coming-soon">
-                    <div class="ap-header">
-                        <div class="ap-number">05</div>
-                        <span class="coming-soon-badge">
-                            <i class="fas fa-hourglass-half"></i>
-                            À venir
-                        </span>
-                        <h3><i class="fas fa-question-circle"></i> Atelier Professionnel #5</h3>
-                        <p class="year"><i class="fas fa-calendar-alt"></i> À définir</p>
-                    </div>
-                    <div class="ap-content">
-                        <p>Cet atelier sera documenté prochainement.</p>
-                        <div class="ap-tags">
-                            <span class="ap-tag">À définir</span>
-                        </div>
-                        <span class="ap-button">
-                            Bientôt disponible
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -917,7 +793,6 @@
     </footer>
 
     <script>
-        // Menu hamburger toggle
         function toggleMenu() {
             const menuToggle = document.querySelector('.menu-toggle');
             const navMenu = document.getElementById('navMenu');
@@ -925,7 +800,6 @@
             navMenu.classList.toggle('active');
         }
 
-        // Toggle sous-menus sur mobile
         const subMenuItems = document.querySelectorAll('.has-submenu');
         subMenuItems.forEach(item => {
             const link = item.querySelector('a');
@@ -938,7 +812,6 @@
             });
         });
 
-        // Fermer le menu si on clique en dehors
         document.addEventListener('click', (e) => {
             if (!e.target.closest('nav')) {
                 document.querySelector('.menu-toggle')?.classList.remove('active');
