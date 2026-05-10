@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ateliers Professionnels | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --deep-blue: #0369a1;
+            --electric-cyan: #06b6d4;
+            --sky-blue: #38bdf8;
+            --indigo: #6366f1;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 30%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            animation: bluePulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bluePulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-blue);
+        }
+
+        .icon-gray {
+            color: var(--text-gray);
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover .icon-gray {
+            color: var(--primary-blue);
+        }
+
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            display: none;
+            list-style: none;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 0.5rem;
+        }
+
+        .submenu li a {
+            padding: 0.75rem 1.25rem;
+            display: block;
+        }
+
+        .has-submenu:hover .submenu {
+            display: flex;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-hero {
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--sky-blue), var(--primary-blue), var(--indigo));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .page-hero h1 i {
+            background: linear-gradient(135deg, var(--sky-blue), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .intro-box {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            margin: 3rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-blue), var(--electric-cyan), transparent);
+        }
+
+        .intro-box h2 {
+            color: var(--sky-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .intro-box p {
+            color: var(--text-gray);
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-blue), var(--electric-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            background: linear-gradient(135deg, var(--primary-blue), var(--electric-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ap-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            margin: 4rem 0;
+        }
+
+        .ap-card {
+            background: linear-gradient(135deg, 
+                rgba(30, 41, 59, 0.6) 0%, 
+                rgba(30, 41, 59, 0.4) 100%
+            );
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .ap-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                var(--primary-blue),
+                var(--electric-cyan),
+                var(--indigo)
+            );
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .ap-card:hover::before {
+            opacity: 1;
+        }
+
+        .ap-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(14, 165, 233, 0.5);
+            box-shadow: 
+                0 30px 60px rgba(14, 165, 233, 0.3),
+                0 0 80px rgba(99, 102, 241, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, 
+                rgba(14, 165, 233, 0.1) 0%, 
+                rgba(30, 41, 59, 0.5) 50%, 
+                rgba(99, 102, 241, 0.1) 100%
+            );
+        }
+
+        .ap-card.coming-soon {
+            background: linear-gradient(135deg, 
+                rgba(30, 41, 59, 0.3) 0%, 
+                rgba(30, 41, 59, 0.2) 100%
+            );
+            border: 1px dashed rgba(14, 165, 233, 0.15);
+            opacity: 0.5;
+        }
+
+        .ap-card.coming-soon::before {
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(14, 165, 233, 0.3),
+                transparent
+            );
+        }
+
+        .ap-card.coming-soon:hover {
+            transform: none;
+            box-shadow: none;
+            background: linear-gradient(135deg, 
+                rgba(30, 41, 59, 0.3) 0%, 
+                rgba(30, 41, 59, 0.2) 100%
+            );
+        }
+
+        .ap-header {
+            background: linear-gradient(135deg, 
+                rgba(14, 165, 233, 0.15) 0%,
+                rgba(99, 102, 241, 0.1) 100%
+            );
+            padding: 2.5rem;
+            color: white;
+            position: relative;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+        }
+
+        .ap-number {
+            display: inline-flex;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--electric-cyan));
+            border-radius: 15px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1.5rem;
+            box-shadow: 
+                0 8px 20px rgba(14, 165, 233, 0.3),
+                0 0 30px rgba(14, 165, 233, 0.2);
+            transition: all 0.3s;
+        }
+
+        .ap-card:hover .ap-number {
+            box-shadow: 
+                0 12px 30px rgba(14, 165, 233, 0.5),
+                0 0 50px rgba(14, 165, 233, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .ap-header h3 {
+            font-size: 1.7rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .ap-header .year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ap-content {
+            padding: 2.5rem;
+        }
+
+        .ap-content p {
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .ap-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .ap-tag {
+            padding: 0.6rem 1.2rem;
+            background: rgba(14, 165, 233, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--sky-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .ap-tag:hover {
+            background: rgba(14, 165, 233, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .ap-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--electric-cyan));
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ap-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .ap-card:hover .ap-button::before {
+            left: 100%;
+        }
+
+        .ap-card.coming-soon .ap-button {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            color: var(--text-gray);
+        }
+
+        .ap-card.coming-soon .ap-button::before {
+            display: none;
+        }
+
+        .coming-soon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(14, 165, 233, 0.15);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: var(--electric-cyan);
+        }
+
+        @media (max-width: 968px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                border-left: 2px solid rgba(14, 165, 233, 0.3);
+                z-index: 999;
+            }
+
+            nav ul.active { right: 0; }
+
+            .submenu {
+                position: static;
+                display: none;
+                width: 100%;
+                margin-top: 0.5rem;
+                background: rgba(30, 41, 59, 0.8);
+            }
+
+            .has-submenu.open .submenu {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .ap-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+
+            .intro-box {
+                padding: 2rem;
+            }
+
+            .ap-header, .ap-content {
+                padding: 2rem;
+            }
+        }
+
+        .site-footer {
+            background: #111113;
+            border-top: 1px solid #27272a;
+            padding: 1.75rem 0;
+        }
+
+        .site-footer__inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .site-footer__copy {
+            color: #52525b;
+            font-size: 0.875rem;
+        }
+
+        .site-footer__copy a {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .site-footer__copy a:hover {
+            color: #fafafa;
+            border-color: #fafafa;
+        }
+
+        .site-footer__socials {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .site-footer__social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #3f3f46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .site-footer__social-btn:hover {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            transform: translateY(-3px);
+        }
+
+        .site-footer__mentions {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .site-footer__mentions:hover {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+
+        @media (max-width: 640px) {
+            .site-footer__inner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+            
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+                
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-tools"></i> Ateliers Professionnels</h1>
+            <p class="subtitle">Projets et travaux pratiques BTS SIO</p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+            <!-- Intro Box -->
+            <div class="intro-box">
+                <h2><i class="fas fa-book-open"></i> Qu'est-ce qu'un Atelier Professionnel ?</h2>
+                <p>
+                    Les <strong>Ateliers Professionnels (AP)</strong> sont des projets techniques réalisés tout au long du BTS SIO. 
+                    Ils permettent de mettre en pratique les compétences acquises en cours sur des cas concrets : 
+                    développement d'applications, administration de systèmes, gestion de bases de données, 
+                    déploiement d'infrastructures, etc.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Chaque AP couvre plusieurs compétences du référentiel BTS SIO et s'étale sur plusieurs séances de travaux pratiques.
+                </p>
+            </div>
+
+            <!-- Section Title -->
+            <h2 class="section-title"><i class="fas fa-folder-open"></i> Mes ateliers professionnels</h2>
+
+            <!-- AP Grid -->
+            <div class="ap-grid">
+                <!-- AP 1 : Odoo -->
+                <a href="ap1.html" class="ap-card">
+                    <div class="ap-header">
+                        <div class="ap-number">01</div>
+                        <h3><i class="fas fa-box"></i> Déploiement Odoo sur Ubuntu Server</h3>
+                        <p class="year"><i class="fas fa-calendar-alt"></i> 1ère année • 2024-2025</p>
+                    </div>
+                    <div class="ap-content">
+                        <p>
+                            Configuration d'une VM Ubuntu Server 22, installation et paramétrage d'Odoo 16, 
+                            gestion des addons, tests d'import CSV de données clients. Travail en binôme avec 
+                            un développeur (scripts Python de génération de données).
+                        </p>
+                        <div class="ap-tags">
+                            <span class="ap-tag">Ubuntu Server</span>
+                            <span class="ap-tag">Odoo 16</span>
+                            <span class="ap-tag">VirtualBox</span>
+                            <span class="ap-tag">Addons</span>
+                        </div>
+                        <span class="ap-button">
+                            Voir l'atelier
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- AP 2 : Infrastructure réseau (B2) -->
+                <div class="ap-card coming-soon">
+                    <div class="ap-header">
+                        <div class="ap-number">02</div>
+                        <span class="coming-soon-badge">
+                            <i class="fas fa-hourglass-half"></i>
+                            À venir
+                        </span>
+                        <h3><i class="fas fa-network-wired"></i> Déploiement d'une infrastructure réseau (B2)</h3>
+                        <p class="year"><i class="fas fa-calendar-alt"></i> 2ème année • 2025-2026</p>
+                    </div>
+                    <div class="ap-content">
+                        <p>
+                            Contrôleur de domaine (AD DS), serveur DNS : Labannu. Mise en place de GLPI/OCS, 
+                            inventaire et gestion d'incidents. Outil de supervision Zabbix. 
+                            Stormshield / Routeur Linux : Pare-feu, règles de filtrage et NAT. 
+                            Routeur et Commutateur Cisco. DMZ.
+                        </p>
+                        <div class="ap-tags">
+                            <span class="ap-tag">AD DS</span>
+                            <span class="ap-tag">DNS</span>
+                            <span class="ap-tag">GLPI/OCS</span>
+                            <span class="ap-tag">Zabbix</span>
+                            <span class="ap-tag">Stormshield</span>
+                            <span class="ap-tag">Cisco</span>
+                            <span class="ap-tag">DMZ</span>
+                        </div>
+                        <span class="ap-button">
+                            Bientôt disponible
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+    
+            <p class="site-footer__copy">
+                &copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>
+            </p>
+            
+            <div class="site-footer__socials">
+                <a href="https://www.linkedin.com/in/christoux-ka%C3%ABlig-6a4620341/"
+                   target="_blank" rel="noopener"
+                   class="site-footer__social-btn"
+                   title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/kaeligchristoux"
+                   target="_blank" rel="noopener"
+                   class="site-footer__social-btn"
+                   title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:christouxkaelig@gmail.com"
+                   class="site-footer__social-btn"
+                   title="Envoyer un e-mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            
+            <a href="mentions-legales.html" class="site-footer__mentions">
+                Mentions légales
+            </a>
+    
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
