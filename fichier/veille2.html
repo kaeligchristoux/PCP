@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veille Technologique - ZTNA | Kaëlig CHRISTOUX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #8b5cf6;
+            --deep-purple: #6d28d9;
+            --light-purple: #a78bfa;
+            --accent-violet: #c4b5fd;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-lighter: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+            --rail-gray: #64748b;
+            --tech-green: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(circle at 25% 40%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 75% 60%, rgba(109, 40, 217, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(167, 139, 250, 0.06) 0%, transparent 60%);
+            z-index: -1;
+            animation: purplePulse 15s ease-in-out infinite;
+        }
+
+        @keyframes purplePulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .logo:hover { color: var(--light-purple); }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        nav ul li a:hover { color: var(--primary-purple); }
+
+        .icon-gray { color: var(--text-gray); }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            padding: 0.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            z-index: 1000;
+            list-style: none;
+        }
+
+        nav ul li.has-submenu { position: relative; }
+        nav ul li.has-submenu:hover .submenu { display: block; }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .submenu li a:hover {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary-purple);
+            padding-left: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary-purple);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(8px, 8px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-hero {
+            padding: 150px 0 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .page-hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple), var(--accent-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .competence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.5rem;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 30px;
+            font-size: 0.95rem;
+            color: var(--light-purple);
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(167, 139, 250, 0.08));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary-purple), var(--light-purple));
+        }
+
+        .intro-box h2 {
+            color: var(--primary-purple);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.9rem;
+            border: none;
+        }
+
+        .section {
+            margin: 4rem 0;
+        }
+
+        .section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .section h2 i { color: var(--primary-purple); }
+
+        .why-box {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-purple);
+            margin-bottom: 2rem;
+        }
+
+        /* Quote / citation */
+        .quote-block {
+            background: rgba(139, 92, 246, 0.08);
+            border-left: 4px solid var(--primary-purple);
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-size: 1.15rem;
+            color: var(--light-purple);
+            font-style: italic;
+        }
+
+        /* Concepts grid */
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.5));
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.3s;
+        }
+
+        .concept-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .concept-card .concept-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--deep-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .concept-card h4 {
+            color: var(--light-purple);
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .concept-card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Tech comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, var(--primary-purple), var(--deep-purple));
+        }
+
+        .comparison-table th {
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .comparison-table tbody tr {
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+            transition: all 0.2s;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: rgba(51, 65, 85, 0.4);
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .comparison-table td {
+            padding: 1rem 1.2rem;
+            color: var(--text-gray);
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: var(--light-purple);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Pros / Cons */
+        .pros-cons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .pros, .cons {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4));
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .pros h4 {
+            color: var(--tech-green);
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .cons h4 {
+            color: #f87171;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .pros ul, .cons ul { list-style: none; padding: 0; }
+
+        .pros li, .cons li {
+            padding: 0.5rem 0 0.5rem 2rem;
+            position: relative;
+            color: var(--text-gray);
+        }
+
+        .pros li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--tech-green);
+            font-weight: bold;
+        }
+
+        .cons li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        /* Phases lab */
+        .phases-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: phase-counter;
+        }
+
+        .phases-list li {
+            counter-increment: phase-counter;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(51, 65, 85, 0.4));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 14px;
+            transition: all 0.3s;
+        }
+
+        .phases-list li:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateX(6px);
+        }
+
+        .phase-number {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--deep-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+        }
+
+        .phase-text strong {
+            color: var(--light-purple);
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .phase-text span {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Sources */
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .source-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.5));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .source-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .source-card .source-type {
+            font-size: 0.8rem;
+            color: var(--primary-purple);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .source-card h4 {
+            color: var(--light-purple);
+            font-size: 1rem;
+        }
+
+        .source-card p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .source-card .source-link {
+            color: var(--primary-purple);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Learning box */
+        .learning-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(30, 41, 59, 0.6));
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .learning-box h3 {
+            color: var(--tech-green);
+            font-size: 1.7rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .learning-box ul { list-style: none; padding: 0; }
+
+        .learning-box li {
+            padding: 0.8rem 0 0.8rem 2.5rem;
+            position: relative;
+            color: var(--text-light);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .learning-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--tech-green);
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--deep-purple));
+            border: none;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            margin-top: 3rem;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateX(-10px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Tag inline */
+        .tag-inline {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--light-purple);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .copyright { color: var(--rail-gray); font-size: 0.9rem; }
+        .copyright a { color: var(--primary-purple); text-decoration: none; }
+        .copyright a:hover { color: var(--light-purple); }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .menu-toggle { display: flex; }
+
+            nav ul {
+                position: fixed;
+                top: 80px; right: -100%;
+                width: 300px;
+                height: calc(100vh - 80px);
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+                transition: right 0.3s ease;
+                overflow-y: auto;
+                align-items: flex-start;
+            }
+
+            nav ul.active { right: 0; }
+
+            nav ul li {
+                border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+                width: 100%;
+            }
+
+            nav ul li:last-child { border-bottom: none; }
+
+            nav ul li > a {
+                display: flex;
+                padding: 1rem 0;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+
+            nav ul li.has-submenu > a i.fa-chevron-down { margin-left: auto; }
+
+            .submenu {
+                position: static;
+                display: none;
+                background: rgba(139, 92, 246, 0.05);
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid rgba(139, 92, 246, 0.2);
+                margin-left: 1rem;
+                padding: 0;
+            }
+
+            nav ul li.has-submenu.open .submenu { display: block; }
+            .submenu li { border: none; }
+            .submenu li a { padding: 0.75rem 1rem !important; font-size: 1rem !important; }
+
+            .page-hero h1 {
+                font-size: 2.2rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .concepts-grid { grid-template-columns: 1fr; }
+            .pros-cons { grid-template-columns: 1fr; }
+            .sources-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.85rem; }
+        }
+
+        @media (max-width: 640px) {
+            .page-hero h1 { font-size: 1.8rem; }
+            .section h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">&lt;KC/&gt;</a>
+
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+
+            <ul id="navMenu">
+                <li><a href="index.html"><i class="fas fa-home icon-gray"></i> Page d'accueil</a></li>
+
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-briefcase icon-gray"></i> Stages <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="stage1.html"><i class="fas fa-building icon-gray"></i> Stage 1</a></li>
+                        <li><a href="stage2.html"><i class="fas fa-train icon-gray"></i> Stage 2</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" onclick="return false;"><i class="fas fa-folder-open icon-gray"></i> Autres <i class="fas fa-chevron-down icon-gray"></i></a>
+                    <ul class="submenu">
+                        <li><a href="veille.html"><i class="fas fa-binoculars icon-gray"></i> Veilles</a></li>
+                        <li><a href="ap.html"><i class="fas fa-tools icon-gray"></i> Ateliers Pro</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="cv.html"><i class="fas fa-file-alt icon-gray"></i> CV</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> Veille Technologique</h1>
+            <p class="subtitle">De la VPN au ZTNA : la fin du modèle château fort</p>
+            <span class="competence-badge"><i class="fas fa-certificate"></i> Compétence B1.6.3 - Mettre en œuvre des outils et stratégies de veille</span>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section style="padding: 2rem 0 4rem;">
+        <div class="container">
+
+            <!-- Intro -->
+            <div class="intro-box">
+                <h2><i class="fas fa-book"></i> Qu'est-ce que la veille technologique ?</h2>
+                <p>
+                    La <strong>veille technologique</strong> est une activité qui consiste à surveiller de manière systématique 
+                    et organisée les <strong>évolutions techniques, technologiques et scientifiques</strong> dans un domaine spécifique. 
+                    Elle permet de rester informé des <strong>nouveautés</strong>, des <strong>tendances</strong>, des 
+                    <strong>bonnes pratiques</strong> et des <strong>innovations</strong> pour adapter ses compétences et anticiper les changements.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Dans le cadre du <strong>BTS SIO option SISR</strong>, la veille technologique est essentielle pour maintenir 
+                    ses connaissances à jour sur les infrastructures systèmes et réseaux, et pour être capable de proposer des 
+                    solutions adaptées aux besoins de l'entreprise.
+                </p>
+            </div>
+
+            <!-- Contexte -->
+            <div class="section">
+                <h2><i class="fas fa-history"></i> Contexte — Pourquoi ce sujet ?</h2>
+                <div class="why-box">
+                    <p style="color: var(--text-gray);">
+                        Pendant des décennies, la sécurité réseau reposait sur le modèle du <strong style="color: var(--light-purple);">château fort</strong> : 
+                        un périmètre défini par le pare-feu et un pont-levis représenté par le VPN. Une fois à l'intérieur, 
+                        l'utilisateur pouvait souvent atteindre l'ensemble du réseau — c'est ce qu'on appelle le <strong style="color: #f87171;">mouvement latéral</strong>.
+                    </p>
+                    <p style="color: var(--text-gray); margin-top: 1rem;">
+                        En 2026, avec le <strong>télétravail généralisé</strong>, le <strong>Cloud hybride</strong> et l'explosion 
+                        des terminaux mobiles, ce modèle est obsolète. Le <strong style="color: var(--light-purple);">ZTNA (Zero Trust Network Access)</strong> 
+                        s'impose comme son successeur naturel, notamment sous l'impulsion de la directive <strong>NIS 2</strong>.
+                    </p>
+                </div>
+
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding-left: 2rem; margin-bottom: 0.8rem; position: relative; color: var(--text-gray);">
+                        <span style="position: absolute; left: 0; color: var(--primary-purple); font-size: 1.3rem;">▹</span>
+                        Comprendre le <strong>modèle Zero Trust</strong> et ses implications pour les infrastructures SISR
+                    </li>
+                    <li style="padding-left: 2rem; margin-bottom: 0.8rem; position: relative; color: var(--text-gray);">
+                        <span style="position: absolute; left: 0; color: var(--primary-purple); font-size: 1.3rem;">▹</span>
+                        Identifier les <strong>solutions leaders</strong> du marché ZTNA en 2025-2026
+                    </li>
+                    <li style="padding-left: 2rem; margin-bottom: 0.8rem; position: relative; color: var(--text-gray);">
+                        <span style="position: absolute; left: 0; color: var(--primary-purple); font-size: 1.3rem;">▹</span>
+                        Comprendre en quoi le ZTNA <strong>empêche les mouvements latéraux</strong> en cas de compromission
+                    </li>
+                    <li style="padding-left: 2rem; margin-bottom: 0.8rem; position: relative; color: var(--text-gray);">
+                        <span style="position: absolute; left: 0; color: var(--primary-purple); font-size: 1.3rem;">▹</span>
+                        Être capable de <strong>mettre en place un lab ZTNA</strong> dans un contexte BTS SIO
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Concepts clés -->
+            <div class="section">
+                <h2><i class="fas fa-key"></i> Définitions et Concepts Clés</h2>
+
+                <div class="quote-block">
+                    "Never Trust, Always Verify" — Le principe fondateur du Zero Trust
+                </div>
+
+                <div class="concepts-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon"><i class="fas fa-id-badge"></i></div>
+                        <h4>L'identité comme périmètre</h4>
+                        <p>Ce n'est plus l'adresse IP qui définit la confiance, mais la combinaison <strong>utilisateur + périphérique + comportement</strong>. L'identité devient la nouvelle frontière de sécurité.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon"><i class="fas fa-user-lock"></i></div>
+                        <h4>Principe du moindre privilège</h4>
+                        <p>Un utilisateur n'accède qu'à <strong>l'application précise</strong> dont il a besoin, jamais au VLAN ou au sous-réseau entier. Chaque accès est une exception explicitement accordée.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon"><i class="fas fa-cubes"></i></div>
+                        <h4>Micro-segmentation</h4>
+                        <p>Le réseau est découpé en <strong>segments minuscules</strong> pour isoler chaque ressource. Un attaquant qui compromet un poste ne peut pas pivoter vers d'autres machines.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon"><i class="fas fa-eye-slash"></i></div>
+                        <h4>Dark Cloud</h4>
+                        <p>Les ressources de l'entreprise <strong>n'ouvrent aucun port entrant</strong> sur Internet. C'est un connecteur interne qui "sort" pour contacter le broker, rendant l'infrastructure invisible.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fonctionnement technique -->
+            <div class="section">
+                <h2><i class="fas fa-cogs"></i> Fonctionnement Technique</h2>
+                <p style="color: var(--text-gray); margin-bottom: 2rem;">
+                    Contrairement au VPN qui connecte un hôte à un réseau (<span class="tag-inline">Layer 3</span>), 
+                    le ZTNA connecte un utilisateur à une application (<span class="tag-inline">Layer 7</span>). 
+                    La différence est fondamentale en termes de surface d'attaque.
+                </p>
+
+                <div class="pros-cons">
+                    <div class="pros" style="border-color: rgba(139, 92, 246, 0.3);">
+                        <h4 style="color: var(--light-purple);"><i class="fas fa-network-wired"></i> VPN — Modèle traditionnel</h4>
+                        <ul>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: #f87171;">✗</span>
+                                Accès Layer 3 : l'utilisateur rejoint le réseau entier
+                            </li>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: #f87171;">✗</span>
+                                Mouvement latéral possible en cas de compromission
+                            </li>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: #f87171;">✗</span>
+                                Ports d'entrée ouverts sur Internet
+                            </li>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
+                                Technologie mature et bien maîtrisée
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="cons" style="border-color: rgba(16, 185, 129, 0.3);">
+                        <h4 style="color: var(--tech-green);"><i class="fas fa-shield-alt"></i> ZTNA — Modèle Zero Trust</h4>
+                        <ul>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
+                                Accès Layer 7 : uniquement l'application ciblée
+                            </li>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
+                                Mouvement latéral rendu impossible
+                            </li>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
+                                Infrastructure invisible depuis l'extérieur
+                            </li>
+                            <li style="padding-left: 2rem; margin-bottom: 0.6rem; position: relative; color: var(--text-gray);">
+                                <span style="position: absolute; left: 0; color: var(--tech-green);">✓</span>
+                                Vérification continue : identité, device, contexte
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="why-box" style="margin-top: 1.5rem;">
+                    <h4 style="color: var(--light-purple); margin-bottom: 0.8rem;"><i class="fas fa-project-diagram"></i> Le rôle du Broker (Contrôleur)</h4>
+                    <p style="color: var(--text-gray);">
+                        Le <strong style="color: var(--light-purple);">Broker</strong> est le cerveau du ZTNA. Un agent client vérifie 
+                        l'<strong>identité</strong> (MFA obligatoire), l'<strong>état du poste</strong> (antivirus à jour, certificat présent, 
+                        OS patché) et le <strong>contexte</strong> (heure de connexion, localisation géographique, comportement habituel). 
+                        Ce n'est qu'une fois ces trois critères validés que l'accès à l'application est accordé — et uniquement à elle.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Solutions du marché -->
+            <div class="section">
+                <h2><i class="fas fa-store"></i> Solutions du Marché en 2026</h2>
+                <p style="color: var(--text-gray); margin-bottom: 2rem;">
+                    Tour d'horizon des acteurs à connaître pour un administrateur SISR en 2026 :
+                </p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Solution</th>
+                            <th>Type</th>
+                            <th>Points forts</th>
+                            <th>Cible</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cloudflare One</td>
+                            <td>SASE / ZTNA</td>
+                            <td>Mise en place simple via Tunnels, réseau mondial, gratuit jusqu'à 50 utilisateurs</td>
+                            <td>PME à grandes entreprises</td>
+                        </tr>
+                        <tr>
+                            <td>Tailscale (WireGuard)</td>
+                            <td>Mesh VPN / ZTNA</td>
+                            <td>Référence Linux/DevOps, protocole WireGuard ultra-rapide, configuration en minutes</td>
+                            <td>Admins système, DevOps</td>
+                        </tr>
+                        <tr>
+                            <td>Zscaler Private Access</td>
+                            <td>Enterprise ZTNA</td>
+                            <td>Leader historique, intégrations SIEM avancées, contrôle granulaire</td>
+                            <td>Très grandes entreprises</td>
+                        </tr>
+                        <tr>
+                            <td>Twingate</td>
+                            <td>ZTNA Cloud-native</td>
+                            <td>Remplacement VPN sans refonte d'infrastructure, interface intuitive</td>
+                            <td>ETI, remplacement VPN existant</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Lab SISR -->
+            <div class="section">
+                <h2><i class="fas fa-flask"></i> Mise en Pratique — Lab SISR</h2>
+                <p style="color: var(--text-gray); margin-bottom: 2rem;">
+                    Démarche pour monter un lab ZTNA dans un contexte BTS SIO :
+                </p>
+
+                <ul class="phases-list">
+                    <li>
+                        <span class="phase-number">01</span>
+                        <div class="phase-text">
+                            <strong>Phase d'audit</strong>
+                            <span>Inventorier toutes les applications accessibles à distance : Web, SSH, RDP. Identifier qui accède à quoi et depuis où.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="phase-number">02</span>
+                        <div class="phase-text">
+                            <strong>Mise en place d'un IDP (Identity Provider)</strong>
+                            <span>Configurer un <span class="tag-inline">Keycloak</span> auto-hébergé ou utiliser <span class="tag-inline">Azure Entra ID</span> pour l'authentification forte avec MFA obligatoire.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="phase-number">03</span>
+                        <div class="phase-text">
+                            <strong>Déploiement des connecteurs</strong>
+                            <span>Installer des agents légers sur des serveurs Debian — par exemple <span class="tag-inline">cloudflared</span> pour Cloudflare Tunnels ou le daemon <span class="tag-inline">tailscale</span>.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="phase-number">04</span>
+                        <div class="phase-text">
+                            <strong>Définition des politiques d'accès</strong>
+                            <span>Exemple concret : "Seul le groupe <em>Admins</em> peut accéder au SSH du serveur Backup, uniquement depuis un poste avec certificat valide et entre 8h et 18h."</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Sources -->
+            <div class="section">
+                <h2><i class="fas fa-book-open"></i> Sources utilisées</h2>
+                <div class="sources-grid">
+                    <a href="https://www.cloudflare.com/learning/access-management/what-is-ztna/" target="_blank" class="source-card">
+                        <span class="source-type"><i class="fas fa-globe"></i> Documentation officielle</span>
+                        <h4>Cloudflare — What is ZTNA?</h4>
+                        <p>Explication complète du modèle Zero Trust par Cloudflare, avec schémas d'architecture et cas d'usage.</p>
+                        <span class="source-link"><i class="fas fa-external-link-alt"></i> cloudflare.com</span>
+                    </a>
+                    <a href="https://tailscale.com/blog/how-tailscale-works" target="_blank" class="source-card">
+                        <span class="source-type"><i class="fas fa-rss"></i> Blog technique</span>
+                        <h4>Tailscale — How Tailscale Works</h4>
+                        <p>Article de fond expliquant le protocole WireGuard, le mécanisme de mesh et la gestion des clés publiques.</p>
+                        <span class="source-link"><i class="fas fa-external-link-alt"></i> tailscale.com</span>
+                    </a>
+                    <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf" target="_blank" class="source-card">
+                        <span class="source-type"><i class="fas fa-file-pdf"></i> Publication officielle</span>
+                        <h4>NIST SP 800-207 — Zero Trust Architecture</h4>
+                        <p>Publication de référence du NIST définissant formellement les principes et l'architecture Zero Trust.</p>
+                        <span class="source-link"><i class="fas fa-external-link-alt"></i> nist.gov</span>
+                    </a>
+                    <a href="https://www.ssi.gouv.fr/guide/le-modele-zero-trust/" target="_blank" class="source-card">
+                        <span class="source-type"><i class="fas fa-landmark"></i> Guide officiel</span>
+                        <h4>ANSSI — Le modèle Zero Trust</h4>
+                        <p>Guide de l'Agence Nationale de la Sécurité des Systèmes d'Information sur l'adoption du Zero Trust en France.</p>
+                        <span class="source-link"><i class="fas fa-external-link-alt"></i> ssi.gouv.fr</span>
+                    </a>
+                    <a href="https://www.twingate.com/blog/ztna-vs-vpn" target="_blank" class="source-card">
+                        <span class="source-type"><i class="fas fa-balance-scale"></i> Comparatif</span>
+                        <h4>Twingate — ZTNA vs VPN</h4>
+                        <p>Comparaison détaillée entre VPN traditionnel et ZTNA, avec tableau des différences techniques et cas d'usage.</p>
+                        <span class="source-link"><i class="fas fa-external-link-alt"></i> twingate.com</span>
+                    </a>
+                    <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32022L2555" target="_blank" class="source-card">
+                        <span class="source-type"><i class="fas fa-gavel"></i> Réglementation</span>
+                        <h4>Directive NIS 2 — Texte officiel</h4>
+                        <p>Directive européenne imposant des exigences de cybersécurité renforcées aux opérateurs, dont l'adoption de modèles Zero Trust.</p>
+                        <span class="source-link"><i class="fas fa-external-link-alt"></i> eur-lex.europa.eu</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Apprentissages -->
+            <div class="learning-box">
+                <h3><i class="fas fa-graduation-cap"></i> Ce que j'ai appris grâce à cette veille</h3>
+                <ul>
+                    <li>Le ZTNA opère au Layer 7 (application) là où le VPN opère au Layer 3 (réseau), ce qui réduit drastiquement la surface d'attaque</li>
+                    <li>Le concept de "Dark Cloud" rend les ressources internes totalement invisibles depuis Internet</li>
+                    <li>Tailscale permet de déployer un ZTNA opérationnel en quelques minutes sur Debian grâce à WireGuard</li>
+                    <li>La directive NIS 2 (2024) impose désormais des mesures Zero Trust aux opérateurs d'importance vitale</li>
+                    <li>Le mouvement latéral est l'argument de sécurité central : un poste compromis ne peut plus scanner tout le LAN</li>
+                    <li>Un Identity Provider (Keycloak, Entra ID) est indispensable pour gérer l'authentification forte dans un modèle ZTNA</li>
+                    <li>Cloudflare Tunnels permet d'exposer des services internes sans ouvrir un seul port sur le pare-feu</li>
+                    <li>Le ZTNA et le VPN peuvent coexister le temps d'une transition progressive dans les grandes infrastructures</li>
+                </ul>
+
+                <p style="margin-top: 2rem; padding: 1.5rem; background: rgba(0,0,0,0.3); border-radius: 12px; border-left: 4px solid var(--tech-green);">
+                    <strong style="color: var(--tech-green);"><i class="fas fa-comments"></i> Conclusion personnelle :</strong><br>
+                    Cette veille m'a permis de comprendre que la sécurité périmétrique classique — reposant sur VPN et pare-feu — 
+                    n'est plus suffisante dans un monde où les utilisateurs travaillent depuis n'importe où et où les ressources 
+                    sont éclatées entre Cloud et on-premise. Le ZTNA représente un changement de paradigme profond : on ne fait plus 
+                    confiance au réseau, on fait confiance à l'identité vérifiée. Pour un futur administrateur SISR, 
+                    savoir déployer et configurer des solutions comme Tailscale ou Cloudflare Tunnels est une compétence 
+                    de plus en plus recherchée — et bien plus valorisante qu'un simple tunnel IPsec.
+                </p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="veille.html" class="back-button"><i class="fas fa-arrow-left"></i> Retour aux veilles</a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p class="copyright">&copy; 2026 <a href="index.html">Kaëlig CHRISTOUX</a>. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        const subMenuItems = document.querySelectorAll('.has-submenu');
+        subMenuItems.forEach(item => {
+            const link = item.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                document.querySelector('.menu-toggle')?.classList.remove('active');
+                document.getElementById('navMenu')?.classList.remove('active');
+                subMenuItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
